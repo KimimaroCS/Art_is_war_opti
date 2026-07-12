@@ -349,7 +349,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 const CONFIG = {
   supabaseUrl: "https://taqdcytecvabwyanyptb.supabase.co",
   supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhcWRjeXRlY3ZhYnd5YW55cHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4NTYwMjAsImV4cCI6MjA5OTQzMjAyMH0.MwAgQTIqxuTzTUpd-l_sTiLEmU9bjRPzwR-PPp8vCJU",
-  siteUrl: "https://ton-pseudo.github.io/art-is-war",  // sans / final — sert au lien d'annulation
+  siteUrl: "https://kimimarocs.github.io/Art_is_war_opti",
   price: 10,
   brand: "ART IS WAR",
   sessionMinutes: 45,
@@ -374,7 +374,7 @@ $("anydesk-link").href = CONFIG.anydeskUrl;
 (function curve(){
   const p=[];
   for(let x=0;x<=900;x+=10){
-    const sub=24*Math.exp(-((x-230)/90)**2), mid=28*Math.exp(-((x-520)/120)**2), hi=9*Math.exp(-((x-820)/110)**2);
+    const sub=24*Math.exp(-Math.pow((x-230)/90,2)), mid=28*Math.exp(-Math.pow((x-520)/120,2)), hi=9*Math.exp(-Math.pow((x-820)/110,2));
     p.push(`${x},${(37+sub-mid-hi).toFixed(1)}`);
   }
   $("curve").setAttribute("d","M"+p.join(" L"));
