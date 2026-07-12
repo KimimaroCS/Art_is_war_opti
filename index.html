@@ -329,8 +329,16 @@
 
 <div class="toast" id="toast" hidden></div>
 
+<script>
+/* Filet de sécurité : affiche toute erreur à l'écran au lieu de planter en silence */
+window.addEventListener("error", e => {
+  const box = document.getElementById("slots-container");
+  if(box) box.innerHTML = `<div class="empty" style="border-color:#C8322B;color:#E2453D;text-align:left">
+    <b>Erreur technique :</b><br><span style="font-family:monospace;font-size:13px">${(e.message||"")} ${(e.filename||"")}</span></div>`;
+});
+</script>
 <script type="module">
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 
 /* ==========================================================
    RÉGLAGES
@@ -340,7 +348,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
    ========================================================== */
 const CONFIG = {
   supabaseUrl: "https://taqdcytecvabwyanyptb.supabase.co",
-  supabaseAnonKey: "sb_publishable_pnUR8tZxGlUIEh2s5TmgRA_CCwqitML",   // clé publique — sans danger
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhcWRjeXRlY3ZhYnd5YW55cHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4NTYwMjAsImV4cCI6MjA5OTQzMjAyMH0.MwAgQTIqxuTzTUpd-l_sTiLEmU9bjRPzwR-PPp8vCJU",
   siteUrl: "https://ton-pseudo.github.io/art-is-war",  // sans / final — sert au lien d'annulation
   price: 10,
   brand: "ART IS WAR",
