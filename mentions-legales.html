@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mentions légales — ART IS WAR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0C0D10;--sumi:#15171C;--line:#2C313B;--bone:#E8E2D6;--grey:#8B919C;--seal:#C8322B;--seal-hi:#E2453D;--free:#3FA65C;--gold:#C9A227;--r:2px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ink);color:var(--bone);font-family:'Barlow',system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+  h1,h2{font-family:'Big Shoulders Display',Impact,sans-serif;font-weight:900;line-height:.94;text-transform:uppercase}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
+  a{color:var(--seal-hi)}
+  :focus-visible{outline:2px solid var(--seal-hi);outline-offset:3px}
+  header{border-bottom:1px solid var(--line);padding:44px 0 34px}
+  .back{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);text-decoration:none}
+  .back:hover{color:var(--seal-hi)}
+  header h1{font-size:clamp(38px,8vw,64px);margin:16px 0 8px}
+  header p{color:var(--grey);max-width:48ch}
+  main{padding:44px 0 60px}
+  article{border-left:1px solid var(--line);padding-left:22px;margin-left:6px}
+  .clause{margin-bottom:32px;position:relative}
+  .clause::before{content:attr(data-n);position:absolute;left:-31px;top:4px;width:16px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--seal);background:var(--ink);padding:2px 0}
+  .clause h2{font-size:24px;margin-bottom:8px}
+  .clause p{color:#BFB9AC}
+  .clause p + p{margin-top:9px}
+  .clause b{color:var(--bone)}
+  dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:15px;background:var(--sumi);border-left:3px solid var(--seal);padding:16px 18px;border-radius:var(--r);margin:14px 0}
+  dt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);padding-top:4px}
+  dd{color:var(--bone);word-break:break-word}
+  .todo{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:13px}
+  footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--grey);font-size:13px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="back" href="index.html">← Retour au planning</a>
+    <p class="eyebrow" style="margin-top:22px">Informations légales</p>
+    <h1>Mentions légales</h1>
+    <p>Qui édite ce site, qui l'héberge, et ce qui est fait de tes données.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+
+    <div class="clause" data-n="01">
+      <h2>Éditeur du site</h2>
+      <p>Le présent site est édité par&nbsp;:</p>
+      <dl>
+        <dt>Nom</dt><dd><span class="todo">[Prénom NOM]</span></dd>
+        <dt>Statut</dt><dd><span class="todo">[Particulier / Auto-entrepreneur]</span></dd>
+        <dt>SIRET</dt><dd><span class="todo">[N° SIRET si tu es déclaré, sinon supprime cette ligne]</span></dd>
+        <dt>Adresse</dt><dd><span class="todo">[Adresse]</span></dd>
+        <dt>Email</dt><dd><span class="todo">[contact@…]</span></dd>
+        <dt>Discord</dt><dd><span class="todo">[lien de ton serveur]</span></dd>
+      </dl>
+      <p>Le directeur de la publication est l'éditeur ci-dessus.</p>
+    </div>
+
+    <div class="clause" data-n="02">
+      <h2>Hébergement</h2>
+      <p>Le site est hébergé par <b>GitHub Pages</b> — GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis.</p>
+      <p>Les données de réservation sont stockées chez <b>Supabase</b>, sur des serveurs situés dans l'Union européenne, et les e-mails de confirmation sont acheminés via <b>EmailJS</b>.</p>
+    </div>
+
+    <div class="clause" data-n="03">
+      <h2>Activité</h2>
+      <p>ART IS WAR propose un service d'<b>optimisation audio</b> réalisé à distance, en session individuelle, via un logiciel de prise en main à distance (AnyDesk). La prestation est facturée <b>10 €</b>, réglés à la fin de la session.</p>
+      <p>Il ne s'agit ni d'une vente de logiciel, ni d'une fourniture de matériel, ni d'un service de dépannage informatique général.</p>
+    </div>
+
+    <div class="clause" data-n="04">
+      <h2>Données personnelles</h2>
+      <p>Les informations demandées au moment de la réservation — <b>pseudo Discord, adresse e-mail, modèle de casque, matériel audio, jeu, adresse AnyDesk, précisions</b> — servent uniquement à préparer et tenir le rendez-vous, et à t'envoyer les e-mails liés à ta commande.</p>
+      <p>Elles ne sont ni revendues, ni transmises à des tiers à des fins commerciales, ni utilisées pour de la publicité. Elles sont conservées le temps nécessaire au suivi des commandes.</p>
+      <p>Conformément au RGPD, tu peux demander à tout moment l'accès, la rectification ou la <b>suppression</b> de tes données : un simple message sur Discord ou à l'adresse e-mail ci-dessus suffit.</p>
+    </div>
+
+    <div class="clause" data-n="05">
+      <h2>Cookies</h2>
+      <p>Ce site <b>ne dépose aucun cookie publicitaire</b> et n'utilise aucun traceur d'audience. Seul un jeton de connexion technique est stocké dans ton navigateur lorsque l'administrateur se connecte à son espace.</p>
+    </div>
+
+    <div class="clause" data-n="06">
+      <h2>Prise en main à distance</h2>
+      <p>La session se déroule via AnyDesk, avec ton accord explicite et sous ton contrôle : tu vois tout ce qui se passe à l'écran et tu peux couper la connexion à tout instant. Aucune donnée personnelle de ta machine n'est consultée, copiée ou conservée.</p>
+    </div>
+
+    <div class="clause" data-n="07">
+      <h2>Propriété intellectuelle</h2>
+      <p>Le nom, l'identité visuelle et les contenus de ce site appartiennent à son éditeur. Toute reproduction sans autorisation est interdite. Les marques citées (AnyDesk, PayPal, Discord, les jeux mentionnés) appartiennent à leurs détenteurs respectifs.</p>
+    </div>
+
+    <div class="clause" data-n="08">
+      <h2>Contact</h2>
+      <p>Pour toute question sur le site, une commande ou tes données : passe par <b>Discord</b> ou par e-mail. J'ai un planning : je ne réponds pas toujours dans la minute, mais je réponds toujours.</p>
+    </div>
+
+  </article>
+</main>
+
+<footer class="wrap">
+  <span>ART IS WAR — <a href="cgv.html" style="color:var(--grey)">CGV</a> · <a href="remboursement.html" style="color:var(--grey)">Remboursement</a></span>
+  <a class="back" href="index.html">Réserver un créneau →</a>
+</footer>
+
+</body>
+</html>

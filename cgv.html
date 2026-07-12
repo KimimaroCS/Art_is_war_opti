@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGV — ART IS WAR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0C0D10;--sumi:#15171C;--line:#2C313B;--bone:#E8E2D6;--grey:#8B919C;--seal:#C8322B;--seal-hi:#E2453D;--free:#3FA65C;--gold:#C9A227;--r:2px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ink);color:var(--bone);font-family:'Barlow',system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+  h1,h2{font-family:'Big Shoulders Display',Impact,sans-serif;font-weight:900;line-height:.94;text-transform:uppercase}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
+  a{color:var(--seal-hi)}
+  :focus-visible{outline:2px solid var(--seal-hi);outline-offset:3px}
+  header{border-bottom:1px solid var(--line);padding:44px 0 34px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);text-decoration:none}
+  .back:hover{color:var(--seal-hi)}
+  header h1{font-size:clamp(38px,8vw,64px);margin:16px 0 8px}
+  header p{color:var(--grey);max-width:50ch}
+  .maj{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--grey);margin-top:14px}
+  main{padding:44px 0 60px}
+  article{border-left:1px solid var(--line);padding-left:22px;margin-left:6px}
+  .clause{margin-bottom:32px;position:relative}
+  .clause::before{content:attr(data-n);position:absolute;left:-31px;top:4px;width:16px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--seal);background:var(--ink);padding:2px 0}
+  .clause h2{font-size:24px;margin-bottom:8px}
+  .clause p{color:#BFB9AC}
+  .clause p + p{margin-top:9px}
+  .clause b{color:var(--bone)}
+  ul{margin:10px 0 0 18px;color:#BFB9AC}
+  li{margin-bottom:5px}
+  .rule{background:var(--sumi);border-left:3px solid var(--seal);padding:16px 18px;border-radius:var(--r);margin:20px 0}
+  .rule p{margin:0;color:var(--bone)}
+  .ok{background:var(--sumi);border-left:3px solid var(--free);padding:16px 18px;border-radius:var(--r);margin:20px 0}
+  .ok p{margin:0;color:#BFB9AC}
+  .ok b{color:var(--free)}
+  footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--grey);font-size:13px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="back" href="index.html">← Retour au planning</a>
+    <p class="eyebrow" style="margin-top:22px">Conditions générales de vente</p>
+    <h1>CGV</h1>
+    <p>Les règles du jeu, en clair. Réserver un créneau vaut acceptation de ces conditions.</p>
+    <p class="maj">Dernière mise à jour : juillet 2026</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+
+    <div class="clause" data-n="01">
+      <h2>Objet</h2>
+      <p>Les présentes conditions régissent la prestation d'<b>optimisation audio</b> proposée par ART IS WAR : une session individuelle, à distance, pendant laquelle les réglages sonores de ta machine (casque, carte son, égalisation, paramètres du jeu) sont ajustés avec toi et sous ton contrôle.</p>
+      <p>La réservation d'un créneau vaut acceptation pleine et entière des présentes conditions, ainsi que de la <a href="remboursement.html">politique de remboursement</a>.</p>
+    </div>
+
+    <div class="clause" data-n="02">
+      <h2>La prestation</h2>
+      <ul>
+        <li><b>Durée</b> : environ 45 minutes.</li>
+        <li><b>Format</b> : à distance, via AnyDesk, en partage d'écran.</li>
+        <li><b>Contenu</b> : analyse de ton matériel, réglages système et in-game, égalisation, réglage du niveau et de la spatialisation, vérification à l'écoute avec toi.</li>
+        <li><b>Livrable</b> : ta configuration, réglée sur ta machine. Elle t'appartient.</li>
+      </ul>
+      <p>Ne sont pas compris : le dépannage informatique, la réparation matérielle, l'installation de jeux, ni la fourniture de matériel ou de licences.</p>
+    </div>
+
+    <div class="clause" data-n="03">
+      <h2>Prix et paiement</h2>
+      <p>La prestation est facturée <b>10 € TTC</b>. <b>Aucun paiement n'est demandé à la réservation.</b></p>
+      <p>Le règlement intervient <b>à la fin de la session</b>, une fois l'optimisation terminée, par PayPal (envoi « entre proches ») ou tout autre moyen convenu ensemble. Tu ne paies donc jamais pour un travail qui n'a pas été fait.</p>
+    </div>
+
+    <div class="clause" data-n="04">
+      <h2>Réservation et créneaux</h2>
+      <p>Les créneaux disponibles apparaissent en <b style="color:var(--free)">vert</b> sur le planning. Une fois réservé, un créneau passe en <b style="color:var(--seal)">rouge</b> et n'est plus proposé à personne d'autre. Chaque réservation reçoit un <b>numéro de commande</b> (format AIW-0000) et un e-mail de confirmation.</p>
+      <p>Le planning est ouvert et fermé librement par l'éditeur, en fonction de ses disponibilités.</p>
+    </div>
+
+    <div class="clause" data-n="05">
+      <h2>Ce que tu dois préparer</h2>
+      <ul>
+        <li><b>AnyDesk installé et ouvert</b> au moment du rendez-vous.</li>
+        <li>Ton <b>casque branché</b> et ton matériel audio connecté.</li>
+        <li>Ton <b>jeu installé</b> et prêt à être lancé.</li>
+        <li>Être <b>joignable sur Discord</b> à l'heure convenue.</li>
+      </ul>
+      <p>Sans ces éléments, la session ne peut pas se tenir dans de bonnes conditions.</p>
+    </div>
+
+    <div class="clause" data-n="06">
+      <h2>Annulation et absence</h2>
+      <p><b>De ton côté</b> : tu peux annuler <b>gratuitement</b> tant que la session n'a pas commencé — préviens-moi simplement sur Discord, le créneau repasse en vert. Rien n'ayant été payé, tu ne dois rien.</p>
+      <p><b>Absence sans prévenir</b> : au-delà de <b>15 minutes de retard</b> sans nouvelle, le créneau est considéré comme perdu et la session annulée. Un nouveau rendez-vous reste possible.</p>
+      <p><b>De mon côté</b> : si je ne peux pas honorer un créneau, je te préviens dès que possible et je te propose un autre horaire en priorité.</p>
+    </div>
+
+    <div class="clause" data-n="07">
+      <h2>Droit de rétractation</h2>
+      <p>En réservant un créneau, tu demandes expressément l'<b>exécution immédiate</b> de la prestation à la date choisie et tu reconnais qu'elle sera <b>pleinement exécutée</b> à l'issue de la session.</p>
+      <p>Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation ne peut plus être exercé une fois la prestation entièrement exécutée avec ton accord. Avant la session, l'annulation reste libre et sans frais — et sans conséquence, puisque rien n'a été payé.</p>
+    </div>
+
+    <div class="clause" data-n="08">
+      <h2>Remboursement</h2>
+      <div class="rule">
+        <p><b>Aucun remboursement n'est effectué après une session réalisée.</b> Le travail est fait sous tes yeux, validé par toi, et payé seulement une fois terminé.</p>
+      </div>
+      <p>Le détail est expliqué sur la page <a href="remboursement.html">politique de remboursement</a>, qui fait partie intégrante des présentes conditions.</p>
+    </div>
+
+    <div class="clause" data-n="09">
+      <h2>Résultat et responsabilité</h2>
+      <p>L'optimisation est une prestation de <b>moyens</b>, pas de résultat : le confort d'écoute reste subjectif et dépend de ton matériel, de ton oreille et de ton jeu. Un niveau de performance en jeu ne peut évidemment pas être garanti.</p>
+      <p>Les réglages sont appliqués avec ton accord, en direct, sur ta machine. Ma responsabilité ne peut être engagée pour les modifications que tu apportes ensuite, une mise à jour du jeu ou du système, un changement de matériel, ni pour un dysfonctionnement indépendant des réglages effectués.</p>
+      <p>Si un réglage ne te convient pas, <b>dis-le pendant la session</b> : on ajuste jusqu'à ce que ce soit bon.</p>
+    </div>
+
+    <div class="clause" data-n="10">
+      <h2>Confidentialité de la session</h2>
+      <p>La prise en main à distance se fait sous ton contrôle : tu vois tout, tu peux couper la connexion à tout moment. Aucun fichier personnel n'est ouvert, copié ou conservé. La session n'est pas enregistrée sans ton accord.</p>
+    </div>
+
+    <div class="clause" data-n="11">
+      <h2>Comportement</h2>
+      <p>Je me réserve le droit d'annuler une session ou de refuser une réservation en cas d'insulte, de menace, de demande illégale (triche, contournement d'anti-cheat, accès à un compte tiers) ou de comportement rendant le travail impossible.</p>
+    </div>
+
+    <div class="clause" data-n="12">
+      <h2>Litiges</h2>
+      <p>Ces conditions sont soumises au droit français. En cas de désaccord, on cherche d'abord une solution à l'amiable, par Discord ou par e-mail. À défaut, les tribunaux français sont compétents.</p>
+    </div>
+
+    <div class="ok">
+      <p><b>L'esprit de tout ça :</b> tu ne risques rien à réserver, tu ne paies qu'un travail livré, et je m'engage à te dire honnêtement ce qui est faisable sur ta config avant même de commencer.</p>
+    </div>
+
+  </article>
+</main>
+
+<footer class="wrap">
+  <span>ART IS WAR — <a href="mentions-legales.html" style="color:var(--grey)">Mentions légales</a> · <a href="remboursement.html" style="color:var(--grey)">Remboursement</a></span>
+  <a class="back" href="index.html">Réserver un créneau →</a>
+</footer>
+
+</body>
+</html>

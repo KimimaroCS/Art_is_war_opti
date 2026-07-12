@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ART IS WAR — Optimisation son</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0C0D10; --sumi:#15171C; --panel:#1B1E25; --line:#2C313B;
+    --bone:#E8E2D6; --grey:#8B919C; --seal:#C8322B; --seal-hi:#E2453D;
+    --free:#3FA65C; --free-hi:#4FC470; --gold:#C9A227; --r:2px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--bone);font-family:'Barlow',system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  h1,h2,h3{font-family:'Big Shoulders Display',Impact,sans-serif;font-weight:900;line-height:.92;text-transform:uppercase}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
+  a{color:var(--bone)}
+  :focus-visible{outline:2px solid var(--seal-hi);outline-offset:3px}
+
+  header.hero{position:relative;padding:60px 0 36px;border-bottom:1px solid var(--line);overflow:hidden}
+  .seal{position:absolute;top:26px;right:20px;width:64px;height:64px;border:2px solid var(--seal);color:var(--seal);border-radius:var(--r);display:grid;place-items:center;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:13px;line-height:1;text-align:center;transform:rotate(-6deg)}
+  .hero h1{font-size:clamp(56px,15vw,130px);margin:12px 0 6px}
+  .hero h1 em{font-style:normal;color:var(--seal)}
+  .hero p.lead{max-width:46ch;color:var(--grey);font-size:18px;margin-bottom:22px}
+  .hero p.lead b{color:var(--bone);font-weight:600}
+  .eq{width:100%;height:74px;display:block;margin:22px 0 0}
+  .eq path{fill:none;stroke:var(--seal);stroke-width:2}
+  .eq path.ghost{stroke:var(--line);stroke-width:1}
+  .price-tag{display:inline-flex;align-items:baseline;gap:8px;border:1px solid var(--line);padding:8px 14px;border-radius:var(--r);background:var(--sumi)}
+  .price-tag .amt{font-family:'Big Shoulders Display',sans-serif;font-size:30px;font-weight:900;line-height:1}
+  .price-tag .lbl{font-size:12px;color:var(--grey);letter-spacing:.12em;text-transform:uppercase}
+
+  .btn{display:inline-block;border:none;cursor:pointer;border-radius:var(--r);font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:19px;text-transform:uppercase;letter-spacing:.06em;padding:12px 24px;background:var(--seal);color:#fff;text-decoration:none;transition:background .15s}
+  .btn:hover{background:var(--seal-hi)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--bone)}
+  .btn.ghost:hover{border-color:var(--bone)}
+  .btn.sm{font-size:14px;padding:7px 12px}
+  .btn[disabled]{opacity:.4;cursor:not-allowed}
+
+  section{padding:52px 0;border-bottom:1px solid var(--line)}
+  section h2{font-size:clamp(30px,6vw,46px);margin:8px 0 20px}
+
+  .banner{border-left:3px solid var(--gold);background:var(--sumi);padding:12px 14px;border-radius:var(--r);margin-bottom:22px;font-size:15px}
+  .banner[hidden]{display:none}
+  .money{display:flex;gap:14px;align-items:flex-start;border-left:3px solid var(--gold);background:var(--sumi);padding:14px 16px;border-radius:var(--r);margin-bottom:24px}
+  .money p{font-size:15px;color:var(--grey);margin:0}
+  .money b{color:var(--bone)}
+
+  .steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r)}
+  @media(min-width:720px){.steps{grid-template-columns:repeat(3,1fr)}}
+  .step{background:var(--sumi);padding:20px}
+  .step .num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--seal);letter-spacing:.2em}
+  .step h3{font-size:23px;margin:6px 0 8px}
+  .step p{color:var(--grey);font-size:15px}
+
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey)}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .dot.g{background:var(--free)} .dot.r{background:var(--seal)}
+
+  .day{margin-bottom:24px}
+  .day-head{display:flex;align-items:baseline;gap:12px;padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:12px}
+  .day-head h3{font-size:21px}
+  .day-head span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--grey)}
+  .slots{display:flex;flex-wrap:wrap;gap:8px}
+  .slot{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;border-radius:var(--r);padding:11px 15px;text-align:left;cursor:pointer;transition:background .15s,border-color .15s}
+  .slot.free{background:rgba(63,166,92,.09);border:1px solid var(--free);color:var(--free-hi)}
+  .slot.free:hover{background:rgba(63,166,92,.2)}
+  .slot.free[aria-pressed="true"]{background:var(--free);color:#08120B}
+  .slot.taken{background:rgba(200,50,43,.08);border:1px solid var(--seal);color:var(--seal);cursor:not-allowed}
+  .slot .tag{display:block;font-size:9px;letter-spacing:.14em;margin-top:2px;opacity:.85}
+  .empty{border:1px dashed var(--line);border-radius:var(--r);padding:26px;text-align:center;color:var(--grey)}
+
+  .card{background:var(--sumi);border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-top:22px}
+  .selected{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border-left:3px solid var(--free);padding:12px 14px;margin-bottom:20px}
+  .selected .when{font-family:'JetBrains Mono',monospace;font-weight:600}
+  .field{margin-bottom:16px}
+  label{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;font-weight:600}
+  label .req{color:var(--seal)}
+  input[type=text],input[type=email],input[type=password],input[type=date],select,textarea{
+    width:100%;background:var(--ink);border:1px solid var(--line);border-radius:var(--r);
+    color:var(--bone);font-family:'Barlow',sans-serif;font-size:16px;padding:11px 12px}
+  input[type=date]{font-family:'JetBrains Mono',monospace}
+  input:focus,select:focus,textarea:focus{border-color:var(--seal)}
+  textarea{resize:vertical;min-height:76px}
+  .hint{font-size:13px;color:var(--grey);margin-top:6px}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--bone)}
+  .check input{margin-top:4px;accent-color:var(--free);width:18px;height:18px;flex:0 0 auto}
+  .anydesk{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);padding:13px;border-radius:var(--r);margin-bottom:10px}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .error{color:var(--seal-hi);font-size:14px;margin-top:8px;min-height:1em}
+  .status{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--grey)}
+
+  .done{text-align:center;padding:34px 20px}
+  .done h3{font-size:32px;color:var(--free);margin-bottom:6px}
+  .ref{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;border:1px solid var(--gold);color:var(--gold);padding:8px 14px;border-radius:var(--r);margin:12px 0}
+
+  .op-toggle{background:none;border:none;color:var(--grey);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;padding:0}
+  .op-toggle:hover{color:var(--seal)}
+  .grid3{display:grid;gap:12px}
+  @media(min-width:640px){.grid3{grid-template-columns:1fr 1fr auto;align-items:end}}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;padding:3px 8px;border-radius:var(--r);border:1px solid;text-transform:uppercase}
+  .p-pending{color:var(--gold);border-color:var(--gold)}
+  .p-confirmed{color:var(--free);border-color:var(--free)}
+  .p-done{color:var(--grey);border-color:var(--line)}
+  .p-cancelled{color:var(--seal);border-color:var(--seal)}
+  .ord{border:1px solid var(--line);border-radius:var(--r);padding:13px;margin-bottom:8px;background:var(--sumi)}
+  .ord .top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+  .ord dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px;margin-bottom:10px}
+  .ord dt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);padding-top:2px}
+  .ord dd{color:var(--bone);word-break:break-word}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .tab{background:var(--panel);border:1px solid var(--line);color:var(--grey);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 11px;border-radius:var(--r);cursor:pointer}
+  .tab[aria-selected="true"]{border-color:var(--seal);color:var(--bone)}
+  .switch{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);padding:13px;border-radius:var(--r);margin-bottom:16px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--free);color:var(--bone);padding:11px 18px;border-radius:var(--r);font-size:14px;z-index:50;max-width:90vw;text-align:center}
+  .toast[hidden]{display:none}
+  footer{padding:32px 0;color:var(--grey);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="seal">ART<br>IS<br>WAR</div>
+    <p class="eyebrow">Optimisation audio · Session à distance</p>
+    <h1>Art is <em>War</em></h1>
+    <p class="lead">Je règle ton son pour que tu <b>entendes les pas avant de les voir</b>. Session en direct sur ton PC, ton casque, ta config. 45 minutes.</p>
+    <div class="row">
+      <a class="btn" href="#planning">Choisir un créneau</a>
+      <span class="price-tag"><span class="amt">10 €</span><span class="lbl">payés après la session</span></span>
+    </div>
+    <svg class="eq" viewBox="0 0 900 74" preserveAspectRatio="none" aria-hidden="true">
+      <path class="ghost" d="M0,37 L900,37"/><path id="curve" d="M0,37 L900,37"/>
+    </svg>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Le protocole</p>
+    <h2>Trois étapes, dans cet ordre</h2>
+    <div class="steps">
+      <div class="step"><span class="num">01</span><h3>Réserve</h3><p>Tu prends un créneau vert et tu remplis ta fiche. Rien à payer maintenant : tu reçois un numéro de commande.</p></div>
+      <div class="step"><span class="num">02</span><h3>Installe AnyDesk</h3><p>Avant le rendez-vous. Le jour J, je prends la main sur ton PC et j'optimise ton son avec toi.</p></div>
+      <div class="step"><span class="num">03</span><h3>Paie 10 €</h3><p>À la fin de la session seulement, par PayPal (entre proches). Tu ne paies que si le travail est fait.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="planning">
+  <div class="wrap">
+    <p class="eyebrow">Planning</p>
+    <h2>Créneaux</h2>
+
+    <div class="money">
+      <div>
+        <p><b>Aucun paiement à la réservation.</b> Le service coûte <b>10 €</b>, réglés à la fin du rendez-vous une fois l'optimisation terminée, par PayPal en « <b>entre proches</b> ». Une fois la session faite, la prestation est due :
+          <a href="remboursement.html" style="color:var(--seal-hi)">politique de remboursement</a>.</p>
+      </div>
+    </div>
+
+    <div class="banner" id="away-banner" hidden><span id="away-text"></span></div>
+    <p class="legend"><span><span class="dot g"></span>Libre</span><span><span class="dot r"></span>Réservé</span></p>
+    <div id="slots-container"><p class="status">Chargement du planning…</p></div>
+
+    <div id="booking" class="card" hidden>
+      <div class="selected">
+        <span class="when" id="sel-when"></span>
+        <button class="btn ghost sm" type="button" id="cancel-sel">Changer de créneau</button>
+      </div>
+
+      <div class="field">
+        <label for="f-pseudo">Pseudo Discord <span class="req">*</span></label>
+        <input type="text" id="f-pseudo" placeholder="@pseudo" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="f-casque">Casque <span class="req">*</span></label>
+        <input type="text" id="f-casque" placeholder="Ex : HyperX Cloud II, DT 990 250 ohm…" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="f-materiel">Carte son / DAC / ampli</label>
+        <input type="text" id="f-materiel" placeholder="Ex : carte mère, GO XLR, Creative G6, aucun…" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="f-jeu">Jeu principal</label>
+        <select id="f-jeu">
+          <option>Call of Duty / Warzone</option><option>Counter-Strike 2</option><option>Valorant</option>
+          <option>Apex Legends</option><option>Fortnite</option><option>Rainbow Six Siege</option><option>Autre</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-mail">Adresse mail <span class="req">*</span></label>
+        <input type="email" id="f-mail" placeholder="toi@mail.com" autocomplete="email">
+        <p class="hint">C'est là que partent la confirmation et la validation de ta commande.</p>
+      </div>
+      <div class="field">
+        <label>AnyDesk <span class="req">*</span></label>
+        <div class="anydesk">
+          <span class="hint" style="margin:0">Installe AnyDesk avant la session, lance-le, note le numéro affiché.</span>
+          <a class="btn ghost sm" id="anydesk-link" href="https://anydesk.com/fr/downloads" target="_blank" rel="noopener">Télécharger AnyDesk</a>
+        </div>
+        <input type="text" id="f-anydesk" placeholder="Adresse AnyDesk (9 chiffres) — si tu l'as déjà" autocomplete="off">
+        <label class="check" style="margin-top:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--bone)">
+          <input type="checkbox" id="f-ok-anydesk">
+          <span>Je confirme qu'AnyDesk sera installé et ouvert au moment du rendez-vous.</span>
+        </label>
+      </div>
+      <div class="field">
+        <label for="f-notes">Précisions</label>
+        <textarea id="f-notes" placeholder="Ce qui te dérange : sons plats, pas inaudibles, saturation, casque trop faible…"></textarea>
+      </div>
+      <label class="check" style="text-transform:none;letter-spacing:0;font-weight:400;margin-bottom:18px">
+        <input type="checkbox" id="f-ok-price">
+        <span>J'ai compris : 10 € à régler à la fin de la session, une fois l'optimisation faite.</span>
+      </label>
+
+      <button class="btn" id="submit-btn" type="button">Réserver mon créneau</button>
+      <p class="error" id="form-error"></p>
+    </div>
+
+    <div id="done" class="card done" hidden>
+      <h3>Créneau réservé</h3>
+      <p class="ref" id="done-ref"></p>
+      <p class="mono" id="done-when" style="margin-bottom:12px"></p>
+      <p style="color:var(--grey);max-width:50ch;margin:0 auto 18px">Un mail de confirmation vient de partir. Installe AnyDesk d'ici là. Le paiement de 10 € se fait à la fin de la session.</p>
+      <button class="btn ghost" id="new-booking" type="button">Réserver un autre créneau</button>
+    </div>
+  </div>
+</section>
+
+<section id="suivi">
+  <div class="wrap">
+    <p class="eyebrow">Suivi</p>
+    <h2>Où en est ma commande&nbsp;?</h2>
+    <div class="row">
+      <input type="text" id="track-ref" placeholder="AIW-0001" style="max-width:280px">
+      <button class="btn ghost" id="track-btn" type="button">Vérifier</button>
+    </div>
+    <div id="track-result" style="margin-top:16px"></div>
+  </div>
+</section>
+
+<section id="op-section">
+  <div class="wrap">
+    <button class="op-toggle" id="op-toggle">— Accès opérateur</button>
+    <div id="op-panel" hidden style="margin-top:18px">
+      <div id="op-login" class="card">
+        <div class="field">
+          <label for="op-mail">Email</label>
+          <input type="email" id="op-mail" autocomplete="username">
+        </div>
+        <div class="field" style="margin:0">
+          <label for="op-pass">Mot de passe</label>
+          <input type="password" id="op-pass" autocomplete="current-password">
+          <p class="error" id="op-error"></p>
+        </div>
+        <button class="btn" id="op-login-btn" type="button" style="margin-top:12px">Se connecter</button>
+        <p class="hint">Identifiants gérés par Supabase — rien n'est stocké dans le code du site.</p>
+      </div>
+
+      <div id="op-console" hidden>
+        <div class="card">
+          <div class="switch">
+            <div>
+              <strong id="avail-label">Je suis disponible</strong>
+              <p class="hint" style="margin:2px 0 0">Ferme tout le planning d'un coup (absence, vacances).</p>
+            </div>
+            <button class="btn ghost sm" id="avail-btn" type="button">Basculer</button>
+          </div>
+          <div class="field">
+            <label for="avail-msg">Message affiché quand tu es indisponible</label>
+            <input type="text" id="avail-msg" placeholder="Absent jusqu'au 20 juillet — je rouvre des créneaux ensuite.">
+          </div>
+          <button class="btn ghost sm" id="avail-save" type="button">Enregistrer le message</button>
+        </div>
+
+        <div class="card">
+          <p class="eyebrow" style="margin-bottom:12px">Ouvrir des créneaux</p>
+          <div class="grid3">
+            <div class="field" style="margin:0">
+              <label for="op-date">Date</label><input type="date" id="op-date">
+            </div>
+            <div class="field" style="margin:0">
+              <label for="op-times">Heures (séparées par des virgules)</label>
+              <input type="text" id="op-times" placeholder="18:00, 19:00, 20:00, 21:00" class="mono">
+            </div>
+            <button class="btn" id="op-add" type="button">Ouvrir</button>
+          </div>
+          <p class="error" id="op-add-error"></p>
+        </div>
+
+        <div class="card">
+          <p class="eyebrow" style="margin-bottom:12px">Planning</p>
+          <div id="op-slots"></div>
+        </div>
+
+        <div class="card">
+          <p class="eyebrow" style="margin-bottom:12px">Commandes</p>
+          <div class="tabs" id="op-tabs">
+            <button class="tab" data-f="all" aria-selected="true">Toutes</button>
+            <button class="tab" data-f="pending" aria-selected="false">À valider</button>
+            <button class="tab" data-f="confirmed" aria-selected="false">Validées</button>
+            <button class="tab" data-f="done" aria-selected="false">Terminées</button>
+            <button class="tab" data-f="cancelled" aria-selected="false">Annulées</button>
+          </div>
+          <div id="op-orders"></div>
+        </div>
+
+        <button class="btn ghost sm" id="op-logout" type="button" style="margin-top:16px">Se déconnecter</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <span>ART IS WAR — 10 € payés après la session ·
+    <a href="cgv.html" style="color:var(--grey)">CGV</a> ·
+    <a href="remboursement.html" style="color:var(--grey)">Remboursement</a> ·
+    <a href="mentions-legales.html" style="color:var(--grey)">Mentions légales</a></span>
+  <span class="mono" id="foot-count"></span>
+</footer>
+
+<div class="toast" id="toast" hidden></div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+/* ==========================================================
+   RÉGLAGES
+   Ces clés sont PUBLIQUES par nature : la clé "anon" de Supabase
+   est faite pour être exposée. La sécurité vient des règles RLS
+   (voir INSTALLATION.md). Ton mot de passe admin n'est jamais ici.
+   ========================================================== */
+const CONFIG = {
+  supabaseUrl: "",          // ex: https://xxxx.supabase.co
+  supabaseAnonKey: "",      // clé "anon public"
+  siteUrl: "https://ton-pseudo.github.io/art-is-war",  // sans / final — sert au lien d'annulation
+  price: 10,
+  brand: "ART IS WAR",
+  sessionMinutes: 45,
+  paypalMe: "artiswar",
+  discord: "https://discord.gg/ton-lien",
+  contactMail: "contact@artiswar.fr",
+  anydeskUrl: "https://anydesk.com/fr/downloads",
+  emailjs: { serviceId:"", templateId:"", publicKey:"" }   // voir INSTALLATION.md
+};
+/* ========================================================== */
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
+const sb = DEMO ? null : createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
+
+let slots = [], orders = [], settings = { available:true, away_message:"" };
+let selectedId = null, isAdmin = false, filter = "all";
+
+$("anydesk-link").href = CONFIG.anydeskUrl;
+
+(function curve(){
+  const p=[];
+  for(let x=0;x<=900;x+=10){
+    const sub=24*Math.exp(-((x-230)/90)**2), mid=28*Math.exp(-((x-520)/120)**2), hi=9*Math.exp(-((x-820)/110)**2);
+    p.push(`${x},${(37+sub-mid-hi).toFixed(1)}`);
+  }
+  $("curve").setAttribute("d","M"+p.join(" L"));
+})();
+
+const toast = m => { const t=$("toast"); t.textContent=m; t.hidden=false; setTimeout(()=>t.hidden=true,4000); };
+const fmtDay  = iso => new Date(iso).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
+const fmtTime = iso => new Date(iso).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+const fmtFull = iso => `${fmtDay(iso)} à ${fmtTime(iso)}`;
+
+const STATUS = {
+  pending:  {label:"Réservation reçue", cls:"p-pending"},
+  confirmed:{label:"Validée",           cls:"p-confirmed"},
+  done:     {label:"Terminée & payée",  cls:"p-done"},
+  cancelled:{label:"Annulée",           cls:"p-cancelled"}
+};
+const pill = s => `<span class="pill ${STATUS[s].cls}">${STATUS[s].label}</span>`;
+
+/* ==========================================================
+   DONNÉES — Supabase, ou mode démo local (aperçu sans base)
+   ========================================================== */
+const demo = {
+  key: "aiw-demo",
+  async get(){ try{ const r = await window.storage.get(this.key,true); return r?.value ? JSON.parse(r.value) : null; }catch(e){ return null; } },
+  async set(d){ try{ await window.storage.set(this.key, JSON.stringify(d), true); }catch(e){} }
+};
+
+async function fetchAll(){
+  if(DEMO){
+    const d = await demo.get() || { slots:[], orders:[], settings:{available:true,away_message:""}, counter:1 };
+    slots = d.slots; orders = d.orders; settings = d.settings;
+    return;
+  }
+  const [s,o,st] = await Promise.all([
+    sb.from("slots").select("*").order("start_at"),
+    isAdmin ? sb.from("orders").select("*").order("created_at",{ascending:false}) : Promise.resolve({data:[]}),
+    sb.from("settings").select("*").eq("id",1).single()
+  ]);
+  slots = s.data || []; orders = o.data || [];
+  if(st.data) settings = st.data;
+}
+async function demoSave(){
+  const d = await demo.get() || { counter:1 };
+  await demo.set({ slots, orders, settings, counter: d.counter || 1 });
+}
+
+/* ==========================================================
+   MAILS (EmailJS)
+   ========================================================== */
+const shell = (title, body) => `<div style="background:#0C0D10;padding:28px 0;font-family:Arial,Helvetica,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#15171C;border:1px solid #2C313B">
+<tr><td style="padding:26px 28px 0">
+  <p style="margin:0;color:#8B919C;font-size:11px;letter-spacing:3px">${CONFIG.brand}</p>
+  <h1 style="margin:8px 0 0;color:#E8E2D6;font-size:26px;text-transform:uppercase">${title}</h1>
+  <div style="height:3px;width:46px;background:#C8322B;margin:14px 0 0"></div>
+</td></tr>
+<tr><td style="padding:20px 28px 28px;color:#C9C4B8;font-size:15px;line-height:1.65">${body}</td></tr>
+<tr><td style="padding:16px 28px;border-top:1px solid #2C313B;color:#6B7079;font-size:12px">
+  ${CONFIG.brand} — optimisation son · <a href="${CONFIG.discord}" style="color:#C8322B;text-decoration:none">Discord</a>
+</td></tr></table></div>`;
+const box = i => `<table width="100%" cellpadding="0" cellspacing="0" style="background:#1B1E25;border-left:3px solid #C8322B;margin:18px 0"><tr><td style="padding:14px 16px;color:#E8E2D6;font-size:14px;line-height:1.8">${i}</td></tr></table>`;
+
+const cancelUrl = o => `${CONFIG.siteUrl}/annuler.html?ref=${encodeURIComponent(o.ref)}&t=${encodeURIComponent(o.cancel_token || "")}`;
+const cancelBlock = o => `
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0 0;border-top:1px solid #2C313B">
+    <tr><td style="padding:18px 0 0">
+      <p style="margin:0 0 10px;color:#8B919C;font-size:13px">Un empêchement ? Tu peux annuler toi-même, sans frais, tant que la session n'a pas commencé.</p>
+      <a href="${cancelUrl(o)}" style="display:inline-block;background:transparent;border:1px solid #C8322B;color:#E2453D;text-decoration:none;padding:10px 18px;font-size:13px;letter-spacing:1px;text-transform:uppercase">Annuler mon rendez-vous</a>
+      <p style="margin:10px 0 0;color:#6B7079;font-size:12px">Ce lien est personnel : ne le transmets à personne.</p>
+    </td></tr></table>`;
+
+const mailReceived = (o,s) => ({
+  subject:`Commande ${o.ref} — réservation enregistrée`,
+  html: shell("Merci pour ta commande",`
+    <p style="margin:0 0 6px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
+    <p style="margin:0">Ta réservation est bien prise. Récapitulatif :</p>
+    ${box(`<b style="color:#C9A227">Commande ${o.ref}</b><br>
+      Rendez-vous : <b>${fmtFull(s.start_at)}</b><br>
+      Durée : ${CONFIG.sessionMinutes} minutes<br>
+      Casque : ${esc(o.casque)}<br>
+      Tarif : ${CONFIG.price} € — <b>à régler à la fin de la session</b>`)}
+    <p style="margin:0 0 6px"><b style="color:#E8E2D6">Avant le rendez-vous</b></p>
+    <p style="margin:0">Installe AnyDesk et laisse-le ouvert : <a href="${CONFIG.anydeskUrl}" style="color:#C8322B">télécharger AnyDesk</a>. Rejoins-moi sur Discord à l'heure prévue.</p>
+    <p style="margin:16px 0 0;color:#8B919C;font-size:14px">Rien à payer aujourd'hui. Tu reçois un second mail dès que je valide ta commande.</p>
+    ${cancelBlock(o)}`)
+});
+const mailConfirmed = (o,s) => ({
+  subject:`Commande ${o.ref} — validée`,
+  html: shell("Ta commande est validée",`
+    <p style="margin:0 0 6px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
+    <p style="margin:0">Ta commande est <b style="color:#3FA65C">validée</b>. Merci pour ta confiance et ta fidélité.</p>
+    ${box(`<b style="color:#C9A227">Commande ${o.ref}</b><br>
+      Rendez-vous confirmé : <b>${fmtFull(s.start_at)}</b><br>
+      Durée : ${CONFIG.sessionMinutes} minutes<br>
+      Tarif : ${CONFIG.price} € — payables à la fin de la session (PayPal, entre proches)`)}
+    <p style="margin:0 0 6px"><b style="color:#E8E2D6">Le jour J</b></p>
+    <p style="margin:0 0 14px">AnyDesk ouvert, casque branché, jeu lancé. Je prends la main, on règle ton son ensemble, et tu repars avec ta config.</p>
+    <p style="margin:0 0 6px"><b style="color:#E8E2D6">Un souci, une question ?</b></p>
+    <p style="margin:0">Écris-moi sur <a href="${CONFIG.discord}" style="color:#C8322B">Discord</a> ou à ${CONFIG.contactMail}. J'ai moi aussi un planning : je ne réponds pas toujours dans la minute, mais je réponds toujours.</p>
+    <p style="margin:18px 0 0;color:#8B919C;font-size:14px">À très vite. — ${CONFIG.brand}</p>
+    ${cancelBlock(o)}`)
+});
+const mailDone = (o,s) => ({
+  subject:`Commande ${o.ref} — session terminée`,
+  html: shell("Session terminée",`
+    <p style="margin:0 0 6px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
+    <p style="margin:0">Ta session du ${fmtFull(s.start_at)} est terminée et le paiement est bien reçu. Ton son est réglé : la config est à toi.</p>
+    <p style="margin:14px 0 0">Si tu changes de casque ou si quelque chose bouge, reviens me voir. Merci pour ta fidélité. — ${CONFIG.brand}</p>`)
+});
+const mailCancelled = (o,s) => ({
+  subject:`Commande ${o.ref} — annulée`,
+  html: shell("Commande annulée",`
+    <p style="margin:0 0 6px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
+    <p style="margin:0">Ta commande <b>${o.ref}</b> du ${fmtFull(s.start_at)} est annulée. Le créneau repasse en vert sur le site.</p>
+    <p style="margin:14px 0 0">Erreur de ma part ou envie de replacer la session ? Écris-moi sur <a href="${CONFIG.discord}" style="color:#C8322B">Discord</a>.</p>`)
+});
+
+const mailReady = () => CONFIG.emailjs.serviceId && CONFIG.emailjs.templateId && CONFIG.emailjs.publicKey;
+async function deliver(to, mail, label){
+  if(!mailReady()){
+    const txt = mail.html.replace(/<br\s*\/?>/gi,"\n").replace(/<\/p>/gi,"\n\n").replace(/<[^>]+>/g,"").replace(/\n{3,}/g,"\n\n").trim();
+    toast("Envoi auto non configuré — ouverture de ta messagerie");
+    window.open(`mailto:${to}?subject=${encodeURIComponent(mail.subject)}&body=${encodeURIComponent(txt)}`,"_blank");
+    return;
+  }
+  try{
+    const r = await fetch("https://api.emailjs.com/api/v1.0/email/send",{
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        service_id: CONFIG.emailjs.serviceId,
+        template_id: CONFIG.emailjs.templateId,
+        user_id: CONFIG.emailjs.publicKey,
+        template_params:{ to_email:to, subject:mail.subject, message_html:mail.html }
+      })
+    });
+    toast(r.ok ? `Mail « ${label} » envoyé` : "Le mail n'est pas parti");
+  }catch(e){ toast("Le mail n'est pas parti"); }
+}
+
+/* ==========================================================
+   PLANNING PUBLIC
+   ========================================================== */
+function render(){
+  const box = $("slots-container"), now = Date.now();
+  const upcoming = slots
+    .filter(s => new Date(s.start_at).getTime() > now - 3600e3)
+    .sort((a,b) => new Date(a.start_at) - new Date(b.start_at));
+  const visible = settings.available ? upcoming.filter(s => s.status !== "closed") : [];
+
+  $("away-banner").hidden = !!settings.available;
+  $("away-text").textContent = settings.away_message || "Réservations fermées pour le moment. Je rouvre des créneaux très vite.";
+
+  const free = visible.filter(s => s.status === "open").length;
+  $("foot-count").textContent = !settings.available ? "réservations fermées"
+    : free ? `${free} créneau${free>1?"x":""} libre${free>1?"s":""}` : "complet";
+
+  if(!visible.length){
+    box.innerHTML = `<div class="empty">${settings.available ? "Aucun créneau ouvert pour le moment. Repasse bientôt." : "Planning fermé."}</div>`;
+  } else {
+    const days = {};
+    visible.forEach(s => { const k = s.start_at.slice(0,10); (days[k] = days[k]||[]).push(s); });
+    box.innerHTML = Object.values(days).map(l => `
+      <div class="day">
+        <div class="day-head"><h3>${fmtDay(l[0].start_at)}</h3>
+          <span>${l.filter(s=>s.status==="open").length} libre(s) / ${l.length}</span></div>
+        <div class="slots">${l.map(s => s.status==="open"
+          ? `<button class="slot free" data-id="${s.id}" aria-pressed="${selectedId===s.id}">${fmtTime(s.start_at)}<span class="tag">LIBRE · ${CONFIG.sessionMinutes} MIN</span></button>`
+          : `<button class="slot taken" disabled>${fmtTime(s.start_at)}<span class="tag">RÉSERVÉ</span></button>`
+        ).join("")}</div>
+      </div>`).join("");
+    box.querySelectorAll(".slot.free").forEach(b => b.addEventListener("click", () => selectSlot(b.dataset.id)));
+  }
+  if(isAdmin){ renderOpSlots(); renderOrders(); }
+}
+
+function selectSlot(id){
+  selectedId = id;
+  const s = slots.find(x => String(x.id) === String(id));
+  $("sel-when").textContent = fmtFull(s.start_at);
+  $("booking").hidden = false; $("done").hidden = true;
+  render();
+  $("booking").scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("cancel-sel").onclick = () => { selectedId=null; $("booking").hidden=true; render(); $("planning").scrollIntoView({behavior:"smooth"}); };
+$("new-booking").onclick = () => { $("done").hidden=true; $("planning").scrollIntoView({behavior:"smooth"}); };
+
+$("submit-btn").onclick = async () => {
+  const err = $("form-error");
+  const pseudo=$("f-pseudo").value.trim(), casque=$("f-casque").value.trim(), mail=$("f-mail").value.trim();
+  if(!selectedId) return err.textContent = "Choisis un créneau vert.";
+  if(!pseudo)     return err.textContent = "Ton pseudo Discord est obligatoire.";
+  if(!casque)     return err.textContent = "Indique ton casque.";
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return err.textContent = "Adresse mail invalide.";
+  if(!$("f-ok-anydesk").checked) return err.textContent = "Confirme l'installation d'AnyDesk.";
+  if(!$("f-ok-price").checked)   return err.textContent = "Confirme que tu as compris le tarif.";
+  err.textContent = ""; $("submit-btn").disabled = true;
+
+  const payload = {
+    p_slot: selectedId, p_pseudo: pseudo, p_casque: casque, p_email: mail,
+    p_materiel: $("f-materiel").value.trim(), p_jeu: $("f-jeu").value,
+    p_anydesk: $("f-anydesk").value.trim(), p_notes: $("f-notes").value.trim()
+  };
+
+  let order = null, slot = slots.find(s => String(s.id) === String(selectedId));
+
+  if(DEMO){
+    const d = await demo.get() || { counter:1 };
+    const counter = d.counter || 1;
+    if(!slot || slot.status !== "open"){ $("submit-btn").disabled=false; return err.textContent = "Ce créneau vient d'être pris."; }
+    order = { ref:`AIW-${String(counter).padStart(4,"0")}`, slot_id:slot.id, status:"pending",
+      pseudo, casque, email:mail, materiel:payload.p_materiel, jeu:payload.p_jeu,
+      anydesk:payload.p_anydesk, notes:payload.p_notes, created_at:new Date().toISOString(),
+      cancel_token: crypto.randomUUID() };
+    orders.unshift(order); slot.status = "booked"; slot.order_ref = order.ref;
+    await demo.set({ slots, orders, settings, counter: counter+1 });
+  } else {
+    // fonction SQL atomique : réserve le créneau ET crée la commande
+    const { data, error } = await sb.rpc("book_slot", payload);
+    $("submit-btn").disabled = false;
+    if(error || !data){ await refresh(); return err.textContent = "Ce créneau vient d'être pris. Choisis-en un autre."; }
+    order = data;
+    await refresh();
+    slot = slots.find(s => String(s.id) === String(order.slot_id)) || slot;
+  }
+
+  $("submit-btn").disabled = false;
+  await deliver(mail, mailReceived(order, slot), "réservation reçue");
+
+  $("done-ref").textContent = order.ref;
+  $("done-when").textContent = fmtFull(slot.start_at);
+  $("booking").hidden = true; $("done").hidden = false;
+  ["f-pseudo","f-casque","f-materiel","f-mail","f-anydesk","f-notes"].forEach(i => $(i).value="");
+  $("f-ok-anydesk").checked = $("f-ok-price").checked = false;
+  selectedId = null; render();
+  $("done").scrollIntoView({behavior:"smooth",block:"center"});
+};
+
+/* ---------- suivi ---------- */
+$("track-btn").onclick = async () => {
+  const ref = $("track-ref").value.trim().toUpperCase(), out = $("track-result");
+  let o = null;
+  if(DEMO) o = orders.find(x => x.ref === ref);
+  else { const { data } = await sb.rpc("track_order", { p_ref: ref }); o = data && data[0]; }
+  if(!o) return out.innerHTML = `<p class="error" style="margin:0">Aucune commande à ce numéro.</p>`;
+  const s = slots.find(x => String(x.id) === String(o.slot_id));
+  out.innerHTML = `<div class="ord"><div class="top"><strong class="mono">${esc(o.ref)}</strong>${pill(o.status)}</div>
+    <dl><dt>Rendez-vous</dt><dd>${o.start_at ? fmtFull(o.start_at) : (s ? fmtFull(s.start_at) : "—")}</dd>
+        <dt>Tarif</dt><dd>${CONFIG.price} € — à régler après la session</dd></dl></div>`;
+};
+
+/* ==========================================================
+   OPÉRATEUR
+   ========================================================== */
+$("op-toggle").onclick = () => {
+  const p = $("op-panel"); p.hidden = !p.hidden;
+  $("op-toggle").textContent = p.hidden ? "— Accès opérateur" : "× Fermer";
+};
+
+$("op-login-btn").onclick = async () => {
+  const e = $("op-error");
+  if(DEMO){
+    isAdmin = true; openConsole(); return;
+  }
+  const { error } = await sb.auth.signInWithPassword({ email:$("op-mail").value.trim(), password:$("op-pass").value });
+  if(error) return e.textContent = "Email ou mot de passe incorrect.";
+  e.textContent = ""; isAdmin = true; $("op-pass").value = "";
+  await refresh(); openConsole();
+};
+$("op-logout").onclick = async () => {
+  if(!DEMO) await sb.auth.signOut();
+  isAdmin = false; $("op-console").hidden = true; $("op-login").hidden = false;
+};
+function openConsole(){
+  $("op-login").hidden = true; $("op-console").hidden = false;
+  $("avail-msg").value = settings.away_message || "";
+  renderAvail(); render();
+}
+function renderAvail(){
+  $("avail-label").textContent = settings.available ? "Je suis disponible" : "Je suis indisponible";
+  $("avail-label").style.color = settings.available ? "var(--free)" : "var(--seal)";
+}
+
+async function saveSettings(){
+  if(DEMO) return demoSave();
+  await sb.from("settings").update({ available: settings.available, away_message: settings.away_message }).eq("id",1);
+}
+$("avail-btn").onclick = async () => {
+  settings.available = !settings.available;
+  await saveSettings(); renderAvail(); render();
+  toast(settings.available ? "Réservations ouvertes" : "Réservations fermées");
+};
+$("avail-save").onclick = async () => {
+  settings.away_message = $("avail-msg").value.trim();
+  await saveSettings(); render(); toast("Message enregistré");
+};
+
+$("op-add").onclick = async () => {
+  const d = $("op-date").value, raw = $("op-times").value.trim(), e = $("op-add-error");
+  if(!d || !raw) return e.textContent = "Indique une date et au moins une heure.";
+  const times = raw.split(",").map(t=>t.trim()).filter(Boolean);
+  if(times.some(t => !/^\d{1,2}:\d{2}$/.test(t))) return e.textContent = "Format : 18:00, 19:30…";
+  e.textContent = "";
+  const rows = times.map(t => {
+    const [h,m] = t.split(":");
+    return { start_at: `${d}T${h.padStart(2,"0")}:${m}:00`, status:"open" };
+  }).filter(r => !slots.some(s => s.start_at.slice(0,16) === r.start_at.slice(0,16)));
+
+  if(!rows.length){ toast("Ces créneaux existent déjà"); return; }
+  if(DEMO){ rows.forEach(r => slots.push({ id:"s"+Date.now()+Math.random().toString(36).slice(2,5), ...r })); await demoSave(); }
+  else { const { error } = await sb.from("slots").insert(rows); if(error) return e.textContent = "Erreur : "+error.message; await refresh(); }
+  render(); toast(`${rows.length} créneau(x) ouvert(s)`);
+  $("op-times").value = "";
+};
+
+function renderOpSlots(){
+  const box = $("op-slots");
+  const list = [...slots].sort((a,b)=>new Date(a.start_at)-new Date(b.start_at));
+  if(!list.length) return box.innerHTML = `<p class="hint">Aucun créneau.</p>`;
+  const days = {};
+  list.forEach(s => { const k = s.start_at.slice(0,10); (days[k]=days[k]||[]).push(s); });
+  box.innerHTML = Object.values(days).map(l => `
+    <div class="day"><div class="day-head"><h3>${fmtDay(l[0].start_at)}</h3></div>
+    ${l.map(s => `<div class="row" style="justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)">
+      <span class="mono">${fmtTime(s.start_at)}
+        <span style="font-size:11px;margin-left:8px;color:${s.status==="open"?"var(--free)":s.status==="booked"?"var(--seal)":"var(--grey)"}">
+          ${s.status==="open"?"LIBRE":s.status==="booked"?"RÉSERVÉ":"FERMÉ"}</span></span>
+      <span class="row" style="gap:6px">
+        ${s.status!=="booked" ? `<button class="btn ghost sm" data-toggle="${s.id}">${s.status==="open"?"Fermer":"Rouvrir"}</button>` : ""}
+        <button class="op-toggle" data-del="${s.id}">supprimer</button>
+      </span></div>`).join("")}</div>`).join("");
+
+  box.querySelectorAll("[data-toggle]").forEach(b => b.onclick = async () => {
+    const s = slots.find(x => String(x.id) === b.dataset.toggle);
+    s.status = s.status === "open" ? "closed" : "open";
+    if(DEMO) await demoSave(); else await sb.from("slots").update({status:s.status}).eq("id",s.id);
+    await refresh(); render();
+  });
+  box.querySelectorAll("[data-del]").forEach(b => b.onclick = async () => {
+    if(!confirm("Supprimer ce créneau ?")) return;
+    if(DEMO){ slots = slots.filter(x => String(x.id) !== b.dataset.del); await demoSave(); }
+    else await sb.from("slots").delete().eq("id", b.dataset.del);
+    await refresh(); render();
+  });
+}
+
+$("op-tabs").onclick = e => {
+  const t = e.target.closest(".tab"); if(!t) return;
+  filter = t.dataset.f;
+  [...$("op-tabs").children].forEach(x => x.setAttribute("aria-selected", x===t));
+  renderOrders();
+};
+
+function renderOrders(){
+  const box = $("op-orders");
+  const list = orders.filter(o => filter==="all" || o.status===filter);
+  if(!list.length) return box.innerHTML = `<p class="hint">Aucune commande.</p>`;
+  box.innerHTML = list.map(o => {
+    const s = slots.find(x => String(x.id) === String(o.slot_id));
+    return `<div class="ord">
+      <div class="top"><strong class="mono">${esc(o.ref)}</strong>${pill(o.status)}</div>
+      <dl>
+        <dt>RDV</dt><dd class="mono">${s ? fmtFull(s.start_at) : "créneau supprimé"}</dd>
+        <dt>Discord</dt><dd>${esc(o.pseudo)}</dd>
+        <dt>Mail</dt><dd>${esc(o.email)}</dd>
+        <dt>Casque</dt><dd>${esc(o.casque)}${o.materiel ? " — "+esc(o.materiel) : ""}</dd>
+        <dt>Jeu</dt><dd>${esc(o.jeu)}</dd>
+        <dt>AnyDesk</dt><dd>${esc(o.anydesk || "à donner en session")}</dd>
+        ${o.notes ? `<dt>Notes</dt><dd>${esc(o.notes)}</dd>` : ""}
+      </dl>
+      <div class="row">
+        ${o.status==="pending"   ? `<button class="btn sm" data-act="confirm" data-ref="${o.ref}">Valider + mail</button>` : ""}
+        ${o.status==="confirmed" ? `<button class="btn ghost sm" data-act="done" data-ref="${o.ref}">Session faite & payée</button>` : ""}
+        ${(o.status!=="cancelled" && o.status!=="done") ? `<button class="btn ghost sm" data-act="cancel" data-ref="${o.ref}">Annuler</button>` : ""}
+        <button class="btn ghost sm" data-act="resend" data-ref="${o.ref}">Renvoyer le mail</button>
+      </div></div>`;
+  }).join("");
+  box.querySelectorAll("[data-act]").forEach(b => b.onclick = () => action(b.dataset.act, b.dataset.ref));
+}
+
+async function setOrderStatus(o, status){
+  o.status = status;
+  if(DEMO) await demoSave();
+  else await sb.from("orders").update({ status }).eq("ref", o.ref);
+}
+
+async function action(act, ref){
+  const o = orders.find(x => x.ref === ref); if(!o) return;
+  const s = slots.find(x => String(x.id) === String(o.slot_id)) || { start_at:o.created_at };
+
+  if(act === "confirm"){ await setOrderStatus(o,"confirmed"); render(); await deliver(o.email, mailConfirmed(o,s), "commande validée"); }
+  else if(act === "done"){ await setOrderStatus(o,"done"); render(); await deliver(o.email, mailDone(o,s), "session terminée"); }
+  else if(act === "cancel"){
+    if(!confirm(`Annuler ${ref} et remettre le créneau en vert ?`)) return;
+    await setOrderStatus(o,"cancelled");
+    const slot = slots.find(x => String(x.id) === String(o.slot_id));
+    if(slot){ slot.status = "open"; if(DEMO) await demoSave(); else await sb.from("slots").update({status:"open"}).eq("id",slot.id); }
+    await refresh(); render();
+    await deliver(o.email, mailCancelled(o,s), "commande annulée");
+  }
+  else if(act === "resend"){
+    const m = o.status==="confirmed" ? mailConfirmed(o,s) : o.status==="done" ? mailDone(o,s)
+            : o.status==="cancelled" ? mailCancelled(o,s) : mailReceived(o,s);
+    await deliver(o.email, m, "renvoi");
+  }
+}
+
+/* ---------- démarrage ---------- */
+async function refresh(){ await fetchAll(); }
+(async () => {
+  if(!DEMO){
+    const { data } = await sb.auth.getSession();
+    if(data.session){ isAdmin = true; }
+  }
+  await refresh();
+  render();
+  if(isAdmin){ $("op-panel").hidden = false; $("op-toggle").textContent = "× Fermer"; openConsole(); }
+  if(DEMO) toast("Mode démo : configure Supabase pour la mise en ligne");
+})();
+</script>
+</body>
+</html>

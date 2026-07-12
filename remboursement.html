@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Remboursement — ART IS WAR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0C0D10;--sumi:#15171C;--panel:#1B1E25;--line:#2C313B;--bone:#E8E2D6;--grey:#8B919C;--seal:#C8322B;--seal-hi:#E2453D;--free:#3FA65C;--gold:#C9A227;--r:2px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ink);color:var(--bone);font-family:'Barlow',system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+  h1,h2{font-family:'Big Shoulders Display',Impact,sans-serif;font-weight:900;line-height:.94;text-transform:uppercase}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
+  a{color:var(--seal-hi)}
+  :focus-visible{outline:2px solid var(--seal-hi);outline-offset:3px}
+
+  header{border-bottom:1px solid var(--line);padding:44px 0 34px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);text-decoration:none}
+  .back:hover{color:var(--seal-hi)}
+  header h1{font-size:clamp(40px,9vw,72px);margin:16px 0 8px}
+  header p{color:var(--grey);max-width:48ch}
+  .stamp{position:absolute;top:38px;right:20px;border:2px solid var(--seal);color:var(--seal);border-radius:var(--r);padding:8px 12px;transform:rotate(-6deg);font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:15px;letter-spacing:.05em;text-align:center;line-height:1.1;opacity:.9}
+
+  main{padding:44px 0 60px}
+  article{border-left:1px solid var(--line);padding-left:22px;margin-left:6px}
+  .clause{margin-bottom:34px;position:relative}
+  .clause::before{content:attr(data-n);position:absolute;left:-31px;top:4px;width:16px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--seal);background:var(--ink);padding:2px 0}
+  .clause h2{font-size:25px;margin-bottom:8px}
+  .clause p{color:#BFB9AC}
+  .clause p + p{margin-top:10px}
+  .clause b{color:var(--bone)}
+
+  .rule{background:var(--sumi);border-left:3px solid var(--seal);padding:18px 20px;border-radius:var(--r);margin:26px 0}
+  .rule p{color:var(--bone);font-size:17px;margin:0}
+  .ok{background:var(--sumi);border-left:3px solid var(--free);padding:18px 20px;border-radius:var(--r);margin:26px 0}
+  .ok p{margin:0;color:#BFB9AC}
+  .ok b{color:var(--free)}
+
+  footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--grey);font-size:13px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .sign{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:22px;color:var(--seal);text-transform:uppercase;letter-spacing:.04em;margin-top:34px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="stamp">SANS<br>REMBOURSEMENT</div>
+    <a class="back" href="index.html">← Retour au planning</a>
+    <p class="eyebrow" style="margin-top:22px">Conditions</p>
+    <h1>Politique de remboursement</h1>
+    <p>Ce que tu paies, tu l'as reçu. Voici la règle, écrite noir sur blanc, pour qu'il n'y ait aucune ambiguïté entre nous.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <article>
+
+    <div class="clause" data-n="01">
+      <h2>Aucun remboursement après la session</h2>
+      <p>Le paiement de <b>10 €</b> intervient <b>à la fin du rendez-vous</b>, une fois l'optimisation terminée. Tu ne règles rien avant, rien pendant : tu paies un travail déjà livré, sous tes yeux, sur ta machine.</p>
+      <p>Pour cette raison, <b>aucun remboursement n'est accordé une fois la session effectuée</b>. Le service est immatériel : il ne se retourne pas, ne se restitue pas, ne s'annule pas rétroactivement.</p>
+    </div>
+
+    <div class="rule">
+      <p>Nous savons exactement ce qui a été fait sur ta machine : chaque réglage est appliqué en direct, avec toi, et validé par toi avant la fin de la session. Une prestation constatée et acceptée ne fait l'objet d'aucun remboursement.</p>
+    </div>
+
+    <div class="clause" data-n="02">
+      <h2>Tu vois tout, en direct</h2>
+      <p>La session se déroule en partage d'écran via AnyDesk. Tu suis chaque manipulation, tu écoutes le résultat, tu valides. Rien n'est fait dans ton dos et rien n'est installé sans que tu le voies.</p>
+      <p>Si le résultat ne te convient pas, <b>dis-le pendant la session</b>, pas après. Tant que le rendez-vous n'est pas terminé, on ajuste, on recommence, on affine. C'est là que le travail se corrige — et c'est justement pour ça que le paiement arrive à la fin.</p>
+    </div>
+
+    <div class="clause" data-n="03">
+      <h2>Le son reste un domaine sensible</h2>
+      <p>Une optimisation dépend de ton casque, de ta carte son, de ton jeu, de ton oreille. Le confort d'écoute est <b>subjectif</b> : ce qui est réglé pour toi peut ne plus te convenir la semaine suivante, après une mise à jour du jeu, un changement de matériel ou une modification de tes paramètres.</p>
+      <p>Un changement d'avis, une manipulation ultérieure de ta part ou une mise à jour de ton système ne constituent pas un motif de remboursement.</p>
+    </div>
+
+    <div class="clause" data-n="04">
+      <h2>Annuler avant, c'est libre et gratuit</h2>
+      <p>Tant que la session n'a pas commencé, tu peux annuler <b>sans frais et sans justification</b> : tu ne dois rien, puisque tu n'as rien payé. Préviens-moi simplement sur Discord et le créneau repart en vert pour quelqu'un d'autre.</p>
+      <p>En réservant, tu demandes l'exécution immédiate de la prestation à la date choisie et tu reconnais qu'elle sera pleinement exécutée à l'issue du rendez-vous — ce qui met fin à toute possibilité de rétractation une fois la session terminée.</p>
+    </div>
+
+    <div class="clause" data-n="05">
+      <h2>Si je ne suis pas au rendez-vous</h2>
+      <p>Le seul cas où de l'argent revient : <b>je n'ai pas honoré le créneau</b> ou la session n'a pas pu se tenir de mon fait. Puisque tu paies après, la question ne se pose presque jamais. Si un paiement a malgré tout été effectué sans prestation en face, il est intégralement rendu.</p>
+    </div>
+
+    <div class="ok">
+      <p><b>En résumé :</b> tu ne paies rien tant que le travail n'est pas fait. Une fois fait, il est dû. Pas d'avance, pas de risque pour toi — et pas de remboursement pour moi.</p>
+    </div>
+
+    <div class="clause" data-n="06">
+      <h2>Une question, un doute&nbsp;?</h2>
+      <p>Écris-moi sur Discord <b>avant</b> de réserver. Je réponds à tout, je préfère une question de trop qu'un malentendu. J'ai aussi un planning : je ne réponds pas toujours dans la minute, mais je réponds toujours.</p>
+    </div>
+
+    <p class="sign">— Art is War</p>
+  </article>
+</main>
+
+<footer class="wrap">
+  <span>ART IS WAR — <a href="cgv.html" style="color:var(--grey)">CGV</a> · <a href="mentions-legales.html" style="color:var(--grey)">Mentions légales</a></span>
+  <a class="back" href="index.html">Réserver un créneau →</a>
+</footer>
+
+</body>
+</html>
