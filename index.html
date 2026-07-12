@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ART IS WAR — Optimisation son</title>
+<title>KimimaroFPS — ART IS WAR — Optimisation son</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -283,16 +283,14 @@
 
         <div class="card">
           <p class="eyebrow" style="margin-bottom:12px">Ouvrir des créneaux</p>
-          <div class="grid3">
-            <div class="field" style="margin:0">
-              <label for="op-date">Date</label><input type="date" id="op-date">
-            </div>
-            <div class="field" style="margin:0">
-              <label for="op-times">Heures (séparées par des virgules)</label>
-              <input type="text" id="op-times" placeholder="18:00, 19:00, 20:00, 21:00" class="mono">
-            </div>
-            <button class="btn" id="op-add" type="button">Ouvrir</button>
+          <div class="field" style="margin:0 0 12px 0">
+            <label for="op-date">Date</label><input type="date" id="op-date">
           </div>
+          <div style="margin-bottom:12px">
+            <label style="display:block;margin-bottom:8px;font-size:14px;font-weight:500">Heures</label>
+            <div id="op-hours" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:6px"></div>
+          </div>
+          <button class="btn" id="op-add" type="button">Ouvrir</button>
           <p class="error" id="op-add-error"></p>
         </div>
 
@@ -304,8 +302,7 @@
         <div class="card">
           <p class="eyebrow" style="margin-bottom:12px">Commandes</p>
           <div class="tabs" id="op-tabs">
-            <button class="tab" data-f="all" aria-selected="true">Toutes</button>
-            <button class="tab" data-f="pending" aria-selected="false">À valider</button>
+            <button class="tab" data-f="pending" aria-selected="true">À valider</button>
             <button class="tab" data-f="confirmed" aria-selected="false">Validées</button>
             <button class="tab" data-f="done" aria-selected="false">Terminées</button>
             <button class="tab" data-f="cancelled" aria-selected="false">Annulées</button>
@@ -320,7 +317,7 @@
 </section>
 
 <footer class="wrap">
-  <span>ART IS WAR — 10 € payés après la session ·
+  <span>KimimaroFPS — ART IS WAR — 10 € payés après la session ·
     <a href="cgv.html" style="color:var(--grey)">CGV</a> ·
     <a href="remboursement.html" style="color:var(--grey)">Remboursement</a> ·
     <a href="mentions-legales.html" style="color:var(--grey)">Mentions légales</a></span>
@@ -351,23 +348,24 @@ const CONFIG = {
   supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhcWRjeXRlY3ZhYnd5YW55cHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4NTYwMjAsImV4cCI6MjA5OTQzMjAyMH0.MwAgQTIqxuTzTUpd-l_sTiLEmU9bjRPzwR-PPp8vCJU",
   siteUrl: "https://kimimarocs.github.io/Art_is_war_opti",
   price: 10,
-  brand: "ART IS WAR",
+  brand: "KimimaroFPS — ART IS WAR",
   sessionMinutes: 45,
   paypalMe: "artiswar",
   discord: "https://discord.gg/ton-lien",
-  contactMail: "contact@artiswar.fr",
+  contactMail: "nouveaupc1506@gmail.com",
   anydeskUrl: "https://anydesk.com/fr/downloads",
   emailjs: { serviceId:"service_ej7v54v", templateId:"template_mx7nmeg", publicKey:"UXN3v6g1hQVE5bc13" }
 };
 /* ========================================================== */
 
 const $ = id => document.getElementById(id);
+const $$ = sel => document.querySelectorAll(sel);
 const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
 const sb = DEMO ? null : createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
 
 let slots = [], orders = [], settings = { available:true, away_message:"" };
-let selectedId = null, isAdmin = false, filter = "all";
+let selectedId = null, isAdmin = false, filter = "pending";
 
 $("anydesk-link").href = CONFIG.anydeskUrl;
 
@@ -547,7 +545,7 @@ function render(){
       </div>`).join("");
     box.querySelectorAll(".slot.free").forEach(b => b.addEventListener("click", () => selectSlot(b.dataset.id)));
   }
-  if(isAdmin){ renderOpSlots(); renderOrders(); }
+  if(isAdmin){ renderHourCheckboxes(); renderOpSlots(); renderOrders(); }
 }
 
 function selectSlot(id){
@@ -671,11 +669,23 @@ $("avail-save").onclick = async () => {
   await saveSettings(); render(); toast("Message enregistré");
 };
 
+// Générer les cases à cocher des heures
+function renderHourCheckboxes(){
+  const box = $("op-hours");
+  const hours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00"];
+  box.innerHTML = hours.map(h => `
+    <label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer;user-select:none">
+      <input type="checkbox" class="hour-check" value="${h}" style="cursor:pointer">
+      <span>${h}</span>
+    </label>
+  `).join("");
+}
+
 $("op-add").onclick = async () => {
-  const d = $("op-date").value, raw = $("op-times").value.trim(), e = $("op-add-error");
-  if(!d || !raw) return e.textContent = "Indique une date et au moins une heure.";
-  const times = raw.split(",").map(t=>t.trim()).filter(Boolean);
-  if(times.some(t => !/^\d{1,2}:\d{2}$/.test(t))) return e.textContent = "Format : 18:00, 19:30…";
+  const d = $("op-date").value, e = $("op-add-error");
+  if(!d) return e.textContent = "Indique une date.";
+  const times = [...$$(".hour-check:checked")].map(cb => cb.value);
+  if(!times.length) return e.textContent = "Coche au moins une heure.";
   e.textContent = "";
   const rows = times.map(t => {
     const [h,m] = t.split(":");
@@ -686,7 +696,7 @@ $("op-add").onclick = async () => {
   if(DEMO){ rows.forEach(r => slots.push({ id:"s"+Date.now()+Math.random().toString(36).slice(2,5), ...r })); await demoSave(); }
   else { const { error } = await sb.from("slots").insert(rows); if(error) return e.textContent = "Erreur : "+error.message; await refresh(); }
   render(); toast(`${rows.length} créneau(x) ouvert(s)`);
-  $("op-times").value = "";
+  [...$$(".hour-check")].forEach(cb => cb.checked = false);
 };
 
 function renderOpSlots(){
