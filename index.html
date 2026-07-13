@@ -350,8 +350,8 @@ const CONFIG = {
   price: 10,
   brand: "KimimaroFPS — ART IS WAR",
   sessionMinutes: 45,
-  paypalMe: "artiswar",
-  discord: "https://discord.gg/ton-lien",
+  paypalMe: "KimimaroFPS",
+  discord: "https://discord.gg/kimimaro1982",
   contactMail: "nouveaupc1506@gmail.com",
   anydeskUrl: "https://anydesk.com/fr/downloads",
   emailjs: { serviceId:"service_ej7v54v", templateId:"template_mx7nmeg", publicKey:"UXN3v6g1hQVE5bc13" }
@@ -487,7 +487,8 @@ const mailCancelled = (o,s) => ({
   html: shell("Commande annulée",`
     <p style="margin:0 0 6px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
     <p style="margin:0">Ta commande <b>${o.ref}</b> du ${fmtFull(s.start_at)} est annulée. Le créneau repasse en vert sur le site.</p>
-    <p style="margin:14px 0 0">Erreur de ma part ou envie de replacer la session ? Écris-moi sur <a href="${CONFIG.discord}" style="color:#C8322B">Discord</a>.</p>`)
+    ${o.cancellation_reason ? `<p style="margin:8px 0 0"><b>Raison :</b> ${esc(o.cancellation_reason)}</p>` : ""}
+    <p style="margin:14px 0 0">Des questions ? Écris-moi sur <a href="${CONFIG.discord}" style="color:#C8322B">Discord</a>.</p>`)
 });
 
 const mailReady = () => CONFIG.emailjs.serviceId && CONFIG.emailjs.templateId && CONFIG.emailjs.publicKey;
@@ -713,6 +714,7 @@ function renderOpSlots(){
           ${s.status==="open"?"LIBRE":s.status==="booked"?"RÉSERVÉ":"FERMÉ"}</span></span>
       <span class="row" style="gap:6px">
         ${s.status!=="booked" ? `<button class="btn ghost sm" data-toggle="${s.id}">${s.status==="open"?"Fermer":"Rouvrir"}</button>` : ""}
+        <button class="btn ghost sm" data-edit="${s.id}">Éditer heure</button>
         <button class="op-toggle" data-del="${s.id}">supprimer</button>
       </span></div>`).join("")}</div>`).join("");
 
@@ -720,6 +722,18 @@ function renderOpSlots(){
     const s = slots.find(x => String(x.id) === b.dataset.toggle);
     s.status = s.status === "open" ? "closed" : "open";
     if(DEMO) await demoSave(); else await sb.from("slots").update({status:s.status}).eq("id",s.id);
+    await refresh(); render();
+  });
+  box.querySelectorAll("[data-edit]").forEach(b => b.onclick = async () => {
+    const s = slots.find(x => String(x.id) === b.dataset.edit);
+    const currentTime = s.start_at.slice(11,16);
+    const newTime = prompt(`Nouvelle heure pour ${fmtDay(s.start_at)} (format HH:MM) :\nActuelle : ${currentTime}`, currentTime);
+    if(!newTime || !/^\d{2}:\d{2}$/.test(newTime.trim())) return;
+    const [h,m] = newTime.trim().split(":");
+    const newStart = `${s.start_at.slice(0,10)}T${h}:${m}:00`;
+    if(slots.some(x => String(x.id) !== String(s.id) && x.start_at.slice(0,16) === newStart.slice(0,16))) return toast("Cette heure existe déjà ce jour.");
+    s.start_at = newStart;
+    if(DEMO) await demoSave(); else await sb.from("slots").update({start_at:newStart}).eq("id",s.id);
     await refresh(); render();
   });
   box.querySelectorAll("[data-del]").forEach(b => b.onclick = async () => {
@@ -778,6 +792,8 @@ async function action(act, ref){
   else if(act === "done"){ await setOrderStatus(o,"done"); render(); await deliver(o.email, mailDone(o,s), "session terminée"); }
   else if(act === "cancel"){
     if(!confirm(`Annuler ${ref} et remettre le créneau en vert ?`)) return;
+    const reason = prompt("Raison d'annulation (optionnel) :", "");
+    o.cancellation_reason = reason || "";
     await setOrderStatus(o,"cancelled");
     const slot = slots.find(x => String(x.id) === String(o.slot_id));
     if(slot){ slot.status = "open"; if(DEMO) await demoSave(); else await sb.from("slots").update({status:"open"}).eq("id",slot.id); }
