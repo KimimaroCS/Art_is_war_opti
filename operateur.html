@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KimimaroFPS — ART IS WAR — Optimisation son</title>
+<title>KimimaroFPS — Panneau opérateur</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -130,172 +130,93 @@
 </style>
 </head>
 <body>
-
-<header class="hero">
-  <button id="theme-toggle" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;padding:8px" title="Basculer le thème">🌙</button>
-  <div class="wrap">
-    <div class="seal">ART<br>IS<br>WAR</div>
-    <p class="eyebrow">Optimisation audio · Session à distance</p>
-    <h1>Art is <em>War</em></h1>
-    <p class="lead">Je règle ton son pour que tu <b>entendes les pas avant de les voir</b>. Session en direct sur ton PC, ton casque, ta config. 45 minutes.</p>
-    <div class="row">
-      <a class="btn" href="#planning">Choisir un créneau</a>
-      <span class="price-tag"><span class="amt">10 €</span><span class="lbl">à payer au début du rendez-vous</span></span>
-    </div>
-    <svg class="eq" viewBox="0 0 900 74" preserveAspectRatio="none" aria-hidden="true">
-      <path class="ghost" d="M0,37 L900,37"/><path id="curve" d="M0,37 L900,37"/>
-    </svg>
-  </div>
-</header>
-
-<section>
-  <div class="wrap">
-    <p class="eyebrow">Le protocole</p>
-    <h2>Trois étapes, dans cet ordre</h2>
-    <div class="steps">
-      <div class="step"><span class="num">01</span><h3>Réserve</h3><p>Tu prends un créneau vert et tu remplis ta fiche. Rien à payer maintenant : tu reçois un numéro de commande.</p></div>
-      <div class="step"><span class="num">02</span><h3>Installe AnyDesk</h3><p>Avant le rendez-vous. Le jour J, je prends la main sur ton PC et j'optimise ton son avec toi.</p></div>
-      <div class="step"><span class="num">03</span><h3>Paie 10 €</h3><p>Au début du rendez-vous, avant qu'on commence, par PayPal (entre proches). Tu ne paies que si le travail est fait.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="planning">
-  <div class="wrap">
-    <p class="eyebrow">Planning</p>
-    <h2>Créneaux</h2>
-
-    <div class="money">
-      <div>
-        <p><b>Aucun paiement à la réservation.</b> Le service coûte <b>10 €</b>, à payer au début du rendez-vous, avant l'optimisation, par PayPal en « <b>entre proches</b> ». Une fois la session faite, la prestation est due :
-          <a href="remboursement.html" style="color:var(--seal-hi)">politique de remboursement</a>.</p>
-      </div>
-    </div>
-
-    <div class="banner" id="away-banner" hidden><span id="away-text"></span></div>
-    <p class="legend"><span><span class="dot g"></span>Libre</span><span><span class="dot r"></span>Réservé</span></p>
-    <div id="slots-container"><p class="status">Chargement du planning…</p></div>
-
-    <div id="booking" class="card" hidden>
-      <div class="selected">
-        <span class="when" id="sel-when"></span>
-        <button class="btn ghost sm" type="button" id="cancel-sel">Changer de créneau</button>
-      </div>
-
-      <div class="field">
-        <label for="f-pseudo">Pseudo Discord <span class="req">*</span></label>
-        <input type="text" id="f-pseudo" placeholder="@pseudo" autocomplete="off">
-      </div>
-      <div class="field">
-        <label for="f-casque">Casque <span class="req">*</span></label>
-        <input type="text" id="f-casque" placeholder="Ex : HyperX Cloud II, DT 990 250 ohm…" autocomplete="off">
-      </div>
-      <div class="field">
-        <label for="f-materiel">Carte son / DAC / ampli</label>
-        <input type="text" id="f-materiel" placeholder="Ex : carte mère, GO XLR, Creative G6, aucun…" autocomplete="off">
-      </div>
-      <div class="field">
-        <label for="f-jeu">Jeu principal</label>
-        <select id="f-jeu">
-          <option>Call of Duty / Warzone</option><option>Counter-Strike 2</option><option>Valorant</option>
-          <option>Apex Legends</option><option>Fortnite</option><option>Rainbow Six Siege</option><option>Autre</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="f-mail">Adresse mail <span class="req">*</span></label>
-        <input type="email" id="f-mail" placeholder="toi@mail.com" autocomplete="email">
-        <p class="hint">C'est là que partent la confirmation et la validation de ta commande.</p>
-      </div>
-      <div class="field">
-        <label>AnyDesk <span class="req">*</span></label>
-        <div class="anydesk">
-          <span class="hint" style="margin:0">Installe AnyDesk avant la session, lance-le, note le numéro affiché.</span>
-          <a class="btn ghost sm" id="anydesk-link" href="https://anydesk.com/fr/downloads" target="_blank" rel="noopener">Télécharger AnyDesk</a>
-        </div>
-        <input type="text" id="f-anydesk" placeholder="Adresse AnyDesk (9 chiffres) — si tu l'as déjà" autocomplete="off">
-        <label class="check" style="margin-top:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--bone)">
-          <input type="checkbox" id="f-ok-anydesk">
-          <span>Je confirme qu'AnyDesk sera installé et ouvert au moment du rendez-vous.</span>
-        </label>
-      </div>
-      <div class="field">
-        <label for="f-notes">Précisions</label>
-        <textarea id="f-notes" placeholder="Ce qui te dérange : sons plats, pas inaudibles, saturation, casque trop faible…"></textarea>
-      </div>
-      <label class="check" style="text-transform:none;letter-spacing:0;font-weight:400;margin-bottom:18px">
-        <input type="checkbox" id="f-ok-price">
-        <span>J'ai compris : 10 € à régler à la fin de la session, une fois l'optimisation faite.</span>
-      </label>
-
-      <button class="btn" id="submit-btn" type="button">Réserver mon créneau</button>
-      <p class="error" id="form-error"></p>
-    </div>
-
-    <div id="done" class="card done" hidden>
-      <h3>Créneau réservé</h3>
-      <p class="ref" id="done-ref"></p>
-      <p class="mono" id="done-when" style="margin-bottom:12px"></p>
-      <p style="color:var(--grey);max-width:50ch;margin:0 auto 18px">Un mail de confirmation vient de partir. Installe AnyDesk d'ici là. Le paiement de 10 € se fait à la fin de la session.</p>
-      <button class="btn ghost" id="new-booking" type="button">Réserver un autre créneau</button>
-    </div>
-  </div>
-</section>
-
-<section id="suivi">
-  <div class="wrap">
-    <p class="eyebrow">Suivi</p>
-    <h2>Où en est ma commande&nbsp;?</h2>
-    <div class="row">
-      <input type="text" id="track-ref" placeholder="AIW-0001" style="max-width:280px">
-      <button class="btn ghost" id="track-btn" type="button">Vérifier</button>
-    </div>
-    <div id="track-result" style="margin-top:16px"></div>
-  </div>
-</section>
-
-
-
+<button id="theme-toggle" style="position:fixed;top:12px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;padding:8px;z-index:999" title="Basculer le thème">🌙</button>
 <section class="wrap" style="margin:40px 0">
-  <h2 style="margin-bottom:24px">Avis clients</h2>
-  <div id="reviews-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px"></div>
-  
-  <div class="card">
-    <h3 style="margin:0 0 16px">Laisse ton avis</h3>
-    <div class="field"><label for="review-ref">Numéro de commande</label><input type="text" id="review-ref" placeholder="AIW-0001 (pour vérifier que tu as eu une session)"></div>
-    <div class="field"><label for="review-pseudo">Pseudo</label><input type="text" id="review-pseudo" placeholder="Ton pseudo Discord"></div>
-    <div class="field"><label for="review-rating">Note</label>
-      <select id="review-rating" style="padding:8px;border:1px solid var(--line);border-radius:4px">
-        <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-        <option value="4">⭐⭐⭐⭐ Très bon</option>
-        <option value="3">⭐⭐⭐ Bon</option>
-        <option value="2">⭐⭐ OK</option>
-        <option value="1">⭐ Pas satisfait</option>
-      </select>
+  <div id="op-panel" style="margin-top:18px">
+    <div id="op-login" class="card">
+      <h2 style="margin:0 0 16px">Espace opérateur</h2>
+      <div class="field">
+        <label for="op-mail">Email</label>
+        <input type="email" id="op-mail" autocomplete="username">
+      </div>
+      <div class="field" style="margin:0">
+        <label for="op-pass">Mot de passe</label>
+        <input type="password" id="op-pass" autocomplete="current-password">
+        <p class="error" id="op-error"></p>
+      </div>
+      <button class="btn" id="op-login-btn" type="button" style="margin-top:12px">Se connecter</button>
+      <p class="hint">Identifiants gérés par Supabase — rien n'est stocké dans le code du site.</p>
     </div>
-    <div class="field"><label for="review-comment">Ton commentaire</label><textarea id="review-comment" placeholder="Partage ton retour d'expérience..." style="min-height:80px;resize:vertical"></textarea></div>
-    <button class="btn" id="review-submit" type="button">Envoyer mon avis</button>
-    <p class="error" id="review-error" style="margin-top:8px"></p>
+
+    <div id="op-console" hidden>
+      <div id="op-stats" class="card" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px;padding:12px">
+        <div style="text-align:center">
+          <div style="font-size:28px;font-weight:900;color:var(--free)">—</div>
+          <div style="font-size:12px;color:var(--grey)">Sessions ce mois</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:28px;font-weight:900;color:var(--gold)">—</div>
+          <div style="font-size:12px;color:var(--grey)">Estimé ce mois</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:28px;font-weight:900;color:var(--seal)">—</div>
+          <div style="font-size:12px;color:var(--grey)">Taux de remplissage</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="eyebrow" style="margin-bottom:12px">Disponibilité</p>
+        <label style="display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer">
+          <input type="checkbox" id="op-avail" style="cursor:pointer">
+          <span>Disponible pour les réservations</span>
+        </label>
+        <div class="field" style="margin:0">
+          <label for="op-away">Message d'absence</label>
+          <input type="text" id="op-away" placeholder="Je reviens lundi avec des optimisations fraîches..." style="margin:0">
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="eyebrow" style="margin-bottom:12px">Ouvrir des créneaux</p>
+        <div class="field" style="margin:0 0 12px 0">
+          <label for="op-date">Date</label><input type="date" id="op-date">
+        </div>
+        <div style="margin-bottom:12px">
+          <label style="display:block;margin-bottom:8px;font-size:14px;font-weight:500">Heures</label>
+          <div id="op-hours" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:6px"></div>
+        </div>
+        <div class="row" style="gap:8px;margin-bottom:12px">
+          <button class="btn" id="op-add" type="button">Ouvrir</button>
+          <button class="btn ghost" id="op-week" type="button">Ouvrir semaine</button>
+        </div>
+        <p class="error" id="op-add-error"></p>
+      </div>
+
+      <div class="card">
+        <p class="eyebrow" style="margin-bottom:12px">Planning</p>
+        <div id="op-slots"></div>
+      </div>
+
+      <div class="card">
+        <p class="eyebrow" style="margin-bottom:12px">Historique des sessions</p>
+        <div id="op-history" style="max-height:300px;overflow-y:auto"></div>
+      </div>
+
+      <div class="card">
+        <p class="eyebrow" style="margin-bottom:12px">Commandes</p>
+        <div class="tabs" id="op-tabs">
+          <button class="tab" data-f="pending" aria-selected="true">À valider</button>
+          <button class="tab" data-f="confirmed" aria-selected="false">Validées</button>
+          <button class="tab" data-f="done" aria-selected="false">Terminées</button>
+          <button class="tab" data-f="cancelled" aria-selected="false">Annulées</button>
+        </div>
+        <div id="op-orders"></div>
+      </div>
+
+      <button class="btn ghost sm" id="op-logout" type="button" style="margin-top:16px">Se déconnecter</button>
+    </div>
   </div>
 </section>
-
-</section>
-  <span>KimimaroFPS — ART IS WAR — 10 € à payer au début du rendez-vous ·
-    <a href="cgv.html" style="color:var(--grey)">CGV</a> ·
-    <a href="remboursement.html" style="color:var(--grey)">Remboursement</a> ·
-    <a href="mentions-legales.html" style="color:var(--grey)">Mentions légales</a></span>
-  <span class="mono" id="foot-count"></span>
-</footer>
-
-<div class="toast" id="toast" hidden></div>
-
-<script>
-/* Filet de sécurité : affiche toute erreur à l'écran au lieu de planter en silence */
-window.addEventListener("error", e => {
-  const box = document.getElementById("slots-container");
-  if(box) box.innerHTML = `<div class="empty" style="border-color:#C8322B;color:#E2453D;text-align:left">
-    <b>Erreur technique :</b><br><span style="font-family:monospace;font-size:13px">${(e.message||"")} ${(e.filename||"")}</span></div>`;
-});
-</script>
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 
@@ -326,9 +247,6 @@ const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&
 const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
 const sb = DEMO ? null : createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
 
-let slots = [], orders = [], settings = { available:true, away_message:"" };
-let selectedId = null, isAdmin = false, filter = "pending", reviews = [];
-
 // Toggle thème sombre
 const initTheme = () => {
   const theme = localStorage.getItem("theme") || "light";
@@ -347,6 +265,10 @@ $("theme-toggle").onclick = () => {
   updateThemeButton();
 };
 
+let slots = [], orders = [], settings = { available:true, away_message:"" };
+let selectedId = null, isAdmin = false, filter = "pending", reviews = [];
+
+// Toggle thème sombre
 // Avis clients
 async function fetchReviews(){
   if(DEMO){ return; }
@@ -705,25 +627,30 @@ $("track-btn").onclick = async () => {
 /* ==========================================================
    OPÉRATEUR
    ========================================================== */
-// Bouton opérateur supprimé (page séparée operateur.html)
+$("op-toggle").onclick = () => {
+  const p = $("op-panel"); p.hidden = !p.hidden;
+  $("op-toggle").textContent = p.hidden ? "— Accès opérateur" : "× Fermer";
+};
 
 $("op-login-btn").onclick = async () => {
   const e = $("op-error");
   if(DEMO){
-    isAdmin = true; return;
+    isAdmin = true; openConsole(); return;
   }
   const { error } = await sb.auth.signInWithPassword({ email:$("op-mail").value.trim(), password:$("op-pass").value });
   if(error) return e.textContent = "Email ou mot de passe incorrect.";
   e.textContent = ""; isAdmin = true; $("op-pass").value = "";
-  await refresh();
+  await refresh(); openConsole();
 };
 $("op-logout").onclick = async () => {
   if(!DEMO) await sb.auth.signOut();
   isAdmin = false; $("op-console").hidden = true; $("op-login").hidden = false;
 };
-
-// openConsole supprimée
-
+function openConsole(){
+  $("op-login").hidden = true; $("op-console").hidden = false;
+  $("avail-msg").value = settings.away_message || "";
+  renderAvail(); render();
+}
 function renderAvail(){
   $("avail-label").textContent = settings.available ? "Je suis disponible" : "Je suis indisponible";
   $("avail-label").style.color = settings.available ? "var(--free)" : "var(--seal)";
@@ -942,9 +869,9 @@ async function refresh(){ await fetchAll(); }
   await refresh();
   await fetchReviews();
   render();
-  // Panel admin sur operateur.html
+  if(isAdmin){ $("op-panel").hidden = false; $("op-toggle").textContent = "× Fermer"; openConsole(); }
   if(DEMO) toast("Mode démo : configure Supabase pour la mise en ligne");
 })();
-</script>
+
 </body>
 </html>
