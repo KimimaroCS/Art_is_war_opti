@@ -635,12 +635,12 @@ $("op-toggle").onclick = () => {
 $("op-login-btn").onclick = async () => {
   const e = $("op-error");
   if(DEMO){
-    isAdmin = true; openConsole(); return;
+    isAdmin = true; $("op-login").hidden = true; $("op-console").hidden = false; return;
   }
   const { error } = await sb.auth.signInWithPassword({ email:$("op-mail").value.trim(), password:$("op-pass").value });
   if(error) return e.textContent = "Email ou mot de passe incorrect.";
   e.textContent = ""; isAdmin = true; $("op-pass").value = "";
-  await refresh(); openConsole();
+  await refresh(); await fetchReviews(); $("op-login").hidden = true; $("op-console").hidden = false; render();
 };
 $("op-logout").onclick = async () => {
   if(!DEMO) await sb.auth.signOut();
