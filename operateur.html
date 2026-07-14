@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
+<style>
   :root{
     --ink:#0C0D10; --sumi:#15171C; --panel:#1B1E25; --line:#2C313B;
     --bone:#E8E2D6; --grey:#8B919C; --seal:#C8322B; --seal-hi:#E2453D;
@@ -128,13 +129,14 @@
   footer{padding:32px 0;color:var(--grey);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   @media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
 </style>
+</style>
 </head>
 <body>
 <button id="theme-toggle" style="position:fixed;top:12px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;padding:8px;z-index:999" title="Basculer le thème">🌙</button>
 <section class="wrap" style="margin:40px 0">
-  <div id="op-panel" style="margin-top:18px">
+  <h2 style="margin:0 0 24px">Panneau opérateur</h2>
+  <div id="op-panel">
     <div id="op-login" class="card">
-      <h2 style="margin:0 0 16px">Espace opérateur</h2>
       <div class="field">
         <label for="op-mail">Email</label>
         <input type="email" id="op-mail" autocomplete="username">
@@ -150,32 +152,10 @@
 
     <div id="op-console" hidden>
       <div id="op-stats" class="card" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px;padding:12px">
-        <div style="text-align:center">
-          <div style="font-size:28px;font-weight:900;color:var(--free)">—</div>
-          <div style="font-size:12px;color:var(--grey)">Sessions ce mois</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:28px;font-weight:900;color:var(--gold)">—</div>
-          <div style="font-size:12px;color:var(--grey)">Estimé ce mois</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:28px;font-weight:900;color:var(--seal)">—</div>
-          <div style="font-size:12px;color:var(--grey)">Taux de remplissage</div>
-        </div>
+        <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--free)">—</div><div style="font-size:12px;color:var(--grey)">Sessions ce mois</div></div>
+        <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--gold)">—</div><div style="font-size:12px;color:var(--grey)">Estimé ce mois</div></div>
+        <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--seal)">—</div><div style="font-size:12px;color:var(--grey)">Taux de remplissage</div></div>
       </div>
-
-      <div class="card">
-        <p class="eyebrow" style="margin-bottom:12px">Disponibilité</p>
-        <label style="display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer">
-          <input type="checkbox" id="op-avail" style="cursor:pointer">
-          <span>Disponible pour les réservations</span>
-        </label>
-        <div class="field" style="margin:0">
-          <label for="op-away">Message d'absence</label>
-          <input type="text" id="op-away" placeholder="Je reviens lundi avec des optimisations fraîches..." style="margin:0">
-        </div>
-      </div>
-
       <div class="card">
         <p class="eyebrow" style="margin-bottom:12px">Ouvrir des créneaux</p>
         <div class="field" style="margin:0 0 12px 0">
@@ -198,7 +178,7 @@
       </div>
 
       <div class="card">
-        <p class="eyebrow" style="margin-bottom:12px">Historique des sessions</p>
+        <p class="eyebrow" style="margin-bottom:12px">Historique</p>
         <div id="op-history" style="max-height:300px;overflow-y:auto"></div>
       </div>
 
@@ -217,6 +197,7 @@
     </div>
   </div>
 </section>
+<script type="module">
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 
@@ -247,6 +228,9 @@ const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&
 const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
 const sb = DEMO ? null : createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
 
+let slots = [], orders = [], settings = { available:true, away_message:"" };
+let selectedId = null, isAdmin = false, filter = "pending", reviews = [];
+
 // Toggle thème sombre
 const initTheme = () => {
   const theme = localStorage.getItem("theme") || "light";
@@ -265,10 +249,6 @@ $("theme-toggle").onclick = () => {
   updateThemeButton();
 };
 
-let slots = [], orders = [], settings = { available:true, away_message:"" };
-let selectedId = null, isAdmin = false, filter = "pending", reviews = [];
-
-// Toggle thème sombre
 // Avis clients
 async function fetchReviews(){
   if(DEMO){ return; }
@@ -627,30 +607,25 @@ $("track-btn").onclick = async () => {
 /* ==========================================================
    OPÉRATEUR
    ========================================================== */
-$("op-toggle").onclick = () => {
-  const p = $("op-panel"); p.hidden = !p.hidden;
-  $("op-toggle").textContent = p.hidden ? "— Accès opérateur" : "× Fermer";
-};
+// Bouton opérateur supprimé (page séparée operateur.html)
 
 $("op-login-btn").onclick = async () => {
   const e = $("op-error");
   if(DEMO){
-    isAdmin = true; $("op-login").hidden = true; $("op-console").hidden = false; return;
+    isAdmin = true; return;
   }
   const { error } = await sb.auth.signInWithPassword({ email:$("op-mail").value.trim(), password:$("op-pass").value });
   if(error) return e.textContent = "Email ou mot de passe incorrect.";
   e.textContent = ""; isAdmin = true; $("op-pass").value = "";
-  await refresh(); await fetchReviews(); $("op-login").hidden = true; $("op-console").hidden = false; render();
+  await refresh();
 };
 $("op-logout").onclick = async () => {
   if(!DEMO) await sb.auth.signOut();
   isAdmin = false; $("op-console").hidden = true; $("op-login").hidden = false;
 };
-function openConsole(){
-  $("op-login").hidden = true; $("op-console").hidden = false;
-  $("avail-msg").value = settings.away_message || "";
-  renderAvail(); render();
-}
+
+// openConsole supprimée
+
 function renderAvail(){
   $("avail-label").textContent = settings.available ? "Je suis disponible" : "Je suis indisponible";
   $("avail-label").style.color = settings.available ? "var(--free)" : "var(--seal)";
@@ -869,9 +844,11 @@ async function refresh(){ await fetchAll(); }
   await refresh();
   await fetchReviews();
   render();
-  if(isAdmin){ $("op-panel").hidden = false; $("op-toggle").textContent = "× Fermer"; openConsole(); }
+  // Panel admin sur operateur.html
   if(DEMO) toast("Mode démo : configure Supabase pour la mise en ligne");
 })();
-
+</script>
+initTheme();
+</script>
 </body>
 </html>
