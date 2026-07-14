@@ -129,7 +129,9 @@
   .toast[hidden]{display:none}
   footer{padding:32px 0;color:var(--grey);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   @media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
-  @keyframes slideIn{ from{ transform:translateX(400px); opacity:0; } to{ transform:translateX(0); opacity:1; } }
+  [hidden] { display: none !important; }
+  #faq-1, #faq-2, #faq-3, #faq-4, #faq-5, #faq-6 { display: block; }
+    @keyframes slideIn{ from{ transform:translateX(400px); opacity:0; } to{ transform:translateX(0); opacity:1; } }
 </style>
 </head>
 <body>
@@ -278,6 +280,7 @@
 </section>
 
 <section class="wrap" style="margin:40px 0">
+  <div style="max-width:960px;margin:0 auto">
   <h2 style="margin-bottom:24px">Avis clients</h2>
   
   <div id="reviews-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:40px"></div>
@@ -344,7 +347,7 @@
         <span>Quel est le tarif ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-1" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">10 € à payer au début du rendez-vous, avant qu'on commence l'optimisation.</div>
+      <div id="faq-1" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">10 € à payer au début du rendez-vous, avant qu'on commence l'optimisation.</div>
     </div>
     
     <div class="card" style="padding:0">
@@ -352,7 +355,7 @@
         <span>Comment ça se passe concrètement ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-2" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">Tu réserves un créneau, tu installe AnyDesk, tu me rejoins sur Discord. Au début du rendez-vous, tu me paiement 10 € en PayPal. Une fois reçu, je commence l'optimisation audio de ton casque. Durée : 45 minutes.</div>
+      <div id="faq-2" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">Tu réserves un créneau, tu installe AnyDesk, tu me rejoins sur Discord. Au début du rendez-vous, tu me paiement 10 € en PayPal. Une fois reçu, je commence l'optimisation audio de ton casque. Durée : 45 minutes.</div>
     </div>
 
     <div class="card" style="padding:0">
@@ -360,7 +363,7 @@
         <span>Qu'est-ce qu'AnyDesk ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-3" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">C'est un logiciel de prise de contrôle à distance, comme TeamViewer. Je peux accéder à ton ordi pour optimiser tes réglages audio. C'est gratuit et sécurisé. <a href="https://anydesk.com/fr/downloads" style="color:var(--seal);text-decoration:none">Télécharge-le ici</a>.</div>
+      <div id="faq-3" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">C'est un logiciel de prise de contrôle à distance, comme TeamViewer. Je peux accéder à ton ordi pour optimiser tes réglages audio. C'est gratuit et sécurisé. <a href="https://anydesk.com/fr/downloads" style="color:var(--seal);text-decoration:none">Télécharge-le ici</a>.</div>
     </div>
 
     <div class="card" style="padding:0">
@@ -368,7 +371,7 @@
         <span>Je peux annuler ma réservation ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-4" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">Oui, tu recevras un lien d'annulation dans le mail de confirmation. Tu peux annuler jusqu'à quelques heures avant. Si tu annules APRÈS avoir payé, il n'y a pas de remboursement (paiement au début = engagement).</div>
+      <div id="faq-4" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">Oui, tu recevras un lien d'annulation dans le mail de confirmation. Tu peux annuler jusqu'à quelques heures avant. Si tu annules APRÈS avoir payé, il n'y a pas de remboursement (paiement au début = engagement).</div>
     </div>
 
     <div class="card" style="padding:0">
@@ -376,7 +379,7 @@
         <span>Quels casques vous optimisez ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-5" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">N'importe lequel ! Casque gaming, casque audio, écouteurs, tout ce qui peut se brancher à ton PC. On optimise l'EQ, les drivers, les réglages du jeu, etc.</div>
+      <div id="faq-5" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">N'importe lequel ! Casque gaming, casque audio, écouteurs, tout ce qui peut se brancher à ton PC. On optimise l'EQ, les drivers, les réglages du jeu, etc.</div>
     </div>
 
     <div class="card" style="padding:0">
@@ -384,8 +387,9 @@
         <span>Après la session, je peux te recontacter ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-6" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">Bien sûr ! Rejoine le Discord, j'y réponds aux questions. Si tu as besoin d'une retouche, on peut envisager une deuxième session.</div>
+      <div id="faq-6" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">Bien sûr ! Rejoine le Discord, j'y réponds aux questions. Si tu as besoin d'une retouche, on peut envisager une deuxième session.</div>
     </div>
+  </div>
   </div>
 </section>
 
@@ -1065,16 +1069,22 @@ initTheme();
 })();
 
 // FAQ - Accordéons (à la fin pour être sûr que le DOM est prêt)
-document.querySelectorAll(".faq-toggle").forEach(btn => {
-  btn.onclick = () => {
-    const target = document.getElementById(btn.dataset.target);
-    if(target) {
-      const isOpen = !target.hidden;
-      target.hidden = isOpen;
-      btn.querySelector("span:last-child").textContent = isOpen ? "+" : "−";
-    }
-  };
-});
+setTimeout(() => {
+  document.querySelectorAll(".faq-toggle").forEach(btn => {
+    btn.onclick = (e) => {
+      e.preventDefault();
+      const id = btn.getAttribute("data-target");
+      const target = document.getElementById(id);
+      console.log("Clic sur", id, "target:", target);
+      if(target) {
+        const isHidden = target.hidden;
+        target.hidden = !isHidden;
+        btn.querySelector("span:last-child").textContent = isHidden ? "−" : "+";
+        console.log("État de", id, ":", target.hidden);
+      }
+    };
+  });
+}, 100);
 </script>
 </body>
 </html>
