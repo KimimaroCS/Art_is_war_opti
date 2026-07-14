@@ -127,6 +127,7 @@
   .toast[hidden]{display:none}
   footer{padding:32px 0;color:var(--grey);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   @media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+  @keyframes slideIn{ from{ transform:translateX(400px); opacity:0; } to{ transform:translateX(0); opacity:1; } }
 </style>
 </head>
 <body>
@@ -147,6 +148,39 @@
     </svg>
   </div>
 </header>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Résultats</p>
+    <h2>Avant / Après optimisation</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;margin:40px 0">
+      <div>
+        <div style="background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:24px;text-align:center">
+          <div style="font-size:48px;margin-bottom:16px">📉</div>
+          <h3 style="margin:0 0 12px;font-size:18px;text-transform:uppercase">Avant</h3>
+          <p style="color:var(--grey);margin:0;font-size:14px">
+            ✗ Son faible<br>
+            ✗ Bruits parasites<br>
+            ✗ Casque non optimisé<br>
+            ✗ EQ par défaut
+          </p>
+        </div>
+      </div>
+      <div>
+        <div style="background:var(--panel);border:2px solid var(--free);border-radius:2px;padding:24px;text-align:center">
+          <div style="font-size:48px;margin-bottom:16px">📈</div>
+          <h3 style="margin:0 0 12px;font-size:18px;text-transform:uppercase;color:var(--free)">Après</h3>
+          <p style="color:var(--grey);margin:0;font-size:14px">
+            ✓ Son cristallin<br>
+            ✓ Isolation active<br>
+            ✓ Calibrage précis<br>
+            ✓ EQ sur mesure
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section>
   <div class="wrap">
@@ -243,24 +277,42 @@
 
 <section class="wrap" style="margin:40px 0">
   <h2 style="margin-bottom:24px">Avis clients</h2>
-  <div id="reviews-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px"></div>
   
-  <div class="card">
-    <h3 style="margin:0 0 16px">Laisse ton avis</h3>
-    <div class="field"><label for="review-ref">Numéro de commande</label><input type="text" id="review-ref" placeholder="AIW-0001 (pour vérifier que tu as eu une session)"></div>
-    <div class="field"><label for="review-pseudo">Pseudo</label><input type="text" id="review-pseudo" placeholder="Ton pseudo Discord"></div>
-    <div class="field"><label for="review-rating">Note</label>
-      <select id="review-rating" style="padding:8px;border:1px solid var(--line);border-radius:4px">
-        <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-        <option value="4">⭐⭐⭐⭐ Très bon</option>
-        <option value="3">⭐⭐⭐ Bon</option>
-        <option value="2">⭐⭐ OK</option>
-        <option value="1">⭐ Pas satisfait</option>
-      </select>
+  <div id="reviews-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:40px"></div>
+  
+  <div style="max-width:500px;margin:0 auto">
+    <div class="card">
+      <h3 style="margin:0 0 20px;font-size:18px;text-transform:uppercase;letter-spacing:1px">Laisse ton avis</h3>
+      
+      <div class="field">
+        <label for="review-ref">Numéro de commande</label>
+        <input type="text" id="review-ref" placeholder="AIW-0001">
+      </div>
+      
+      <div class="field">
+        <label for="review-pseudo">Pseudo</label>
+        <input type="text" id="review-pseudo" placeholder="Ton pseudo Discord">
+      </div>
+      
+      <div class="field">
+        <label for="review-rating">Note</label>
+        <select id="review-rating">
+          <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+          <option value="4">⭐⭐⭐⭐ Très bon</option>
+          <option value="3">⭐⭐⭐ Bon</option>
+          <option value="2">⭐⭐ OK</option>
+          <option value="1">⭐ Pas satisfait</option>
+        </select>
+      </div>
+      
+      <div class="field">
+        <label for="review-comment">Ton commentaire</label>
+        <textarea id="review-comment" placeholder="Partage ton retour..." style="min-height:80px;resize:vertical"></textarea>
+      </div>
+      
+      <button class="btn" id="review-submit" type="button" style="width:100%">Envoyer mon avis</button>
+      <p class="error" id="review-error" style="margin-top:8px;text-align:center"></p>
     </div>
-    <div class="field"><label for="review-comment">Ton commentaire</label><textarea id="review-comment" placeholder="Partage ton retour d'expérience..." style="min-height:80px;resize:vertical"></textarea></div>
-    <button class="btn" id="review-submit" type="button">Envoyer mon avis</button>
-    <p class="error" id="review-error" style="margin-top:8px"></p>
   </div>
 </section>
 <section id="suivi">
@@ -282,24 +334,95 @@
 
 <section class="wrap" style="margin:40px 0">
   <h2 style="margin-bottom:24px">Avis clients</h2>
-  <div id="reviews-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px"></div>
   
-  <div class="card">
-    <h3 style="margin:0 0 16px">Laisse ton avis</h3>
-    <div class="field"><label for="review-ref">Numéro de commande</label><input type="text" id="review-ref" placeholder="AIW-0001 (pour vérifier que tu as eu une session)"></div>
-    <div class="field"><label for="review-pseudo">Pseudo</label><input type="text" id="review-pseudo" placeholder="Ton pseudo Discord"></div>
-    <div class="field"><label for="review-rating">Note</label>
-      <select id="review-rating" style="padding:8px;border:1px solid var(--line);border-radius:4px">
-        <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-        <option value="4">⭐⭐⭐⭐ Très bon</option>
-        <option value="3">⭐⭐⭐ Bon</option>
-        <option value="2">⭐⭐ OK</option>
-        <option value="1">⭐ Pas satisfait</option>
-      </select>
+  <div id="reviews-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:40px"></div>
+  
+  <div style="max-width:500px;margin:0 auto">
+    <div class="card">
+      <h3 style="margin:0 0 20px;font-size:18px;text-transform:uppercase;letter-spacing:1px">Laisse ton avis</h3>
+      
+      <div class="field">
+        <label for="review-ref">Numéro de commande</label>
+        <input type="text" id="review-ref" placeholder="AIW-0001">
+      </div>
+      
+      <div class="field">
+        <label for="review-pseudo">Pseudo</label>
+        <input type="text" id="review-pseudo" placeholder="Ton pseudo Discord">
+      </div>
+      
+      <div class="field">
+        <label for="review-rating">Note</label>
+        <select id="review-rating">
+          <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+          <option value="4">⭐⭐⭐⭐ Très bon</option>
+          <option value="3">⭐⭐⭐ Bon</option>
+          <option value="2">⭐⭐ OK</option>
+          <option value="1">⭐ Pas satisfait</option>
+        </select>
+      </div>
+      
+      <div class="field">
+        <label for="review-comment">Ton commentaire</label>
+        <textarea id="review-comment" placeholder="Partage ton retour..." style="min-height:80px;resize:vertical"></textarea>
+      </div>
+      
+      <button class="btn" id="review-submit" type="button" style="width:100%">Envoyer mon avis</button>
+      <p class="error" id="review-error" style="margin-top:8px;text-align:center"></p>
     </div>
-    <div class="field"><label for="review-comment">Ton commentaire</label><textarea id="review-comment" placeholder="Partage ton retour d'expérience..." style="min-height:80px;resize:vertical"></textarea></div>
-    <button class="btn" id="review-submit" type="button">Envoyer mon avis</button>
-    <p class="error" id="review-error" style="margin-top:8px"></p>
+  </div>
+</section>
+
+<section class="wrap" style="margin:40px 0">
+  <h2 style="margin-bottom:24px">Questions fréquentes</h2>
+  <div style="display:grid;gap:12px">
+    <div class="card" style="padding:0">
+      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-1">
+        <span>Quel est le tarif ?</span>
+        <span style="color:var(--grey)">+</span>
+      </button>
+      <div id="faq-1" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--grey)">10 € à payer au début du rendez-vous, avant qu'on commence l'optimisation.</div>
+    </div>
+    
+    <div class="card" style="padding:0">
+      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-2">
+        <span>Comment ça se passe concrètement ?</span>
+        <span style="color:var(--grey)">+</span>
+      </button>
+      <div id="faq-2" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--grey)">Tu réserves un créneau, tu installe AnyDesk, tu me rejoins sur Discord. Au début du rendez-vous, tu me paiement 10 € en PayPal. Une fois reçu, je commence l'optimisation audio de ton casque. Durée : 45 minutes.</div>
+    </div>
+
+    <div class="card" style="padding:0">
+      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-3">
+        <span>Qu'est-ce qu'AnyDesk ?</span>
+        <span style="color:var(--grey)">+</span>
+      </button>
+      <div id="faq-3" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--grey)">C'est un logiciel de prise de contrôle à distance, comme TeamViewer. Je peux accéder à ton ordi pour optimiser tes réglages audio. C'est gratuit et sécurisé. <a href="https://anydesk.com/fr/downloads" style="color:var(--seal);text-decoration:none">Télécharge-le ici</a>.</div>
+    </div>
+
+    <div class="card" style="padding:0">
+      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-4">
+        <span>Je peux annuler ma réservation ?</span>
+        <span style="color:var(--grey)">+</span>
+      </button>
+      <div id="faq-4" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--grey)">Oui, tu recevras un lien d'annulation dans le mail de confirmation. Tu peux annuler jusqu'à quelques heures avant. Si tu annules APRÈS avoir payé, il n'y a pas de remboursement (paiement au début = engagement).</div>
+    </div>
+
+    <div class="card" style="padding:0">
+      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-5">
+        <span>Quels casques vous optimisez ?</span>
+        <span style="color:var(--grey)">+</span>
+      </button>
+      <div id="faq-5" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--grey)">N'importe lequel ! Casque gaming, casque audio, écouteurs, tout ce qui peut se brancher à ton PC. On optimise l'EQ, les drivers, les réglages du jeu, etc.</div>
+    </div>
+
+    <div class="card" style="padding:0">
+      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-6">
+        <span>Après la session, je peux te recontacter ?</span>
+        <span style="color:var(--grey)">+</span>
+      </button>
+      <div id="faq-6" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--grey)">Bien sûr ! Rejoine le Discord, j'y réponds aux questions. Si tu as besoin d'une retouche, on peut envisager une deuxième session.</div>
+    </div>
   </div>
 </section>
 
@@ -346,6 +469,13 @@ const CONFIG = {
 /* ========================================================== */
 
 const $ = id => document.getElementById(id);
+const toast = (msg, dur = 3000) => {
+  const t = document.createElement("div");
+  t.style.cssText = "position:fixed;bottom:20px;right:20px;background:var(--seal);color:var(--bone);padding:16px;border-radius:2px;max-width:300px;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:slideIn 0.3s;z-index:9999";
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), dur);
+};
 const $$ = sel => document.querySelectorAll(sel);
 const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
@@ -959,6 +1089,18 @@ async function action(act, ref){
 /* ---------- démarrage ---------- */
 async function refresh(){ await fetchAll(); }
 (async () => {
+// FAQ accordéons
+document.querySelectorAll(".faq-toggle").forEach(btn => {
+  btn.onclick = () => {
+    const target = document.getElementById(btn.dataset.target);
+    if(target) {
+      const isOpen = !target.hidden;
+      target.hidden = isOpen;
+      btn.querySelector("span:last-child").textContent = isOpen ? "+" : "−";
+    }
+  };
+});
+
   initTheme();
   if(!DEMO){
     const { data } = await sb.auth.getSession();

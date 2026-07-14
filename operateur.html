@@ -8,27 +8,47 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root{--ink:#0C0D10;--sumi:#15171C;--panel:#1B1E25;--line:#2C313B;--bone:#E8E2D6;--grey:#8B919C;--seal:#C8322B;--free:#3FA65C;--gold:#C9A227}
+  :root{--ink:#0C0D10;--sumi:#15171C;--panel:#1B1E25;--line:#2C313B;--bone:#E8E2D6;--grey:#8B919C;--seal:#C8322B;--seal-hi:#E2453D;--free:#3FA65C;--free-hi:#4FC470;--gold:#C9A227}
   html.dark :root{--ink:#F5F5F5;--sumi:#EEEEEE;--panel:#E8E8E8;--line:#D0D0D0;--bone:#222222;--grey:#666666}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--ink);color:var(--bone);font-family:'Barlow',sans-serif;font-size:16px;line-height:1.55}
+  body{background:var(--ink);color:var(--bone);font-family:'Barlow',sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
   .wrap{max-width:960px;margin:0 auto;padding:0 20px}
   h2{font-family:'Big Shoulders Display',sans-serif;font-size:32px;margin:0 0 24px;text-transform:uppercase}
+  h3{font-size:16px;font-weight:600}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:16px;margin:0 0 16px}
   .field{margin:0 0 16px}
   label{display:block;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin:0 0 6px;color:var(--grey)}
-  input,select{font-family:inherit;font-size:inherit;border:1px solid var(--line);border-radius:2px;background:var(--sumi);color:var(--bone);padding:8px;width:100%}
+  input,select,textarea{font-family:inherit;font-size:inherit;border:1px solid var(--line);border-radius:2px;background:var(--sumi);color:var(--bone);padding:8px;width:100%}
   input:focus{outline:none;border-color:var(--free)}
   .btn{background:var(--seal);color:var(--bone);border:none;padding:10px 16px;font-weight:600;text-transform:uppercase;font-size:12px;border-radius:2px;cursor:pointer}
-  .btn:hover{background:#E2453D}
+  .btn:hover{background:var(--seal-hi)}
   .btn.ghost{background:none;border:1px solid var(--line);color:var(--bone)}
   .btn.ghost:hover{border-color:var(--seal)}
+  .btn.sm{font-size:11px;padding:6px 12px}
   .error{color:var(--seal);font-size:12px;margin:8px 0 0}
   .tabs{display:flex;gap:4px;margin:0 0 16px;flex-wrap:wrap}
   .tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--grey);cursor:pointer;padding:8px 0;font-size:13px;font-weight:600;text-transform:uppercase}
   .tab[aria-selected="true"]{border-color:var(--free);color:var(--bone)}
   .eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--grey)}
   .mono{font-family:'JetBrains Mono',monospace;font-size:12px}
+  .slot{background:var(--sumi);border:1px solid var(--line);border-radius:2px;padding:8px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+  .slot.booked{border-color:var(--seal)}
+  .slot.open{border-color:var(--free)}
+  .order{background:var(--sumi);border:1px solid var(--line);border-radius:2px;padding:12px;margin:0 0 12px}
+  .toast{position:fixed;bottom:20px;right:20px;background:var(--seal);color:var(--bone);padding:16px;border-radius:2px;max-width:300px;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:slideIn 0.3s}
+  @keyframes slideIn{from{transform:translateX(400px);opacity:0}to{transform:translateX(0);opacity:1}}
+  @media(max-width:640px){
+    .wrap{padding:0 16px}
+    h2{font-size:24px}
+    .card{padding:12px}
+    .field{margin:0 0 12px}
+    .btn{padding:8px;font-size:11px}
+    input,select,textarea{padding:6px;font-size:16px}
+    #op-hours{grid-template-columns:repeat(auto-fit,minmax(60px,1fr))}
+    .slot{flex-wrap:wrap;gap:8px}
+    .order{padding:10px}
+    .toast{bottom:10px;right:10px;max-width:calc(100% - 20px);padding:12px;font-size:12px}
+  }
 </style>
 </head>
 <body>
@@ -41,29 +61,34 @@
     <div id="op-login" class="card">
       <div class="field"><label for="op-mail">Email</label><input type="email" id="op-mail"></div>
       <div class="field"><label for="op-pass">Mot de passe</label><input type="password" id="op-pass"><p class="error" id="op-error"></p></div>
-      <button class="btn" id="op-login-btn" style="margin-top:12px">Se connecter</button>
+      <button class="btn" id="op-login-btn" style="margin-top:12px;width:100%">Se connecter</button>
     </div>
 
     <div id="op-console" hidden>
-      <div class="card">
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center">
-          <div><div style="font-size:28px;font-weight:900;color:var(--free)">—</div><div style="font-size:12px;color:var(--grey)">Sessions</div></div>
-          <div><div style="font-size:28px;font-weight:900;color:var(--gold)">—</div><div style="font-size:12px;color:var(--grey)">Estimé</div></div>
-          <div><div style="font-size:28px;font-weight:900;color:var(--seal)">—</div><div style="font-size:12px;color:var(--grey)">Remplissage</div></div>
-        </div>
+      <div class="card" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;padding:12px">
+        <div><div style="font-size:28px;font-weight:900;color:var(--free)" id="stat1">—</div><div style="font-size:12px;color:var(--grey)">Sessions ce mois</div></div>
+        <div><div style="font-size:28px;font-weight:900;color:var(--gold)" id="stat2">—</div><div style="font-size:12px;color:var(--grey)">Estimé</div></div>
+        <div><div style="font-size:28px;font-weight:900;color:var(--seal)" id="stat3">—</div><div style="font-size:12px;color:var(--grey)">Remplissage</div></div>
       </div>
 
       <div class="card">
         <p class="eyebrow" style="margin-bottom:12px">Ouvrir créneaux</p>
         <div class="field"><label for="op-date">Date</label><input type="date" id="op-date"></div>
         <div style="margin-bottom:12px"><label style="display:block;font-size:14px;font-weight:500;margin-bottom:8px">Heures</label><div id="op-hours" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:6px"></div></div>
-        <div style="display:flex;gap:8px;margin-bottom:12px"><button class="btn" id="op-add">Ouvrir</button><button class="btn ghost" id="op-week">Semaine</button></div>
-        <p class="error" id="op-add-error"></p>
+        <div style="display:flex;gap:8px"><button class="btn" id="op-add">Ouvrir</button><button class="btn ghost" id="op-week">Semaine</button></div>
       </div>
 
-      <div class="card"><p class="eyebrow" style="margin-bottom:12px">Planning</p><div id="op-slots"></div></div>
-      <div class="card"><p class="eyebrow" style="margin-bottom:12px">Historique</p><div id="op-history" style="max-height:300px;overflow-y:auto"></div></div>
-      <div class="card"><p class="eyebrow" style="margin-bottom:12px">Commandes</p><div class="tabs" id="op-tabs"><button class="tab" data-f="pending" aria-selected="true">À valider</button><button class="tab" data-f="confirmed">Validées</button><button class="tab" data-f="done">Terminées</button><button class="tab" data-f="cancelled">Annulées</button></div><div id="op-orders"></div></div>
+      <div class="card">
+        <p class="eyebrow" style="margin-bottom:12px">Planning</p>
+        <div id="op-slots" style="max-height:300px;overflow-y:auto"></div>
+      </div>
+
+      <div class="card">
+        <p class="eyebrow" style="margin-bottom:12px">Commandes</p>
+        <div class="tabs"><button class="tab op-tab" data-f="pending" aria-selected="true">À valider</button><button class="tab op-tab" data-f="confirmed">Validées</button><button class="tab op-tab" data-f="done">Terminées</button><button class="tab op-tab" data-f="cancelled">Annulées</button></div>
+        <div id="op-orders"></div>
+      </div>
+
       <button class="btn ghost" id="op-logout" style="margin-top:16px;width:100%">Déconnecter</button>
     </div>
   </div>
@@ -74,40 +99,104 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 const CONFIG = {supabaseUrl:"https://taqdcytecvabwyanyptb.supabase.co",supabaseAnonKey:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhcWRjeXRlY3ZhYnd5YW55cHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4NTYwMjAsImV4cCI6MjA5OTQzMjAyMH0.MwAgQTIqxuTzTUpd-l_sTiLEmU9bjRPzwR-PPp8vCJU",price:10};
 const sb = createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
 const $ = id => document.getElementById(id);
-let slots = [], orders = [];
+const $$ = sel => document.querySelectorAll(sel);
+let slots = [], orders = [], filter = "pending";
+
+const toast = (msg, dur = 3000) => {const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), dur);};
 
 const initTheme = () => {const t = localStorage.getItem("theme") || "light"; if(t === "dark") document.documentElement.classList.add("dark"); updateTheme();};
 const updateTheme = () => {const d = document.documentElement.classList.contains("dark"); $("theme-toggle").textContent = d ? "☀️" : "🌙";};
 $("theme-toggle").onclick = () => {const d = document.documentElement.classList.toggle("dark"); localStorage.setItem("theme", d ? "dark" : "light"); updateTheme();};
 
 const fetchAll = async () => {
-  const [s, o] = await Promise.all([sb.from("slots").select("*"), sb.from("orders").select("*")]);
+  const [s, o] = await Promise.all([sb.from("slots").select("*").order("start_at"), sb.from("orders").select("*").order("created_at", {ascending: false})]);
   slots = s.data || [];
   orders = o.data || [];
+  render();
 };
 
 const renderHours = () => {
   const box = $("op-hours");
-  if(!box) return;
-  box.innerHTML = Array.from({length:15}, (_, i) => {
-    const h = 8 + i;
-    return `<button class="btn ghost sm" data-hour="${h}:00" style="padding:8px">${String(h).padStart(2, '0')}:00</button>`;
-  }).join("");
-  box.querySelectorAll("[data-hour]").forEach(b => b.onclick = () => b.style.background = b.style.background ? "" : "var(--seal)");
+  box.innerHTML = Array.from({length:15}, (_, i) => {const h = 8 + i; return `<button class="btn ghost sm" data-hour="${h}:00" style="padding:8px">${String(h).padStart(2, '0')}:00</button>`;}).join("");
+  box.querySelectorAll("[data-hour]").forEach(b => b.onclick = () => b.classList.toggle("active"));
 };
+
+const renderSlots = () => {
+  const box = $("op-slots");
+  if(!slots.length) return box.innerHTML = `<p style="color:var(--grey);font-size:14px">Aucun créneau.</p>`;
+  box.innerHTML = slots.map(s => {
+    const d = new Date(s.start_at);
+    const status = s.status === "booked" ? "🔴 Réservé" : "🟢 Libre";
+    return `<div class="slot ${s.status}"><div><span class="mono">${d.toLocaleString("fr")}</span><br><span style="font-size:12px;color:var(--grey)">${status}</span></div><button class="btn ghost sm" onclick="delSlot('${s.id}')" style="padding:6px 8px">✕</button></div>`;
+  }).join("");
+};
+
+const renderOrders = () => {
+  const box = $("op-orders");
+  const filtered = orders.filter(o => o.status === filter);
+  if(!filtered.length) return box.innerHTML = `<p style="color:var(--grey);font-size:14px">Aucune commande.</p>`;
+  box.innerHTML = filtered.map(o => `
+    <div class="order">
+      <div style="display:flex;justify-content:space-between;align-items:start">
+        <div style="flex:1">
+          <strong class="mono">${o.ref}</strong> — ${o.pseudo}<br>
+          <span style="font-size:12px;color:var(--grey)">${new Date(o.created_at).toLocaleString("fr")}</span><br>
+          <span style="font-size:12px">Casque: ${o.casque}</span>
+        </div>
+        <div style="display:flex;gap:4px">
+          ${filter === "pending" ? `<button class="btn sm" onclick="setStatus('${o.ref}', 'confirmed')">✓</button>` : ""}
+          ${filter === "confirmed" ? `<button class="btn sm" onclick="setStatus('${o.ref}', 'done')">Fait</button>` : ""}
+          ${filter !== "cancelled" ? `<button class="btn ghost sm" onclick="setStatus('${o.ref}', 'cancelled')">✕</button>` : ""}
+        </div>
+      </div>
+    </div>
+  `).join("");
+};
+
+const updateStats = () => {
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const done = orders.filter(o => o.status === "done" && new Date(o.created_at) >= monthStart).length;
+  const revenue = done * CONFIG.price;
+  const filled = slots.filter(s => s.status === "booked").length;
+  const rate = slots.length ? Math.round((filled / slots.length) * 100) : 0;
+  $("stat1").textContent = done;
+  $("stat2").textContent = revenue + "€";
+  $("stat3").textContent = rate + "%";
+};
+
+const render = () => {renderSlots(); renderOrders(); updateStats();};
+
+window.delSlot = async (id) => {
+  await sb.from("slots").delete().eq("id", id);
+  await fetchAll();
+  toast("Créneau supprimé");
+};
+
+window.setStatus = async (ref, status) => {
+  await sb.from("orders").update({status}).eq("ref", ref);
+  await fetchAll();
+  toast(`Commande ${status === "cancelled" ? "annulée" : status === "confirmed" ? "validée" : "terminée"}`);
+};
+
+$$(".op-tab").forEach(b => b.onclick = () => {
+  $$(".op-tab").forEach(x => x.setAttribute("aria-selected", "false"));
+  b.setAttribute("aria-selected", "true");
+  filter = b.dataset.f;
+  render();
+});
 
 $("op-add").onclick = async () => {
   const date = $("op-date").value;
-  const selected = Array.from($("op-hours").querySelectorAll("[data-hour]")).filter(b => b.style.background).map(b => b.dataset.hour);
-  if(!date || !selected.length) return $("op-add-error").textContent = "Sélectionne une date et des heures.";
-  
-  for(const hour of selected) {
-    const start_at = new Date(date + "T" + hour + ":00").toISOString();
-    await sb.from("slots").insert({start_at, status: "open"});
+  const selected = Array.from($$("[data-hour].active")).map(b => b.dataset.hour);
+  if(!date || !selected.length) return toast("Sélectionne une date et des heures");
+  for(const h of selected) {
+    await sb.from("slots").insert({start_at: new Date(date + "T" + h + ":00").toISOString(), status: "open"});
   }
   await fetchAll();
-  $("op-add-error").textContent = "✅ Créneaux ouverts!";
   renderHours();
+  $$("[data-hour]").forEach(b => b.classList.remove("active"));
+  toast("✅ Créneaux ouverts!");
 };
 
 $("op-week").onclick = async () => {
@@ -122,7 +211,8 @@ $("op-week").onclick = async () => {
     }
   }
   await fetchAll();
-  $("op-add-error").textContent = "✅ Semaine ouverte!";
+  renderHours();
+  toast("✅ Semaine ouverte!");
 };
 
 $("op-login-btn").onclick = async () => {
@@ -132,12 +222,14 @@ $("op-login-btn").onclick = async () => {
   $("op-console").hidden = false;
   await fetchAll();
   renderHours();
+  toast("✅ Connecté!");
 };
 
 $("op-logout").onclick = async () => {
   await sb.auth.signOut();
   $("op-login").hidden = false;
   $("op-console").hidden = true;
+  toast("Déconnecté");
 };
 
 (async () => {
