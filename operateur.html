@@ -3,11 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KimimaroFPS — Panneau opérateur</title>
+<title>KimimaroFPS — ART IS WAR — Optimisation son</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<style>
 <style>
   :root{
     --ink:#0C0D10; --sumi:#15171C; --panel:#1B1E25; --line:#2C313B;
@@ -129,84 +128,39 @@
   footer{padding:32px 0;color:var(--grey);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   @media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
 </style>
-</style>
 </head>
 <body>
 <button id="theme-toggle" style="position:fixed;top:12px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;padding:8px;z-index:999" title="Basculer le thème">🌙</button>
+
 <section class="wrap" style="margin:40px 0">
   <h2 style="margin:0 0 24px">Panneau opérateur</h2>
   <div id="op-panel">
     <div id="op-login" class="card">
-      <div class="field">
-        <label for="op-mail">Email</label>
-        <input type="email" id="op-mail" autocomplete="username">
-      </div>
-      <div class="field" style="margin:0">
-        <label for="op-pass">Mot de passe</label>
-        <input type="password" id="op-pass" autocomplete="current-password">
-        <p class="error" id="op-error"></p>
-      </div>
+      <div class="field"><label for="op-mail">Email</label><input type="email" id="op-mail" autocomplete="username"></div>
+      <div class="field" style="margin:0"><label for="op-pass">Mot de passe</label><input type="password" id="op-pass" autocomplete="current-password"><p class="error" id="op-error"></p></div>
       <button class="btn" id="op-login-btn" type="button" style="margin-top:12px">Se connecter</button>
-      <p class="hint">Identifiants gérés par Supabase — rien n'est stocké dans le code du site.</p>
+      <p class="hint">Identifiants gérés par Supabase.</p>
     </div>
 
     <div id="op-console" hidden>
       <div id="op-stats" class="card" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px;padding:12px">
         <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--free)">—</div><div style="font-size:12px;color:var(--grey)">Sessions ce mois</div></div>
         <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--gold)">—</div><div style="font-size:12px;color:var(--grey)">Estimé ce mois</div></div>
-        <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--seal)">—</div><div style="font-size:12px;color:var(--grey)">Taux de remplissage</div></div>
+        <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--seal)">—</div><div style="font-size:12px;color:var(--grey)">Taux remplissage</div></div>
       </div>
-      <div class="card">
-        <p class="eyebrow" style="margin-bottom:12px">Ouvrir des créneaux</p>
-        <div class="field" style="margin:0 0 12px 0">
-          <label for="op-date">Date</label><input type="date" id="op-date">
-        </div>
-        <div style="margin-bottom:12px">
-          <label style="display:block;margin-bottom:8px;font-size:14px;font-weight:500">Heures</label>
-          <div id="op-hours" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:6px"></div>
-        </div>
-        <div class="row" style="gap:8px;margin-bottom:12px">
-          <button class="btn" id="op-add" type="button">Ouvrir</button>
-          <button class="btn ghost" id="op-week" type="button">Ouvrir semaine</button>
-        </div>
-        <p class="error" id="op-add-error"></p>
-      </div>
-
-      <div class="card">
-        <p class="eyebrow" style="margin-bottom:12px">Planning</p>
-        <div id="op-slots"></div>
-      </div>
-
-      <div class="card">
-        <p class="eyebrow" style="margin-bottom:12px">Historique</p>
-        <div id="op-history" style="max-height:300px;overflow-y:auto"></div>
-      </div>
-
-      <div class="card">
-        <p class="eyebrow" style="margin-bottom:12px">Commandes</p>
-        <div class="tabs" id="op-tabs">
-          <button class="tab" data-f="pending" aria-selected="true">À valider</button>
-          <button class="tab" data-f="confirmed" aria-selected="false">Validées</button>
-          <button class="tab" data-f="done" aria-selected="false">Terminées</button>
-          <button class="tab" data-f="cancelled" aria-selected="false">Annulées</button>
-        </div>
-        <div id="op-orders"></div>
-      </div>
-
-      <button class="btn ghost sm" id="op-logout" type="button" style="margin-top:16px">Se déconnecter</button>
+      <div class="card"><p class="eyebrow" style="margin-bottom:12px">Ouvrir créneaux</p><div class="field" style="margin:0 0 12px 0"><label for="op-date">Date</label><input type="date" id="op-date"></div><div style="margin-bottom:12px"><label style="display:block;margin-bottom:8px;font-size:14px;font-weight:500">Heures</label><div id="op-hours" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:6px"></div></div><div class="row" style="gap:8px;margin-bottom:12px"><button class="btn" id="op-add" type="button">Ouvrir</button><button class="btn ghost" id="op-week" type="button">Semaine</button></div><p class="error" id="op-add-error"></p></div>
+      <div class="card"><p class="eyebrow" style="margin-bottom:12px">Planning</p><div id="op-slots"></div></div>
+      <div class="card"><p class="eyebrow" style="margin-bottom:12px">Historique</p><div id="op-history" style="max-height:300px;overflow-y:auto"></div></div>
+      <div class="card"><p class="eyebrow" style="margin-bottom:12px">Commandes</p><div class="tabs" id="op-tabs"><button class="tab" data-f="pending" aria-selected="true">À valider</button><button class="tab" data-f="confirmed" aria-selected="false">Validées</button><button class="tab" data-f="done" aria-selected="false">Terminées</button><button class="tab" data-f="cancelled" aria-selected="false">Annulées</button></div><div id="op-orders"></div></div>
+      <button class="btn ghost sm" id="op-logout" type="button" style="margin-top:16px">Déconnecter</button>
     </div>
   </div>
 </section>
 <script type="module">
-<script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
+const $ = id => document.getElementById(id);
+const $$ = sel => document.querySelectorAll(sel);
 
-/* ==========================================================
-   RÉGLAGES
-   Ces clés sont PUBLIQUES par nature : la clé "anon" de Supabase
-   est faite pour être exposée. La sécurité vient des règles RLS
-   (voir INSTALLATION.md). Ton mot de passe admin n'est jamais ici.
-   ========================================================== */
 const CONFIG = {
   supabaseUrl: "https://taqdcytecvabwyanyptb.supabase.co",
   supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhcWRjeXRlY3ZhYnd5YW55cHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4NTYwMjAsImV4cCI6MjA5OTQzMjAyMH0.MwAgQTIqxuTzTUpd-l_sTiLEmU9bjRPzwR-PPp8vCJU",
@@ -214,24 +168,13 @@ const CONFIG = {
   price: 10,
   brand: "KimimaroFPS — ART IS WAR",
   sessionMinutes: 45,
-  paypalMe: "KimimaroFPS",
-  discord: "https://discord.gg/kimimaro1982",
-  contactMail: "nouveaupc1506@gmail.com",
-  anydeskUrl: "https://anydesk.com/fr/downloads",
-  emailjs: { serviceId:"service_ej7v54v", templateId:"template_mx7nmeg", publicKey:"UXN3v6g1hQVE5bc13" }
 };
-/* ========================================================== */
 
-const $ = id => document.getElementById(id);
-const $$ = sel => document.querySelectorAll(sel);
-const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
 const sb = DEMO ? null : createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
 
-let slots = [], orders = [], settings = { available:true, away_message:"" };
-let selectedId = null, isAdmin = false, filter = "pending", reviews = [];
+let slots = [], orders = [], settings = { available: true, away_message: "" }, isAdmin = false, filter = "pending";
 
-// Toggle thème sombre
 const initTheme = () => {
   const theme = localStorage.getItem("theme") || "light";
   if(theme === "dark") document.documentElement.classList.add("dark");
@@ -249,606 +192,39 @@ $("theme-toggle").onclick = () => {
   updateThemeButton();
 };
 
-// Avis clients
-async function fetchReviews(){
-  if(DEMO){ return; }
-  const { data } = await sb.from("reviews").select("*").eq("approved", true).order("created_at", {ascending: false});
-  reviews = data || [];
-  renderReviews();
-}
-
-// Afficher les avis
-function renderReviews(){
-  const box = $("reviews-list");
-  if(!reviews.length) return box.innerHTML = `<p class="hint" style="grid-column:1/-1">Aucun avis pour le moment. Sois le premier !</p>`;
-  box.innerHTML = reviews.map(r => `<div class="card" style="padding:12px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <div>
-        <strong>${esc(r.pseudo)}</strong>
-        <span style="font-size:12px;color:var(--grey);margin-left:6px">#${esc(r.order_ref)}</span>
-      </div>
-      <span>${"⭐".repeat(r.rating)}</span>
-    </div>
-    <p style="margin:0;font-size:14px;color:var(--grey)">${esc(r.comment)}</p>
-  </div>`).join("");
-}
-
-// Soumettre un avis
-$("review-submit").onclick = async () => {
-  const ref = $("review-ref").value.trim().toUpperCase();
-  const pseudo = $("review-pseudo").value.trim();
-  const rating = parseInt($("review-rating").value);
-  const comment = $("review-comment").value.trim();
-  const err = $("review-error");
-  
-  // Validations
-  if(!ref || ref.length < 5) return err.textContent = "Numéro de commande invalide (format : AIW-0001)";
-  if(!pseudo || pseudo.length < 2) return err.textContent = "Pseudo trop court";
-  if(!comment || comment.length < 5) return err.textContent = "Commentaire trop court";
-  
-  // Vérifier que la commande existe et est terminée
-  if(DEMO){ toast("Mode démo : les avis ne sont pas sauvegardés"); return; }
-  
-  const order = orders.find(o => o.ref === ref);
-  if(!order) return err.textContent = `Commande ${ref} introuvable`;
-  if(order.status !== "done") return err.textContent = `La session ${ref} n'est pas terminée ou n'existe pas`;
-  
-  err.textContent = "";
-  
-  const { error } = await sb.from("reviews").insert({ order_ref: ref, pseudo, rating, comment });
-  if(error) return err.textContent = "Erreur : "+error.message;
-  
-  toast("Merci ! Ton avis sera publié après validation");
-  $("review-ref").value = "";
-  $("review-pseudo").value = "";
-  $("review-comment").value = "";
-  $("review-rating").value = "5";
-};
-
-$("anydesk-link").href = CONFIG.anydeskUrl;
-
-(function curve(){
-  const p=[];
-  for(let x=0;x<=900;x+=10){
-    const sub=24*Math.exp(-Math.pow((x-230)/90,2)), mid=28*Math.exp(-Math.pow((x-520)/120,2)), hi=9*Math.exp(-Math.pow((x-820)/110,2));
-    p.push(`${x},${(37+sub-mid-hi).toFixed(1)}`);
-  }
-  $("curve").setAttribute("d","M"+p.join(" L"));
-})();
-
-const toast = m => { const t=$("toast"); t.textContent=m; t.hidden=false; setTimeout(()=>t.hidden=true,4000); };
-const fmtDay  = iso => new Date(iso).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
-const fmtTime = iso => new Date(iso).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
-const fmtFull = iso => `${fmtDay(iso)} à ${fmtTime(iso)}`;
-
-const STATUS = {
-  pending:  {label:"Réservation reçue", cls:"p-pending"},
-  confirmed:{label:"Validée",           cls:"p-confirmed"},
-  done:     {label:"Terminée & payée",  cls:"p-done"},
-  cancelled:{label:"Annulée",           cls:"p-cancelled"}
-};
-const pill = s => `<span class="pill ${STATUS[s].cls}">${STATUS[s].label}</span>`;
-
-/* ==========================================================
-   DONNÉES — Supabase, ou mode démo local (aperçu sans base)
-   ========================================================== */
-const demo = {
-  key: "aiw-demo",
-  async get(){ try{ const r = await window.storage.get(this.key,true); return r?.value ? JSON.parse(r.value) : null; }catch(e){ return null; } },
-  async set(d){ try{ await window.storage.set(this.key, JSON.stringify(d), true); }catch(e){} }
-};
-
 async function fetchAll(){
-  if(DEMO){
-    const d = await demo.get() || { slots:[], orders:[], settings:{available:true,away_message:""}, counter:1 };
-    slots = d.slots; orders = d.orders; settings = d.settings;
-    return;
-  }
-  const [s,o,st] = await Promise.all([
-    sb.from("slots").select("*").order("start_at"),
-    isAdmin ? sb.from("orders").select("*").order("created_at",{ascending:false}) : Promise.resolve({data:[]}),
-    sb.from("settings").select("*").eq("id",1).single()
+  if(DEMO) return;
+  const [s, o, st] = await Promise.all([
+    sb.from("slots").select("*"),
+    sb.from("orders").select("*"),
+    sb.from("settings").select("*").eq("id", 1).single()
   ]);
-  slots = s.data || []; orders = o.data || [];
-  if(st.data) settings = st.data;
+  slots = s.data || [];
+  orders = o.data || [];
+  settings = st.data || { available: true, away_message: "" };
 }
-async function demoSave(){
-  const d = await demo.get() || { counter:1 };
-  await demo.set({ slots, orders, settings, counter: d.counter || 1 });
-}
-
-/* ==========================================================
-   MAILS (EmailJS)
-   ========================================================== */
-const shell = (title, body) => `<div style="background:#0C0D10;padding:28px 0;font-family:Arial,Helvetica,sans-serif">
-<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#15171C;border:1px solid #2C313B">
-<tr><td style="padding:26px 28px 0">
-  <p style="margin:0;color:#8B919C;font-size:11px;letter-spacing:3px">${CONFIG.brand}</p>
-  <h1 style="margin:8px 0 0;color:#E8E2D6;font-size:26px;text-transform:uppercase">${title}</h1>
-  <div style="height:3px;width:46px;background:#C8322B;margin:14px 0 0"></div>
-</td></tr>
-<tr><td style="padding:20px 28px 28px;color:#C9C4B8;font-size:15px;line-height:1.65">${body}</td></tr>
-<tr><td style="padding:16px 28px;border-top:1px solid #2C313B;color:#6B7079;font-size:12px">
-  ${CONFIG.brand} — optimisation son · <a href="${CONFIG.discord}" style="color:#C8322B;text-decoration:none">Discord</a>
-</td></tr></table></div>`;
-const box = i => `<table width="100%" cellpadding="0" cellspacing="0" style="background:#1B1E25;border-left:3px solid #C8322B;margin:18px 0"><tr><td style="padding:14px 16px;color:#E8E2D6;font-size:14px;line-height:1.8">${i}</td></tr></table>`;
-
-const cancelUrl = o => `${CONFIG.siteUrl}/annuler.html?ref=${encodeURIComponent(o.ref)}&t=${encodeURIComponent(o.cancel_token || "")}`;
-const cancelBlock = o => `
-  <table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0 0;border-top:1px solid #2C313B">
-    <tr><td style="padding:18px 0 0">
-      <p style="margin:0 0 10px;color:#8B919C;font-size:13px">Un empêchement ? Tu peux annuler toi-même, sans frais, tant que la session n'a pas commencé.</p>
-      <a href="${cancelUrl(o)}" style="display:inline-block;background:transparent;border:1px solid #C8322B;color:#E2453D;text-decoration:none;padding:10px 18px;font-size:13px;letter-spacing:1px;text-transform:uppercase">Annuler mon rendez-vous</a>
-      <p style="margin:10px 0 0;color:#6B7079;font-size:12px">Ce lien est personnel : ne le transmets à personne.</p>
-    </td></tr></table>`;
-
-const mailReceived = (o,s) => ({
-  subject:`Réservation ${o.ref} — ${fmtDay(s.start_at)}`,
-  html: shell("Merci pour ta commande",`
-    <p style="margin:0 0 12px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
-    <p style="margin:0 0 12px"><b style="font-size:18px;color:#C9A227">Ton numéro de commande : ${o.ref}</b></p>
-    <p style="margin:0 0 12px;color:#8B919C">Garde ce numéro pour pouvoir laisser ton avis après la session.</p>
-    <p style="margin:0 0 6px"><b style="color:#E8E2D6">Récapitulatif</b></p>
-    ${box(`<b style="color:#C9A227">${o.ref}</b><br>
-      Rendez-vous : <b>${fmtFull(s.start_at)}</b><br>
-      Durée : ${CONFIG.sessionMinutes} minutes<br>
-      Casque : ${esc(o.casque)}<br>
-      Tarif : ${CONFIG.price} € — <b>à payer au début du rendez-vous</b>`)}
-    <p style="margin:0 0 6px"><b style="color:#E8E2D6">Important : comment ça se passe</b></p>
-    <p style="margin:0">Au début de notre rendez-vous, je te demanderai de payer <b>10 € en PayPal</b> avant qu'on commence l'optimisation. Une fois reçu, on démarre. Je ne procéderai à l'optimisation que si le paiement est validé.</p>
-    <p style="margin:16px 0 0"><b style="color:#E8E2D6">Avant le rendez-vous</b></p>
-    <p style="margin:0">Installe AnyDesk et laisse-le ouvert : <a href="${CONFIG.anydeskUrl}" style="color:#C8322B">télécharger AnyDesk</a>. Rejoins-moi sur Discord à l'heure prévue.</p>
-    ${cancelBlock(o)}`)
-});
-const mailConfirmed = (o,s) => ({
-  subject:`Commande ${o.ref} — validée`,
-  html: shell("Ta commande est validée",`
-    <p style="margin:0 0 6px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
-    <p style="margin:0">Ta commande est <b style="color:#3FA65C">validée</b>. Merci pour ta confiance et ta fidélité.</p>
-    ${box(`<b style="color:#C9A227">Commande ${o.ref}</b><br>
-      Rendez-vous confirmé : <b>${fmtFull(s.start_at)}</b><br>
-      Durée : ${CONFIG.sessionMinutes} minutes<br>
-      Tarif : ${CONFIG.price} € — à payer au début du rendez-vous (PayPal, entre proches)`)}
-    <p style="margin:0 0 6px"><b style="color:#E8E2D6">Le jour J</b></p>
-    <p style="margin:0 0 14px">AnyDesk ouvert, casque branché, jeu lancé. Je prends la main, on règle ton son ensemble, et tu repars avec ta config.</p>
-    <p style="margin:0 0 6px"><b style="color:#E8E2D6">Un souci, une question ?</b></p>
-    <p style="margin:0">Écris-moi sur <a href="${CONFIG.discord}" style="color:#C8322B">Discord</a> ou à ${CONFIG.contactMail}. J'ai moi aussi un planning : je ne réponds pas toujours dans la minute, mais je réponds toujours.</p>
-    <p style="margin:18px 0 0;color:#8B919C;font-size:14px">À très vite. — ${CONFIG.brand}</p>
-    ${cancelBlock(o)}`)
-});
-const mailDone = (o,s) => ({
-  subject:`Commande ${o.ref} — session terminée`,
-  html: shell("Session terminée",`
-    <p style="margin:0 0 6px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
-    <p style="margin:0">Ta session du ${fmtFull(s.start_at)} est terminée et le paiement est bien reçu. Ton son est réglé : la config est à toi.</p>
-    <p style="margin:14px 0 0">Si tu changes de casque ou si quelque chose bouge, reviens me voir. Merci pour ta fidélité. — ${CONFIG.brand}</p>`)
-});
-const mailCancelled = (o,s) => ({
-  subject:`Commande ${o.ref} — annulée`,
-  html: shell("Commande annulée",`
-    <p style="margin:0 0 6px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
-    <p style="margin:0">Ta commande <b>${o.ref}</b> du ${fmtFull(s.start_at)} est annulée. Le créneau repasse en vert sur le site.</p>
-    ${o.cancellation_reason ? `<p style="margin:8px 0 0"><b>Raison :</b> ${esc(o.cancellation_reason)}</p>` : ""}
-    <p style="margin:14px 0 0">Des questions ? Écris-moi sur <a href="${CONFIG.discord}" style="color:#C8322B">Discord</a>.</p>`)
-});
-
-const mailReady = () => CONFIG.emailjs.serviceId && CONFIG.emailjs.templateId && CONFIG.emailjs.publicKey;
-async function deliver(to, mail, label){
-  if(!mailReady()){
-    const txt = mail.html.replace(/<br\s*\/?>/gi,"\n").replace(/<\/p>/gi,"\n\n").replace(/<[^>]+>/g,"").replace(/\n{3,}/g,"\n\n").trim();
-    toast("Envoi auto non configuré — ouverture de ta messagerie");
-    window.open(`mailto:${to}?subject=${encodeURIComponent(mail.subject)}&body=${encodeURIComponent(txt)}`,"_blank");
-    return;
-  }
-  try{
-    const r = await fetch("https://api.emailjs.com/api/v1.0/email/send",{
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({
-        service_id: CONFIG.emailjs.serviceId,
-        template_id: CONFIG.emailjs.templateId,
-        user_id: CONFIG.emailjs.publicKey,
-        template_params:{ to_email:to, subject:mail.subject, message_html:mail.html }
-      })
-    });
-    toast(r.ok ? `Mail « ${label} » envoyé` : "Le mail n'est pas parti");
-  }catch(e){ toast("Le mail n'est pas parti"); }
-}
-
-/* ==========================================================
-   PLANNING PUBLIC
-   ========================================================== */
-// Mettre à jour le dashboard de stats
-function updateStats(){
-  const now = new Date();
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  
-  // Sessions "done" ce mois-ci
-  const sessionsDone = orders.filter(o => o.status === "done" && new Date(o.created_at) >= monthStart).length;
-  
-  // Estimé revenue
-  const revenue = sessionsDone * CONFIG.price;
-  
-  // Taux de remplissage
-  const totalSlots = slots.length || 1;
-  const bookedSlots = slots.filter(s => s.status === "booked").length;
-  const fillRate = totalSlots > 0 ? Math.round((bookedSlots / totalSlots) * 100) : 0;
-  
-  // Mettre à jour le HTML
-  const statBox = $("op-stats");
-  if(statBox){
-    statBox.innerHTML = `
-      <div style="text-align:center">
-        <div style="font-size:28px;font-weight:900;color:var(--free)">${sessionsDone}</div>
-        <div style="font-size:12px;color:var(--grey)">Sessions ce mois</div>
-      </div>
-      <div style="text-align:center">
-        <div style="font-size:28px;font-weight:900;color:var(--gold)">${revenue}€</div>
-        <div style="font-size:12px;color:var(--grey)">Estimé ce mois</div>
-      </div>
-      <div style="text-align:center">
-        <div style="font-size:28px;font-weight:900;color:var(--seal)">${fillRate}%</div>
-        <div style="font-size:12px;color:var(--grey)">Taux de remplissage</div>
-      </div>
-    `;
-  }
-}
-
-function render(){
-  const box = $("slots-container"), now = Date.now();
-  const upcoming = slots
-    .filter(s => new Date(s.start_at).getTime() > now - 3600e3)
-    .sort((a,b) => new Date(a.start_at) - new Date(b.start_at));
-  const visible = settings.available ? upcoming.filter(s => s.status !== "closed") : [];
-
-  $("away-banner").hidden = !!settings.available;
-  $("away-text").textContent = settings.away_message || "Réservations fermées pour le moment. Je rouvre des créneaux très vite.";
-
-  const free = visible.filter(s => s.status === "open").length;
-  $("foot-count").textContent = !settings.available ? "réservations fermées"
-    : free ? `${free} créneau${free>1?"x":""} libre${free>1?"s":""}` : "complet";
-
-  if(!visible.length){
-    box.innerHTML = `<div class="empty">${settings.available ? "Aucun créneau ouvert pour le moment. Repasse bientôt." : "Planning fermé."}</div>`;
-  } else {
-    const days = {};
-    visible.forEach(s => { const k = s.start_at.slice(0,10); (days[k] = days[k]||[]).push(s); });
-    box.innerHTML = Object.values(days).map(l => `
-      <div class="day">
-        <div class="day-head"><h3>${fmtDay(l[0].start_at)}</h3>
-          <span>${l.filter(s=>s.status==="open").length} libre(s) / ${l.length}</span></div>
-        <div class="slots">${l.map(s => s.status==="open"
-          ? `<button class="slot free" data-id="${s.id}" aria-pressed="${selectedId===s.id}">${fmtTime(s.start_at)}<span class="tag">LIBRE · ${CONFIG.sessionMinutes} MIN</span></button>`
-          : `<button class="slot taken" disabled>${fmtTime(s.start_at)}<span class="tag">RÉSERVÉ</span></button>`
-        ).join("")}</div>
-      </div>`).join("");
-    box.querySelectorAll(".slot.free").forEach(b => b.addEventListener("click", () => selectSlot(b.dataset.id)));
-  }
-  if(isAdmin){ renderHourCheckboxes(); renderOpSlots(); renderHistory(); renderOrders(); updateStats(); }
-}
-
-function selectSlot(id){
-  selectedId = id;
-  const s = slots.find(x => String(x.id) === String(id));
-  $("sel-when").textContent = fmtFull(s.start_at);
-  $("booking").hidden = false; $("done").hidden = true;
-  render();
-  $("booking").scrollIntoView({behavior:"smooth",block:"start"});
-}
-$("cancel-sel").onclick = () => { selectedId=null; $("booking").hidden=true; render(); $("planning").scrollIntoView({behavior:"smooth"}); };
-$("new-booking").onclick = () => { $("done").hidden=true; $("planning").scrollIntoView({behavior:"smooth"}); };
-
-$("submit-btn").onclick = async () => {
-  const err = $("form-error");
-  const pseudo=$("f-pseudo").value.trim(), casque=$("f-casque").value.trim(), mail=$("f-mail").value.trim();
-  if(!selectedId) return err.textContent = "Choisis un créneau vert.";
-  if(!pseudo)     return err.textContent = "Ton pseudo Discord est obligatoire.";
-  if(!casque)     return err.textContent = "Indique ton casque.";
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return err.textContent = "Adresse mail invalide.";
-  if(!$("f-ok-anydesk").checked) return err.textContent = "Confirme l'installation d'AnyDesk.";
-  if(!$("f-ok-price").checked)   return err.textContent = "Confirme que tu as compris le tarif.";
-  err.textContent = ""; $("submit-btn").disabled = true;
-
-  const payload = {
-    p_slot: selectedId, p_pseudo: pseudo, p_casque: casque, p_email: mail,
-    p_materiel: $("f-materiel").value.trim(), p_jeu: $("f-jeu").value,
-    p_anydesk: $("f-anydesk").value.trim(), p_notes: $("f-notes").value.trim()
-  };
-
-  let order = null, slot = slots.find(s => String(s.id) === String(selectedId));
-
-  if(DEMO){
-    const d = await demo.get() || { counter:1 };
-    const counter = d.counter || 1;
-    if(!slot || slot.status !== "open"){ $("submit-btn").disabled=false; return err.textContent = "Ce créneau vient d'être pris."; }
-    order = { ref:`AIW-${String(counter).padStart(4,"0")}`, slot_id:slot.id, status:"pending",
-      pseudo, casque, email:mail, materiel:payload.p_materiel, jeu:payload.p_jeu,
-      anydesk:payload.p_anydesk, notes:payload.p_notes, created_at:new Date().toISOString(),
-      cancel_token: crypto.randomUUID() };
-    orders.unshift(order); slot.status = "booked"; slot.order_ref = order.ref;
-    await demo.set({ slots, orders, settings, counter: counter+1 });
-  } else {
-    // fonction SQL atomique : réserve le créneau ET crée la commande
-    const { data, error } = await sb.rpc("book_slot", payload);
-    $("submit-btn").disabled = false;
-    if(error || !data){ await refresh(); return err.textContent = "Ce créneau vient d'être pris. Choisis-en un autre."; }
-    order = data;
-    await refresh();
-    slot = slots.find(s => String(s.id) === String(order.slot_id)) || slot;
-  }
-
-  $("submit-btn").disabled = false;
-  await deliver(mail, mailReceived(order, slot), "réservation reçue");
-
-  // Toast de confirmation avec numéro AIW
-  toast(`✅ Réservation confirmée ! Numéro : <b style="color:#C9A227">${order.ref}</b>`, 5000);
-
-  $("done-ref").textContent = order.ref;
-  $("done-when").textContent = fmtFull(slot.start_at);
-  $("booking").hidden = true; $("done").hidden = false;
-  ["f-pseudo","f-casque","f-materiel","f-mail","f-anydesk","f-notes"].forEach(i => $(i).value="");
-  $("f-ok-anydesk").checked = $("f-ok-price").checked = false;
-  selectedId = null; render();
-  $("done").scrollIntoView({behavior:"smooth",block:"center"});
-};
-
-/* ---------- suivi ---------- */
-$("track-btn").onclick = async () => {
-  const ref = $("track-ref").value.trim().toUpperCase(), out = $("track-result");
-  let o = null;
-  if(DEMO) o = orders.find(x => x.ref === ref);
-  else { const { data } = await sb.rpc("track_order", { p_ref: ref }); o = data && data[0]; }
-  if(!o) return out.innerHTML = `<p class="error" style="margin:0">Aucune commande à ce numéro.</p>`;
-  const s = slots.find(x => String(x.id) === String(o.slot_id));
-  out.innerHTML = `<div class="ord"><div class="top"><strong class="mono">${esc(o.ref)}</strong>${pill(o.status)}</div>
-    <dl><dt>Rendez-vous</dt><dd>${o.start_at ? fmtFull(o.start_at) : (s ? fmtFull(s.start_at) : "—")}</dd>
-        <dt>Tarif</dt><dd>${CONFIG.price} € — à régler après la session</dd></dl></div>`;
-};
-
-/* ==========================================================
-   OPÉRATEUR
-   ========================================================== */
-// Bouton opérateur supprimé (page séparée operateur.html)
 
 $("op-login-btn").onclick = async () => {
   const e = $("op-error");
-  if(DEMO){
-    isAdmin = true; return;
-  }
+  if(DEMO){ isAdmin = true; $("op-login").hidden = true; $("op-console").hidden = false; return; }
   const { error } = await sb.auth.signInWithPassword({ email:$("op-mail").value.trim(), password:$("op-pass").value });
   if(error) return e.textContent = "Email ou mot de passe incorrect.";
   e.textContent = ""; isAdmin = true; $("op-pass").value = "";
-  await refresh();
+  await fetchAll(); $("op-login").hidden = true; $("op-console").hidden = false;
 };
+
 $("op-logout").onclick = async () => {
   if(!DEMO) await sb.auth.signOut();
   isAdmin = false; $("op-console").hidden = true; $("op-login").hidden = false;
 };
 
-// openConsole supprimée
-
-function renderAvail(){
-  $("avail-label").textContent = settings.available ? "Je suis disponible" : "Je suis indisponible";
-  $("avail-label").style.color = settings.available ? "var(--free)" : "var(--seal)";
-}
-
-async function saveSettings(){
-  if(DEMO) return demoSave();
-  await sb.from("settings").update({ available: settings.available, away_message: settings.away_message }).eq("id",1);
-}
-$("avail-btn").onclick = async () => {
-  settings.available = !settings.available;
-  await saveSettings(); renderAvail(); render();
-  toast(settings.available ? "Réservations ouvertes" : "Réservations fermées");
-};
-$("avail-save").onclick = async () => {
-  settings.away_message = $("avail-msg").value.trim();
-  await saveSettings(); render(); toast("Message enregistré");
-};
-
-// Générer les cases à cocher des heures
-function renderHourCheckboxes(){
-  const box = $("op-hours");
-  const hours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00"];
-  box.innerHTML = hours.map(h => `
-    <label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer;user-select:none">
-      <input type="checkbox" class="hour-check" value="${h}" style="cursor:pointer">
-      <span>${h}</span>
-    </label>
-  `).join("");
-}
-
-$("op-add").onclick = async () => {
-  const d = $("op-date").value, e = $("op-add-error");
-  if(!d) return e.textContent = "Indique une date.";
-  const times = [...$$(".hour-check:checked")].map(cb => cb.value);
-  if(!times.length) return e.textContent = "Coche au moins une heure.";
-  e.textContent = "";
-  const rows = times.map(t => {
-    const [h,m] = t.split(":");
-    return { start_at: `${d}T${h.padStart(2,"0")}:${m}:00`, status:"open" };
-  }).filter(r => !slots.some(s => s.start_at.slice(0,16) === r.start_at.slice(0,16)));
-
-  if(!rows.length){ toast("Ces créneaux existent déjà"); return; }
-  if(DEMO){ rows.forEach(r => slots.push({ id:"s"+Date.now()+Math.random().toString(36).slice(2,5), ...r })); await demoSave(); }
-  else { const { error } = await sb.from("slots").insert(rows); if(error) return e.textContent = "Erreur : "+error.message; await refresh(); }
-  render(); toast(`${rows.length} créneau(x) ouvert(s)`);
-  [...$$(".hour-check")].forEach(cb => cb.checked = false);
-};
-
-$("op-week").onclick = async () => {
-  const today = new Date(), e = $("op-add-error");
-  const times = [...$$(".hour-check:checked")].map(cb => cb.value);
-  if(!times.length) return e.textContent = "Coche au moins une heure.";
-  e.textContent = "";
-  
-  const rows = [];
-  for(let i=0; i<7; i++){
-    const d = new Date(today);
-    d.setDate(d.getDate()+i);
-    const dateStr = d.toISOString().slice(0,10);
-    times.forEach(t => {
-      const [h,m] = t.split(":");
-      const start = `${dateStr}T${h.padStart(2,"0")}:${m}:00`;
-      if(!slots.some(s => s.start_at.slice(0,16) === start.slice(0,16))) {
-        rows.push({ start_at: start, status:"open" });
-      }
-    });
-  }
-  
-  if(!rows.length){ toast("Tous ces créneaux existent déjà"); return; }
-  if(DEMO){ rows.forEach(r => slots.push({ id:"s"+Date.now()+Math.random().toString(36).slice(2,5), ...r })); await demoSave(); }
-  else { const { error } = await sb.from("slots").insert(rows); if(error) return e.textContent = "Erreur : "+error.message; await refresh(); }
-  render(); toast(`${rows.length} créneau(x) ouvert(s) pour la semaine`);
-  [...$$(".hour-check")].forEach(cb => cb.checked = false);
-};
-
-function renderOpSlots(){
-  const box = $("op-slots");
-  const list = [...slots].sort((a,b)=>new Date(a.start_at)-new Date(b.start_at));
-  if(!list.length) return box.innerHTML = `<p class="hint">Aucun créneau.</p>`;
-  const days = {};
-  list.forEach(s => { const k = s.start_at.slice(0,10); (days[k]=days[k]||[]).push(s); });
-  box.innerHTML = Object.values(days).map(l => `
-    <div class="day"><div class="day-head"><h3>${fmtDay(l[0].start_at)}</h3></div>
-    ${l.map(s => `<div class="row" style="justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)">
-      <span class="mono">${fmtTime(s.start_at)}
-        <span style="font-size:11px;margin-left:8px;color:${s.status==="open"?"var(--free)":s.status==="booked"?"var(--seal)":"var(--grey)"}">
-          ${s.status==="open"?"LIBRE":s.status==="booked"?"RÉSERVÉ":"FERMÉ"}</span></span>
-      <span class="row" style="gap:6px">
-        ${s.status!=="booked" ? `<button class="btn ghost sm" data-toggle="${s.id}">${s.status==="open"?"Fermer":"Rouvrir"}</button>` : ""}
-        <button class="btn ghost sm" data-edit="${s.id}">Éditer heure</button>
-        <button class="op-toggle" data-del="${s.id}">supprimer</button>
-      </span></div>`).join("")}</div>`).join("");
-
-  box.querySelectorAll("[data-toggle]").forEach(b => b.onclick = async () => {
-    const s = slots.find(x => String(x.id) === b.dataset.toggle);
-    s.status = s.status === "open" ? "closed" : "open";
-    if(DEMO) await demoSave(); else await sb.from("slots").update({status:s.status}).eq("id",s.id);
-    await refresh(); render();
-  });
-  box.querySelectorAll("[data-edit]").forEach(b => b.onclick = async () => {
-    const s = slots.find(x => String(x.id) === b.dataset.edit);
-    const currentTime = s.start_at.slice(11,16);
-    const newTime = prompt(`Nouvelle heure pour ${fmtDay(s.start_at)} (format HH:MM) :\nActuelle : ${currentTime}`, currentTime);
-    if(!newTime || !/^\d{2}:\d{2}$/.test(newTime.trim())) return;
-    const [h,m] = newTime.trim().split(":");
-    const newStart = `${s.start_at.slice(0,10)}T${h}:${m}:00`;
-    if(slots.some(x => String(x.id) !== String(s.id) && x.start_at.slice(0,16) === newStart.slice(0,16))) return toast("Cette heure existe déjà ce jour.");
-    s.start_at = newStart;
-    if(DEMO) await demoSave(); else await sb.from("slots").update({start_at:newStart}).eq("id",s.id);
-    await refresh(); render();
-  });
-  box.querySelectorAll("[data-del]").forEach(b => b.onclick = async () => {
-    if(!confirm("Supprimer ce créneau ?")) return;
-    if(DEMO){ slots = slots.filter(x => String(x.id) !== b.dataset.del); await demoSave(); }
-    else await sb.from("slots").delete().eq("id", b.dataset.del);
-    await refresh(); render();
-  });
-}
-
-$("op-tabs").onclick = e => {
-  const t = e.target.closest(".tab"); if(!t) return;
-  filter = t.dataset.f;
-  [...$("op-tabs").children].forEach(x => x.setAttribute("aria-selected", x===t));
-  renderOrders();
-};
-
-// Afficher l'historique des sessions
-function renderHistory(){
-  const box = $("op-history");
-  if(!box) return;
-  
-  const done = [...orders]
-    .filter(o => o.status === "done")
-    .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
-    .slice(0, 20);
-  
-  if(!done.length) return box.innerHTML = `<p class="hint">Aucune session terminée.</p>`;
-  
-  box.innerHTML = done.map(o => {
-    const s = slots.find(s => String(s.id) === String(o.slot_id));
-    return `<div style="padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center">
-      <div style="flex:1">
-        <strong>${esc(o.pseudo)}</strong> — <span class="mono">${o.ref}</span><br>
-        <span style="font-size:12px;color:var(--grey)">${s ? fmtFull(s.start_at) : "—"}</span>
-      </div>
-      <span style="color:var(--free);font-weight:900">${CONFIG.price}€</span>
-    </div>`;
-  }).join("");
-}
-
-function renderOrders(){
-  const box = $("op-orders");
-  const list = orders.filter(o => filter==="all" || o.status===filter);
-  if(!list.length) return box.innerHTML = `<p class="hint">Aucune commande.</p>`;
-  box.innerHTML = list.map(o => {
-    const s = slots.find(x => String(x.id) === String(o.slot_id));
-    return `<div class="ord">
-      <div class="top"><strong class="mono">${esc(o.ref)}</strong>${pill(o.status)}</div>
-      <dl>
-        <dt>RDV</dt><dd class="mono">${s ? fmtFull(s.start_at) : "créneau supprimé"}</dd>
-        <dt>Discord</dt><dd>${esc(o.pseudo)}</dd>
-        <dt>Mail</dt><dd>${esc(o.email)}</dd>
-        <dt>Casque</dt><dd>${esc(o.casque)}${o.materiel ? " — "+esc(o.materiel) : ""}</dd>
-        <dt>Jeu</dt><dd>${esc(o.jeu)}</dd>
-        <dt>AnyDesk</dt><dd>${esc(o.anydesk || "à donner en session")}</dd>
-        ${o.notes ? `<dt>Notes</dt><dd>${esc(o.notes)}</dd>` : ""}
-      </dl>
-      <div class="row">
-        ${o.status==="pending"   ? `<button class="btn sm" data-act="confirm" data-ref="${o.ref}">Valider + mail</button>` : ""}
-        ${o.status==="confirmed" ? `<button class="btn ghost sm" data-act="done" data-ref="${o.ref}">Session faite & payée</button>` : ""}
-        ${(o.status!=="cancelled" && o.status!=="done") ? `<button class="btn ghost sm" data-act="cancel" data-ref="${o.ref}">Annuler</button>` : ""}
-        <button class="btn ghost sm" data-act="resend" data-ref="${o.ref}">Renvoyer le mail</button>
-      </div></div>`;
-  }).join("");
-  box.querySelectorAll("[data-act]").forEach(b => b.onclick = () => action(b.dataset.act, b.dataset.ref));
-}
-
-async function setOrderStatus(o, status){
-  o.status = status;
-  if(DEMO) await demoSave();
-  else await sb.from("orders").update({ status }).eq("ref", o.ref);
-}
-
-async function action(act, ref){
-  const o = orders.find(x => x.ref === ref); if(!o) return;
-  const s = slots.find(x => String(x.id) === String(o.slot_id)) || { start_at:o.created_at };
-
-  if(act === "confirm"){ await setOrderStatus(o,"confirmed"); render(); await deliver(o.email, mailConfirmed(o,s), "commande validée"); }
-  else if(act === "done"){ await setOrderStatus(o,"done"); render(); await deliver(o.email, mailDone(o,s), "session terminée"); }
-  else if(act === "cancel"){
-    if(!confirm(`Annuler ${ref} et remettre le créneau en vert ?`)) return;
-    const reason = prompt("Raison d'annulation (optionnel) :", "");
-    o.cancellation_reason = reason || "";
-    await setOrderStatus(o,"cancelled");
-    const slot = slots.find(x => String(x.id) === String(o.slot_id));
-    if(slot){ slot.status = "open"; if(DEMO) await demoSave(); else await sb.from("slots").update({status:"open"}).eq("id",slot.id); }
-    await refresh(); render();
-    await deliver(o.email, mailCancelled(o,s), "commande annulée");
-  }
-  else if(act === "resend"){
-    const m = o.status==="confirmed" ? mailConfirmed(o,s) : o.status==="done" ? mailDone(o,s)
-            : o.status==="cancelled" ? mailCancelled(o,s) : mailReceived(o,s);
-    await deliver(o.email, m, "renvoi");
-  }
-}
-
-/* ---------- démarrage ---------- */
-async function refresh(){ await fetchAll(); }
-(async () => {
-  initTheme();
-  if(!DEMO){
-    const { data } = await sb.auth.getSession();
-    if(data.session){ isAdmin = true; }
-  }
-  await refresh();
-  await fetchReviews();
-  render();
-  // Panel admin sur operateur.html
-  if(DEMO) toast("Mode démo : configure Supabase pour la mise en ligne");
-})();
-</script>
 initTheme();
+if(!DEMO){
+  (async () => {
+    const { data } = await sb.auth.getSession();
+    if(data.session){ isAdmin = true; $("op-login").hidden = true; $("op-console").hidden = false; await fetchAll(); }
+  })();
+}
 </script>
 </body>
 </html>
