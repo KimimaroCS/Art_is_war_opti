@@ -12,20 +12,22 @@
     --ink:#0C0D10; --sumi:#15171C; --panel:#1B1E25; --line:#2C313B;
     --bone:#E8E2D6; --grey:#8B919C; --seal:#C8322B; --seal-hi:#E2453D;
     --free:#3FA65C; --free-hi:#4FC470; --gold:#C9A227; --r:2px;
+    --text-light:#E8E2D6;
   }
   html.dark :root{
     --ink:#F5F5F5; --sumi:#EEEEEE; --panel:#E8E8E8; --line:#D0D0D0;
     --bone:#222222; --grey:#666666; --seal:#C8322B; --seal-hi:#E2453D;
     --free:#3FA65C; --free-hi:#4FC470; --gold:#C9A227; --r:2px;
+    --text-light:#FFFFFF;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--ink);color:var(--bone);font-family:'Barlow',system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  body{background:var(--ink);color:var(--text-light);font-family:'Barlow',system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
   .wrap{max-width:960px;margin:0 auto;padding:0 20px}
   h1,h2,h3{font-family:'Big Shoulders Display',Impact,sans-serif;font-weight:900;line-height:.92;text-transform:uppercase}
   .mono{font-family:'JetBrains Mono',monospace}
   .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
-  a{color:var(--bone)}
+  a{color:var(--text-light)}
   :focus-visible{outline:2px solid var(--seal-hi);outline-offset:3px}
 
   header.hero{position:relative;padding:60px 0 36px;border-bottom:1px solid var(--line);overflow:hidden}
@@ -33,7 +35,7 @@
   .hero h1{font-size:clamp(56px,15vw,130px);margin:12px 0 6px}
   .hero h1 em{font-style:normal;color:var(--seal)}
   .hero p.lead{max-width:46ch;color:var(--grey);font-size:18px;margin-bottom:22px}
-  .hero p.lead b{color:var(--bone);font-weight:600}
+  .hero p.lead b{color:var(--text-light);font-weight:600}
   .eq{width:100%;height:74px;display:block;margin:22px 0 0}
   .eq path{fill:none;stroke:var(--seal);stroke-width:2}
   .eq path.ghost{stroke:var(--line);stroke-width:1}
@@ -43,8 +45,8 @@
 
   .btn{display:inline-block;border:none;cursor:pointer;border-radius:var(--r);font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:19px;text-transform:uppercase;letter-spacing:.06em;padding:12px 24px;background:var(--seal);color:#fff;text-decoration:none;transition:background .15s}
   .btn:hover{background:var(--seal-hi)}
-  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--bone)}
-  .btn.ghost:hover{border-color:var(--bone)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text-light)}
+  .btn.ghost:hover{border-color:var(--text-light)}
   .btn.sm{font-size:14px;padding:7px 12px}
   .btn[disabled]{opacity:.4;cursor:not-allowed}
 
@@ -55,7 +57,7 @@
   .banner[hidden]{display:none}
   .money{display:flex;gap:14px;align-items:flex-start;border-left:3px solid var(--gold);background:var(--sumi);padding:14px 16px;border-radius:var(--r);margin-bottom:24px}
   .money p{font-size:15px;color:var(--grey);margin:0}
-  .money b{color:var(--bone)}
+  .money b{color:var(--text-light)}
 
   .steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r)}
   @media(min-width:720px){.steps{grid-template-columns:repeat(3,1fr)}}
@@ -89,12 +91,12 @@
   label .req{color:var(--seal)}
   input[type=text],input[type=email],input[type=password],input[type=date],select,textarea{
     width:100%;background:var(--ink);border:1px solid var(--line);border-radius:var(--r);
-    color:var(--bone);font-family:'Barlow',sans-serif;font-size:16px;padding:11px 12px}
+    color:var(--text-light);font-family:'Barlow',sans-serif;font-size:16px;padding:11px 12px}
   input[type=date]{font-family:'JetBrains Mono',monospace}
   input:focus,select:focus,textarea:focus{border-color:var(--seal)}
   textarea{resize:vertical;min-height:76px}
   .hint{font-size:13px;color:var(--grey);margin-top:6px}
-  .check{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--bone)}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--text-light)}
   .check input{margin-top:4px;accent-color:var(--free);width:18px;height:18px;flex:0 0 auto}
   .anydesk{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);padding:13px;border-radius:var(--r);margin-bottom:10px}
   .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -118,12 +120,12 @@
   .ord .top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
   .ord dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px;margin-bottom:10px}
   .ord dt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);padding-top:2px}
-  .ord dd{color:var(--bone);word-break:break-word}
+  .ord dd{color:var(--text-light);word-break:break-word}
   .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
   .tab{background:var(--panel);border:1px solid var(--line);color:var(--grey);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 11px;border-radius:var(--r);cursor:pointer}
-  .tab[aria-selected="true"]{border-color:var(--seal);color:var(--bone)}
+  .tab[aria-selected="true"]{border-color:var(--seal);color:var(--text-light)}
   .switch{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);padding:13px;border-radius:var(--r);margin-bottom:16px}
-  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--free);color:var(--bone);padding:11px 18px;border-radius:var(--r);font-size:14px;z-index:50;max-width:90vw;text-align:center}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--free);color:var(--text-light);padding:11px 18px;border-radius:var(--r);font-size:14px;z-index:50;max-width:90vw;text-align:center}
   .toast[hidden]{display:none}
   footer{padding:32px 0;color:var(--grey);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   @media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
@@ -247,7 +249,7 @@
           <a class="btn ghost sm" id="anydesk-link" href="https://anydesk.com/fr/downloads" target="_blank" rel="noopener">Télécharger AnyDesk</a>
         </div>
         <input type="text" id="f-anydesk" placeholder="Adresse AnyDesk (9 chiffres) — si tu l'as déjà" autocomplete="off">
-        <label class="check" style="margin-top:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--bone)">
+        <label class="check" style="margin-top:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--text-light)">
           <input type="checkbox" id="f-ok-anydesk">
           <span>Je confirme qu'AnyDesk sera installé et ouvert au moment du rendez-vous.</span>
         </label>
@@ -342,7 +344,7 @@
         <span>Quel est le tarif ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-1" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--bone)">10 € à payer au début du rendez-vous, avant qu'on commence l'optimisation.</div>
+      <div id="faq-1" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">10 € à payer au début du rendez-vous, avant qu'on commence l'optimisation.</div>
     </div>
     
     <div class="card" style="padding:0">
@@ -350,7 +352,7 @@
         <span>Comment ça se passe concrètement ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-2" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--bone)">Tu réserves un créneau, tu installe AnyDesk, tu me rejoins sur Discord. Au début du rendez-vous, tu me paiement 10 € en PayPal. Une fois reçu, je commence l'optimisation audio de ton casque. Durée : 45 minutes.</div>
+      <div id="faq-2" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">Tu réserves un créneau, tu installe AnyDesk, tu me rejoins sur Discord. Au début du rendez-vous, tu me paiement 10 € en PayPal. Une fois reçu, je commence l'optimisation audio de ton casque. Durée : 45 minutes.</div>
     </div>
 
     <div class="card" style="padding:0">
@@ -358,7 +360,7 @@
         <span>Qu'est-ce qu'AnyDesk ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-3" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--bone)">C'est un logiciel de prise de contrôle à distance, comme TeamViewer. Je peux accéder à ton ordi pour optimiser tes réglages audio. C'est gratuit et sécurisé. <a href="https://anydesk.com/fr/downloads" style="color:var(--seal);text-decoration:none">Télécharge-le ici</a>.</div>
+      <div id="faq-3" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">C'est un logiciel de prise de contrôle à distance, comme TeamViewer. Je peux accéder à ton ordi pour optimiser tes réglages audio. C'est gratuit et sécurisé. <a href="https://anydesk.com/fr/downloads" style="color:var(--seal);text-decoration:none">Télécharge-le ici</a>.</div>
     </div>
 
     <div class="card" style="padding:0">
@@ -366,7 +368,7 @@
         <span>Je peux annuler ma réservation ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-4" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--bone)">Oui, tu recevras un lien d'annulation dans le mail de confirmation. Tu peux annuler jusqu'à quelques heures avant. Si tu annules APRÈS avoir payé, il n'y a pas de remboursement (paiement au début = engagement).</div>
+      <div id="faq-4" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">Oui, tu recevras un lien d'annulation dans le mail de confirmation. Tu peux annuler jusqu'à quelques heures avant. Si tu annules APRÈS avoir payé, il n'y a pas de remboursement (paiement au début = engagement).</div>
     </div>
 
     <div class="card" style="padding:0">
@@ -374,7 +376,7 @@
         <span>Quels casques vous optimisez ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-5" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--bone)">N'importe lequel ! Casque gaming, casque audio, écouteurs, tout ce qui peut se brancher à ton PC. On optimise l'EQ, les drivers, les réglages du jeu, etc.</div>
+      <div id="faq-5" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">N'importe lequel ! Casque gaming, casque audio, écouteurs, tout ce qui peut se brancher à ton PC. On optimise l'EQ, les drivers, les réglages du jeu, etc.</div>
     </div>
 
     <div class="card" style="padding:0">
@@ -382,7 +384,7 @@
         <span>Après la session, je peux te recontacter ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-6" hidden style="padding:0 16px 16px;border-top:1px solid var(--line);color:var(--bone)">Bien sûr ! Rejoine le Discord, j'y réponds aux questions. Si tu as besoin d'une retouche, on peut envisager une deuxième session.</div>
+      <div id="faq-6" hidden style="padding:16px;border-top:1px solid var(--line);color:var(--text-light);line-height:1.6">Bien sûr ! Rejoine le Discord, j'y réponds aux questions. Si tu as besoin d'une retouche, on peut envisager une deuxième session.</div>
     </div>
   </div>
 </section>
@@ -432,7 +434,7 @@ const CONFIG = {
 const $ = id => document.getElementById(id);
 const toast = (msg, dur = 3000) => {
   const t = document.createElement("div");
-  t.style.cssText = "position:fixed;bottom:20px;right:20px;background:var(--seal);color:var(--bone);padding:16px;border-radius:2px;max-width:300px;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:slideIn 0.3s;z-index:9999";
+  t.style.cssText = "position:fixed;bottom:20px;right:20px;background:var(--seal);color:var(--text-light);padding:16px;border-radius:2px;max-width:300px;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:slideIn 0.3s;z-index:9999";
   t.textContent = msg;
   document.body.appendChild(t);
   setTimeout(() => t.remove(), dur);
@@ -1050,19 +1052,7 @@ async function action(act, ref){
 /* ---------- démarrage ---------- */
 async function refresh(){ await fetchAll(); }
 (async () => {
-// FAQ accordéons
-document.querySelectorAll(".faq-toggle").forEach(btn => {
-  btn.onclick = () => {
-    const target = document.getElementById(btn.dataset.target);
-    if(target) {
-      const isOpen = !target.hidden;
-      target.hidden = isOpen;
-      btn.querySelector("span:last-child").textContent = isOpen ? "+" : "−";
-    }
-  };
-});
-
-  initTheme();
+initTheme();
   if(!DEMO){
     const { data } = await sb.auth.getSession();
     if(data.session){ isAdmin = true; }
@@ -1073,6 +1063,18 @@ document.querySelectorAll(".faq-toggle").forEach(btn => {
   // Panel admin sur operateur.html
   if(DEMO) toast("Mode démo : configure Supabase pour la mise en ligne");
 })();
+
+// FAQ - Accordéons (à la fin pour être sûr que le DOM est prêt)
+document.querySelectorAll(".faq-toggle").forEach(btn => {
+  btn.onclick = () => {
+    const target = document.getElementById(btn.dataset.target);
+    if(target) {
+      const isOpen = !target.hidden;
+      target.hidden = isOpen;
+      btn.querySelector("span:last-child").textContent = isOpen ? "+" : "−";
+    }
+  };
+});
 </script>
 </body>
 </html>
