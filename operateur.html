@@ -3,228 +3,154 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KimimaroFPS — ART IS WAR — Optimisation son</title>
+<title>KimimaroFPS — Opérateur</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ink:#0C0D10; --sumi:#15171C; --panel:#1B1E25; --line:#2C313B;
-    --bone:#E8E2D6; --grey:#8B919C; --seal:#C8322B; --seal-hi:#E2453D;
-    --free:#3FA65C; --free-hi:#4FC470; --gold:#C9A227; --r:2px;
-  }
-  html.dark :root{
-    --ink:#F5F5F5; --sumi:#EEEEEE; --panel:#E8E8E8; --line:#D0D0D0;
-    --bone:#222222; --grey:#666666; --seal:#C8322B; --seal-hi:#E2453D;
-    --free:#3FA65C; --free-hi:#4FC470; --gold:#C9A227; --r:2px;
-  }
+  :root{--ink:#0C0D10;--sumi:#15171C;--panel:#1B1E25;--line:#2C313B;--bone:#E8E2D6;--grey:#8B919C;--seal:#C8322B;--free:#3FA65C;--gold:#C9A227}
+  html.dark :root{--ink:#F5F5F5;--sumi:#EEEEEE;--panel:#E8E8E8;--line:#D0D0D0;--bone:#222222;--grey:#666666}
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--ink);color:var(--bone);font-family:'Barlow',system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  body{background:var(--ink);color:var(--bone);font-family:'Barlow',sans-serif;font-size:16px;line-height:1.55}
   .wrap{max-width:960px;margin:0 auto;padding:0 20px}
-  h1,h2,h3{font-family:'Big Shoulders Display',Impact,sans-serif;font-weight:900;line-height:.92;text-transform:uppercase}
-  .mono{font-family:'JetBrains Mono',monospace}
-  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
-  a{color:var(--bone)}
-  :focus-visible{outline:2px solid var(--seal-hi);outline-offset:3px}
-
-  header.hero{position:relative;padding:60px 0 36px;border-bottom:1px solid var(--line);overflow:hidden}
-  .seal{position:absolute;top:26px;right:20px;width:64px;height:64px;border:2px solid var(--seal);color:var(--seal);border-radius:var(--r);display:grid;place-items:center;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:13px;line-height:1;text-align:center;transform:rotate(-6deg)}
-  .hero h1{font-size:clamp(56px,15vw,130px);margin:12px 0 6px}
-  .hero h1 em{font-style:normal;color:var(--seal)}
-  .hero p.lead{max-width:46ch;color:var(--grey);font-size:18px;margin-bottom:22px}
-  .hero p.lead b{color:var(--bone);font-weight:600}
-  .eq{width:100%;height:74px;display:block;margin:22px 0 0}
-  .eq path{fill:none;stroke:var(--seal);stroke-width:2}
-  .eq path.ghost{stroke:var(--line);stroke-width:1}
-  .price-tag{display:inline-flex;align-items:baseline;gap:8px;border:1px solid var(--line);padding:8px 14px;border-radius:var(--r);background:var(--sumi)}
-  .price-tag .amt{font-family:'Big Shoulders Display',sans-serif;font-size:30px;font-weight:900;line-height:1}
-  .price-tag .lbl{font-size:12px;color:var(--grey);letter-spacing:.12em;text-transform:uppercase}
-
-  .btn{display:inline-block;border:none;cursor:pointer;border-radius:var(--r);font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:19px;text-transform:uppercase;letter-spacing:.06em;padding:12px 24px;background:var(--seal);color:#fff;text-decoration:none;transition:background .15s}
-  .btn:hover{background:var(--seal-hi)}
-  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--bone)}
-  .btn.ghost:hover{border-color:var(--bone)}
-  .btn.sm{font-size:14px;padding:7px 12px}
-  .btn[disabled]{opacity:.4;cursor:not-allowed}
-
-  section{padding:52px 0;border-bottom:1px solid var(--line)}
-  section h2{font-size:clamp(30px,6vw,46px);margin:8px 0 20px}
-
-  .banner{border-left:3px solid var(--gold);background:var(--sumi);padding:12px 14px;border-radius:var(--r);margin-bottom:22px;font-size:15px}
-  .banner[hidden]{display:none}
-  .money{display:flex;gap:14px;align-items:flex-start;border-left:3px solid var(--gold);background:var(--sumi);padding:14px 16px;border-radius:var(--r);margin-bottom:24px}
-  .money p{font-size:15px;color:var(--grey);margin:0}
-  .money b{color:var(--bone)}
-
-  .steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r)}
-  @media(min-width:720px){.steps{grid-template-columns:repeat(3,1fr)}}
-  .step{background:var(--sumi);padding:20px}
-  .step .num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--seal);letter-spacing:.2em}
-  .step h3{font-size:23px;margin:6px 0 8px}
-  .step p{color:var(--grey);font-size:15px}
-
-  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey)}
-  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
-  .dot.g{background:var(--free)} .dot.r{background:var(--seal)}
-
-  .day{margin-bottom:24px}
-  .day-head{display:flex;align-items:baseline;gap:12px;padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:12px}
-  .day-head h3{font-size:21px}
-  .day-head span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--grey)}
-  .slots{display:flex;flex-wrap:wrap;gap:8px}
-  .slot{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;border-radius:var(--r);padding:11px 15px;text-align:left;cursor:pointer;transition:background .15s,border-color .15s}
-  .slot.free{background:rgba(63,166,92,.09);border:1px solid var(--free);color:var(--free-hi)}
-  .slot.free:hover{background:rgba(63,166,92,.2)}
-  .slot.free[aria-pressed="true"]{background:var(--free);color:#08120B}
-  .slot.taken{background:rgba(200,50,43,.08);border:1px solid var(--seal);color:var(--seal);cursor:not-allowed}
-  .slot .tag{display:block;font-size:9px;letter-spacing:.14em;margin-top:2px;opacity:.85}
-  .empty{border:1px dashed var(--line);border-radius:var(--r);padding:26px;text-align:center;color:var(--grey)}
-
-  .card{background:var(--sumi);border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-top:22px}
-  .selected{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border-left:3px solid var(--free);padding:12px 14px;margin-bottom:20px}
-  .selected .when{font-family:'JetBrains Mono',monospace;font-weight:600}
-  .field{margin-bottom:16px}
-  label{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;font-weight:600}
-  label .req{color:var(--seal)}
-  input[type=text],input[type=email],input[type=password],input[type=date],select,textarea{
-    width:100%;background:var(--ink);border:1px solid var(--line);border-radius:var(--r);
-    color:var(--bone);font-family:'Barlow',sans-serif;font-size:16px;padding:11px 12px}
-  input[type=date]{font-family:'JetBrains Mono',monospace}
-  input:focus,select:focus,textarea:focus{border-color:var(--seal)}
-  textarea{resize:vertical;min-height:76px}
-  .hint{font-size:13px;color:var(--grey);margin-top:6px}
-  .check{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--bone)}
-  .check input{margin-top:4px;accent-color:var(--free);width:18px;height:18px;flex:0 0 auto}
-  .anydesk{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);padding:13px;border-radius:var(--r);margin-bottom:10px}
-  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  .error{color:var(--seal-hi);font-size:14px;margin-top:8px;min-height:1em}
-  .status{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--grey)}
-
-  .done{text-align:center;padding:34px 20px}
-  .done h3{font-size:32px;color:var(--free);margin-bottom:6px}
-  .ref{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;border:1px solid var(--gold);color:var(--gold);padding:8px 14px;border-radius:var(--r);margin:12px 0}
-
-  .op-toggle{background:none;border:none;color:var(--grey);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;padding:0}
-  .op-toggle:hover{color:var(--seal)}
-  .grid3{display:grid;gap:12px}
-  @media(min-width:640px){.grid3{grid-template-columns:1fr 1fr auto;align-items:end}}
-  .pill{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;padding:3px 8px;border-radius:var(--r);border:1px solid;text-transform:uppercase}
-  .p-pending{color:var(--gold);border-color:var(--gold)}
-  .p-confirmed{color:var(--free);border-color:var(--free)}
-  .p-done{color:var(--grey);border-color:var(--line)}
-  .p-cancelled{color:var(--seal);border-color:var(--seal)}
-  .ord{border:1px solid var(--line);border-radius:var(--r);padding:13px;margin-bottom:8px;background:var(--sumi)}
-  .ord .top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
-  .ord dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px;margin-bottom:10px}
-  .ord dt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);padding-top:2px}
-  .ord dd{color:var(--bone);word-break:break-word}
-  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-  .tab{background:var(--panel);border:1px solid var(--line);color:var(--grey);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 11px;border-radius:var(--r);cursor:pointer}
-  .tab[aria-selected="true"]{border-color:var(--seal);color:var(--bone)}
-  .switch{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);padding:13px;border-radius:var(--r);margin-bottom:16px}
-  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--free);color:var(--bone);padding:11px 18px;border-radius:var(--r);font-size:14px;z-index:50;max-width:90vw;text-align:center}
-  .toast[hidden]{display:none}
-  footer{padding:32px 0;color:var(--grey);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  @media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+  h2{font-family:'Big Shoulders Display',sans-serif;font-size:32px;margin:0 0 24px;text-transform:uppercase}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:16px;margin:0 0 16px}
+  .field{margin:0 0 16px}
+  label{display:block;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin:0 0 6px;color:var(--grey)}
+  input,select{font-family:inherit;font-size:inherit;border:1px solid var(--line);border-radius:2px;background:var(--sumi);color:var(--bone);padding:8px;width:100%}
+  input:focus{outline:none;border-color:var(--free)}
+  .btn{background:var(--seal);color:var(--bone);border:none;padding:10px 16px;font-weight:600;text-transform:uppercase;font-size:12px;border-radius:2px;cursor:pointer}
+  .btn:hover{background:#E2453D}
+  .btn.ghost{background:none;border:1px solid var(--line);color:var(--bone)}
+  .btn.ghost:hover{border-color:var(--seal)}
+  .error{color:var(--seal);font-size:12px;margin:8px 0 0}
+  .tabs{display:flex;gap:4px;margin:0 0 16px;flex-wrap:wrap}
+  .tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--grey);cursor:pointer;padding:8px 0;font-size:13px;font-weight:600;text-transform:uppercase}
+  .tab[aria-selected="true"]{border-color:var(--free);color:var(--bone)}
+  .eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--grey)}
+  .mono{font-family:'JetBrains Mono',monospace;font-size:12px}
 </style>
 </head>
 <body>
-<button id="theme-toggle" style="position:fixed;top:12px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;padding:8px;z-index:999" title="Basculer le thème">🌙</button>
+<button id="theme-toggle" style="position:fixed;top:12px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;padding:8px;z-index:999">🌙</button>
 
 <section class="wrap" style="margin:40px 0">
-  <h2 style="margin:0 0 24px">Panneau opérateur</h2>
+  <h2>Panneau opérateur</h2>
+  
   <div id="op-panel">
     <div id="op-login" class="card">
-      <div class="field"><label for="op-mail">Email</label><input type="email" id="op-mail" autocomplete="username"></div>
-      <div class="field" style="margin:0"><label for="op-pass">Mot de passe</label><input type="password" id="op-pass" autocomplete="current-password"><p class="error" id="op-error"></p></div>
-      <button class="btn" id="op-login-btn" type="button" style="margin-top:12px">Se connecter</button>
-      <p class="hint">Identifiants gérés par Supabase.</p>
+      <div class="field"><label for="op-mail">Email</label><input type="email" id="op-mail"></div>
+      <div class="field"><label for="op-pass">Mot de passe</label><input type="password" id="op-pass"><p class="error" id="op-error"></p></div>
+      <button class="btn" id="op-login-btn" style="margin-top:12px">Se connecter</button>
     </div>
 
     <div id="op-console" hidden>
-      <div id="op-stats" class="card" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px;padding:12px">
-        <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--free)">—</div><div style="font-size:12px;color:var(--grey)">Sessions ce mois</div></div>
-        <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--gold)">—</div><div style="font-size:12px;color:var(--grey)">Estimé ce mois</div></div>
-        <div style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--seal)">—</div><div style="font-size:12px;color:var(--grey)">Taux remplissage</div></div>
+      <div class="card">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center">
+          <div><div style="font-size:28px;font-weight:900;color:var(--free)">—</div><div style="font-size:12px;color:var(--grey)">Sessions</div></div>
+          <div><div style="font-size:28px;font-weight:900;color:var(--gold)">—</div><div style="font-size:12px;color:var(--grey)">Estimé</div></div>
+          <div><div style="font-size:28px;font-weight:900;color:var(--seal)">—</div><div style="font-size:12px;color:var(--grey)">Remplissage</div></div>
+        </div>
       </div>
-      <div class="card"><p class="eyebrow" style="margin-bottom:12px">Ouvrir créneaux</p><div class="field" style="margin:0 0 12px 0"><label for="op-date">Date</label><input type="date" id="op-date"></div><div style="margin-bottom:12px"><label style="display:block;margin-bottom:8px;font-size:14px;font-weight:500">Heures</label><div id="op-hours" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:6px"></div></div><div class="row" style="gap:8px;margin-bottom:12px"><button class="btn" id="op-add" type="button">Ouvrir</button><button class="btn ghost" id="op-week" type="button">Semaine</button></div><p class="error" id="op-add-error"></p></div>
+
+      <div class="card">
+        <p class="eyebrow" style="margin-bottom:12px">Ouvrir créneaux</p>
+        <div class="field"><label for="op-date">Date</label><input type="date" id="op-date"></div>
+        <div style="margin-bottom:12px"><label style="display:block;font-size:14px;font-weight:500;margin-bottom:8px">Heures</label><div id="op-hours" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:6px"></div></div>
+        <div style="display:flex;gap:8px;margin-bottom:12px"><button class="btn" id="op-add">Ouvrir</button><button class="btn ghost" id="op-week">Semaine</button></div>
+        <p class="error" id="op-add-error"></p>
+      </div>
+
       <div class="card"><p class="eyebrow" style="margin-bottom:12px">Planning</p><div id="op-slots"></div></div>
       <div class="card"><p class="eyebrow" style="margin-bottom:12px">Historique</p><div id="op-history" style="max-height:300px;overflow-y:auto"></div></div>
-      <div class="card"><p class="eyebrow" style="margin-bottom:12px">Commandes</p><div class="tabs" id="op-tabs"><button class="tab" data-f="pending" aria-selected="true">À valider</button><button class="tab" data-f="confirmed" aria-selected="false">Validées</button><button class="tab" data-f="done" aria-selected="false">Terminées</button><button class="tab" data-f="cancelled" aria-selected="false">Annulées</button></div><div id="op-orders"></div></div>
-      <button class="btn ghost sm" id="op-logout" type="button" style="margin-top:16px">Déconnecter</button>
+      <div class="card"><p class="eyebrow" style="margin-bottom:12px">Commandes</p><div class="tabs" id="op-tabs"><button class="tab" data-f="pending" aria-selected="true">À valider</button><button class="tab" data-f="confirmed">Validées</button><button class="tab" data-f="done">Terminées</button><button class="tab" data-f="cancelled">Annulées</button></div><div id="op-orders"></div></div>
+      <button class="btn ghost" id="op-logout" style="margin-top:16px;width:100%">Déconnecter</button>
     </div>
   </div>
 </section>
+
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
+const CONFIG = {supabaseUrl:"https://taqdcytecvabwyanyptb.supabase.co",supabaseAnonKey:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhcWRjeXRlY3ZhYnd5YW55cHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4NTYwMjAsImV4cCI6MjA5OTQzMjAyMH0.MwAgQTIqxuTzTUpd-l_sTiLEmU9bjRPzwR-PPp8vCJU",price:10};
+const sb = createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
 const $ = id => document.getElementById(id);
-const $$ = sel => document.querySelectorAll(sel);
+let slots = [], orders = [];
 
-const CONFIG = {
-  supabaseUrl: "https://taqdcytecvabwyanyptb.supabase.co",
-  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhcWRjeXRlY3ZhYnd5YW55cHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4NTYwMjAsImV4cCI6MjA5OTQzMjAyMH0.MwAgQTIqxuTzTUpd-l_sTiLEmU9bjRPzwR-PPp8vCJU",
-  siteUrl: "https://kimimarocs.github.io/Art_is_war_opti",
-  price: 10,
-  brand: "KimimaroFPS — ART IS WAR",
-  sessionMinutes: 45,
-};
+const initTheme = () => {const t = localStorage.getItem("theme") || "light"; if(t === "dark") document.documentElement.classList.add("dark"); updateTheme();};
+const updateTheme = () => {const d = document.documentElement.classList.contains("dark"); $("theme-toggle").textContent = d ? "☀️" : "🌙";};
+$("theme-toggle").onclick = () => {const d = document.documentElement.classList.toggle("dark"); localStorage.setItem("theme", d ? "dark" : "light"); updateTheme();};
 
-const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
-const sb = DEMO ? null : createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
-
-let slots = [], orders = [], settings = { available: true, away_message: "" }, isAdmin = false, filter = "pending";
-
-const initTheme = () => {
-  const theme = localStorage.getItem("theme") || "light";
-  if(theme === "dark") document.documentElement.classList.add("dark");
-  updateThemeButton();
-};
-
-const updateThemeButton = () => {
-  const isDark = document.documentElement.classList.contains("dark");
-  $("theme-toggle").textContent = isDark ? "☀️" : "🌙";
-};
-
-$("theme-toggle").onclick = () => {
-  const isDark = document.documentElement.classList.toggle("dark");
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-  updateThemeButton();
-};
-
-async function fetchAll(){
-  if(DEMO) return;
-  const [s, o, st] = await Promise.all([
-    sb.from("slots").select("*"),
-    sb.from("orders").select("*"),
-    sb.from("settings").select("*").eq("id", 1).single()
-  ]);
+const fetchAll = async () => {
+  const [s, o] = await Promise.all([sb.from("slots").select("*"), sb.from("orders").select("*")]);
   slots = s.data || [];
   orders = o.data || [];
-  settings = st.data || { available: true, away_message: "" };
-}
+};
+
+const renderHours = () => {
+  const box = $("op-hours");
+  if(!box) return;
+  box.innerHTML = Array.from({length:15}, (_, i) => {
+    const h = 8 + i;
+    return `<button class="btn ghost sm" data-hour="${h}:00" style="padding:8px">${String(h).padStart(2, '0')}:00</button>`;
+  }).join("");
+  box.querySelectorAll("[data-hour]").forEach(b => b.onclick = () => b.style.background = b.style.background ? "" : "var(--seal)");
+};
+
+$("op-add").onclick = async () => {
+  const date = $("op-date").value;
+  const selected = Array.from($("op-hours").querySelectorAll("[data-hour]")).filter(b => b.style.background).map(b => b.dataset.hour);
+  if(!date || !selected.length) return $("op-add-error").textContent = "Sélectionne une date et des heures.";
+  
+  for(const hour of selected) {
+    const start_at = new Date(date + "T" + hour + ":00").toISOString();
+    await sb.from("slots").insert({start_at, status: "open"});
+  }
+  await fetchAll();
+  $("op-add-error").textContent = "✅ Créneaux ouverts!";
+  renderHours();
+};
+
+$("op-week").onclick = async () => {
+  const now = new Date();
+  for(let d = 0; d < 7; d++) {
+    const date = new Date(now);
+    date.setDate(date.getDate() + d);
+    for(let h = 8; h < 23; h++) {
+      const start_at = new Date(date);
+      start_at.setHours(h, 0, 0, 0);
+      await sb.from("slots").insert({start_at: start_at.toISOString(), status: "open"});
+    }
+  }
+  await fetchAll();
+  $("op-add-error").textContent = "✅ Semaine ouverte!";
+};
 
 $("op-login-btn").onclick = async () => {
-  const e = $("op-error");
-  if(DEMO){ isAdmin = true; $("op-login").hidden = true; $("op-console").hidden = false; return; }
-  const { error } = await sb.auth.signInWithPassword({ email:$("op-mail").value.trim(), password:$("op-pass").value });
-  if(error) return e.textContent = "Email ou mot de passe incorrect.";
-  e.textContent = ""; isAdmin = true; $("op-pass").value = "";
-  await fetchAll(); $("op-login").hidden = true; $("op-console").hidden = false;
+  const {error} = await sb.auth.signInWithPassword({email: $("op-mail").value.trim(), password: $("op-pass").value});
+  if(error) return $("op-error").textContent = "Email ou mot de passe incorrect.";
+  $("op-login").hidden = true;
+  $("op-console").hidden = false;
+  await fetchAll();
+  renderHours();
 };
 
 $("op-logout").onclick = async () => {
-  if(!DEMO) await sb.auth.signOut();
-  isAdmin = false; $("op-console").hidden = true; $("op-login").hidden = false;
+  await sb.auth.signOut();
+  $("op-login").hidden = false;
+  $("op-console").hidden = true;
 };
 
+(async () => {
+  const {data} = await sb.auth.getSession();
+  if(data.session) {
+    $("op-login").hidden = true;
+    $("op-console").hidden = false;
+    await fetchAll();
+    renderHours();
+  }
+})();
+
 initTheme();
-if(!DEMO){
-  (async () => {
-    const { data } = await sb.auth.getSession();
-    if(data.session){ isAdmin = true; $("op-login").hidden = true; $("op-console").hidden = false; await fetchAll(); }
-  })();
-}
 </script>
 </body>
 </html>
