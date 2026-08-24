@@ -436,13 +436,6 @@ const CONFIG = {
 /* ========================================================== */
 
 const $ = id => document.getElementById(id);
-const toast = (msg, dur = 3000) => {
-  const t = document.createElement("div");
-  t.style.cssText = "position:fixed;bottom:20px;right:20px;background:var(--seal);color:var(--text-light);padding:16px;border-radius:2px;max-width:300px;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:slideIn 0.3s;z-index:9999";
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), dur);
-};
 const $$ = sel => document.querySelectorAll(sel);
 const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
@@ -800,7 +793,7 @@ $("submit-btn").onclick = async () => {
   await deliver(mail, mailReceived(order, slot), "réservation reçue");
 
   // Toast de confirmation avec numéro AIW
-  toast(`✅ Réservation confirmée ! Numéro : <b style="color:#C9A227">${order.ref}</b>`, 5000);
+  toast(`✅ Réservation confirmée ! Numéro : ${order.ref}`);
 
   $("done-ref").textContent = order.ref;
   $("done-when").textContent = fmtFull(slot.start_at);
