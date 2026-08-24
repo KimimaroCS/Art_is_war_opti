@@ -145,7 +145,7 @@
     <p class="lead">Je règle ton son pour que tu <b>entendes les pas avant de les voir</b>. Session en direct sur ton PC, ton casque, ta config. 45 minutes.</p>
     <div class="row">
       <a class="btn" href="#planning">Choisir un créneau</a>
-      <span class="price-tag"><span class="amt">10 €</span><span class="lbl">à payer au début du rendez-vous</span></span>
+      <span class="price-tag"><span class="amt">Gratuit</span><span class="lbl">Optimisation son offerte</span></span>
     </div>
     <svg class="eq" viewBox="0 0 900 74" preserveAspectRatio="none" aria-hidden="true">
       <path class="ghost" d="M0,37 L900,37"/><path id="curve" d="M0,37 L900,37"/>
@@ -193,7 +193,7 @@
     <div class="steps">
       <div class="step"><span class="num">01</span><h3>Réserve</h3><p>Tu prends un créneau vert et tu remplis ta fiche. Rien à payer maintenant : tu reçois un numéro de commande.</p></div>
       <div class="step"><span class="num">02</span><h3>Installe AnyDesk</h3><p>Avant le rendez-vous. Le jour J, je prends la main sur ton PC et j'optimise ton son avec toi.</p></div>
-      <div class="step"><span class="num">03</span><h3>Paie 10 €</h3><p>Au début du rendez-vous, avant qu'on commence, par PayPal (entre proches). Tu ne paies que si le travail est fait.</p></div>
+      <div class="step"><span class="num">03</span><h3>C'est gratuit !</h3><p>Aucun paiement. Profite d'une optimisation son gratuite offerte par KimimaroFPS.</p></div>
     </div>
   </div>
 </section>
@@ -205,8 +205,7 @@
 
     <div class="money">
       <div>
-        <p><b>Aucun paiement à la réservation.</b> Le service coûte <b>10 €</b>, à payer au début du rendez-vous, avant l'optimisation, par PayPal en « <b>entre proches</b> ». Une fois la session faite, la prestation est due :
-          <a href="remboursement.html" style="color:var(--seal-hi)">politique de remboursement</a>.</p>
+        <p><b>Aucun paiement.</b> Cette optimisation son est <b>totalement gratuite</b>. Profite simplement du service offert par KimimaroFPS. <a href="remboursement.html" style="color:var(--seal-hi)">Plus d'infos</a>.</p>
       </div>
     </div>
 
@@ -262,7 +261,7 @@
       </div>
       <label class="check" style="text-transform:none;letter-spacing:0;font-weight:400;margin-bottom:18px">
         <input type="checkbox" id="f-ok-price">
-        <span>J'ai compris : 10 € à régler à la fin de la session, une fois l'optimisation faite.</span>
+        <span>J'ai compris : le service est gratuit, aucun paiement requis.</span>
       </label>
 
       <button class="btn" id="submit-btn" type="button">Réserver mon créneau</button>
@@ -273,7 +272,7 @@
       <h3>Créneau réservé</h3>
       <p class="ref" id="done-ref"></p>
       <p class="mono" id="done-when" style="margin-bottom:12px"></p>
-      <p style="color:var(--grey);max-width:50ch;margin:0 auto 18px">Un mail de confirmation vient de partir. Installe AnyDesk d'ici là. Le paiement de 10 € se fait à la fin de la session.</p>
+      <p style="color:var(--grey);max-width:50ch;margin:0 auto 18px">Un mail de confirmation vient de partir. Installe AnyDesk d'ici là. Le service est gratuit, aucun paiement requis.</p>
       <button class="btn ghost" id="new-booking" type="button">Réserver un autre créneau</button>
     </div>
   </div>
@@ -347,7 +346,7 @@
         <span>Quel est le tarif ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-1" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">10 € à payer au début du rendez-vous, avant qu'on commence l'optimisation.</div>
+      <div id="faq-1" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">Le service est totalement gratuit. Aucun paiement à la réservation ni au rendez-vous.</div>
     </div>
     
     <div class="card" style="padding:0">
@@ -355,7 +354,7 @@
         <span>Comment ça se passe concrètement ?</span>
         <span style="color:var(--grey)">+</span>
       </button>
-      <div id="faq-2" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">Tu réserves un créneau, tu installe AnyDesk, tu me rejoins sur Discord. Au début du rendez-vous, tu me paiement 10 € en PayPal. Une fois reçu, je commence l'optimisation audio de ton casque. Durée : 45 minutes.</div>
+      <div id="faq-2" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">Tu réserves un créneau, tu installes AnyDesk, tu me rejoins sur Discord. Au début du rendez-vous, nous démarrons l'optimisation audio de ton casque. Aucun paiement requis. Durée : 45 minutes.</div>
     </div>
 
     <div class="card" style="padding:0">
@@ -394,7 +393,7 @@
 </section>
 
 </section>
-  <span>KimimaroFPS — ART IS WAR — 10 € à payer au début du rendez-vous ·
+  <span>KimimaroFPS — ART IS WAR — Service gratuit ·
     <a href="cgv.html" style="color:var(--grey)">CGV</a> ·
     <a href="remboursement.html" style="color:var(--grey)">Remboursement</a> ·
     <a href="mentions-legales.html" style="color:var(--grey)">Mentions légales</a></span>
@@ -424,7 +423,7 @@ const CONFIG = {
   supabaseUrl: "https://taqdcytecvabwyanyptb.supabase.co",
   supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhcWRjeXRlY3ZhYnd5YW55cHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4NTYwMjAsImV4cCI6MjA5OTQzMjAyMH0.MwAgQTIqxuTzTUpd-l_sTiLEmU9bjRPzwR-PPp8vCJU",
   siteUrl: "https://kimimarocs.github.io/Art_is_war_opti",
-  price: 10,
+  price: 0,
   brand: "KimimaroFPS — ART IS WAR",
   sessionMinutes: 45,
   paypalMe: "KimimaroFPS",
@@ -529,7 +528,7 @@ $("anydesk-link").href = CONFIG.anydeskUrl;
   $("curve").setAttribute("d","M"+p.join(" L"));
 })();
 
-const toast = m => { const t=$("toast"); t.textContent=m; t.hidden=false; setTimeout(()=>t.hidden=true,4000); };
+const toast = (m, dur = 4000) => { const t=$("toast"); t.textContent=m; t.hidden=false; setTimeout(()=>t.hidden=true,dur); };
 const fmtDay  = iso => new Date(iso).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
 const fmtTime = iso => new Date(iso).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
 const fmtFull = iso => `${fmtDay(iso)} à ${fmtTime(iso)}`;
@@ -606,9 +605,9 @@ const mailReceived = (o,s) => ({
       Rendez-vous : <b>${fmtFull(s.start_at)}</b><br>
       Durée : ${CONFIG.sessionMinutes} minutes<br>
       Casque : ${esc(o.casque)}<br>
-      Tarif : ${CONFIG.price} € — <b>à payer au début du rendez-vous</b>`)}
+      Tarif : <b>Gratuit</b>`)}
     <p style="margin:0 0 6px"><b style="color:#E8E2D6">Important : comment ça se passe</b></p>
-    <p style="margin:0">Au début de notre rendez-vous, je te demanderai de payer <b>10 € en PayPal</b> avant qu'on commence l'optimisation. Une fois reçu, on démarre. Je ne procéderai à l'optimisation que si le paiement est validé.</p>
+    <p style="margin:0">Ce service d'optimisation son est <b>totalement gratuit</b>. Aucun paiement requis. Simplement du partage d'expertise.</p>
     <p style="margin:16px 0 0"><b style="color:#E8E2D6">Avant le rendez-vous</b></p>
     <p style="margin:0">Installe AnyDesk et laisse-le ouvert : <a href="${CONFIG.anydeskUrl}" style="color:#C8322B">télécharger AnyDesk</a>. Rejoins-moi sur Discord à l'heure prévue.</p>
     ${cancelBlock(o)}`)
@@ -621,7 +620,7 @@ const mailConfirmed = (o,s) => ({
     ${box(`<b style="color:#C9A227">Commande ${o.ref}</b><br>
       Rendez-vous confirmé : <b>${fmtFull(s.start_at)}</b><br>
       Durée : ${CONFIG.sessionMinutes} minutes<br>
-      Tarif : ${CONFIG.price} € — à payer au début du rendez-vous (PayPal, entre proches)`)}
+      Tarif : <b>Gratuit</b>`)}
     <p style="margin:0 0 6px"><b style="color:#E8E2D6">Le jour J</b></p>
     <p style="margin:0 0 14px">AnyDesk ouvert, casque branché, jeu lancé. Je prends la main, on règle ton son ensemble, et tu repars avec ta config.</p>
     <p style="margin:0 0 6px"><b style="color:#E8E2D6">Un souci, une question ?</b></p>
@@ -793,7 +792,7 @@ $("submit-btn").onclick = async () => {
   await deliver(mail, mailReceived(order, slot), "réservation reçue");
 
   // Toast de confirmation avec numéro AIW
-  toast(`✅ Réservation confirmée ! Numéro : ${order.ref}`);
+  toast(`✅ Réservation confirmée ! Numéro : <b style="color:#C9A227">${order.ref}</b>`, 5000);
 
   $("done-ref").textContent = order.ref;
   $("done-when").textContent = fmtFull(slot.start_at);
@@ -814,7 +813,7 @@ $("track-btn").onclick = async () => {
   const s = slots.find(x => String(x.id) === String(o.slot_id));
   out.innerHTML = `<div class="ord"><div class="top"><strong class="mono">${esc(o.ref)}</strong>${pill(o.status)}</div>
     <dl><dt>Rendez-vous</dt><dd>${o.start_at ? fmtFull(o.start_at) : (s ? fmtFull(s.start_at) : "—")}</dd>
-        <dt>Tarif</dt><dd>${CONFIG.price} € — à régler après la session</dd></dl></div>`;
+        <dt>Tarif</dt><dd>${CONFIG.price === 0 ? "Gratuit" : CONFIG.price + " €"}</dd></dl></div>`;
 };
 
 /* ==========================================================
@@ -985,7 +984,7 @@ function renderHistory(){
         <strong>${esc(o.pseudo)}</strong> — <span class="mono">${o.ref}</span><br>
         <span style="font-size:12px;color:var(--grey)">${s ? fmtFull(s.start_at) : "—"}</span>
       </div>
-      <span style="color:var(--free);font-weight:900">${CONFIG.price}€</span>
+      <span style="color:var(--free);font-weight:900">${CONFIG.price === 0 ? "Gratuit" : CONFIG.price + "€"}</span>
     </div>`;
   }).join("");
 }
