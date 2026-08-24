@@ -832,21 +832,6 @@ $("track-btn").onclick = async () => {
    ========================================================== */
 // Bouton opérateur supprimé (page séparée operateur.html)
 
-$("op-login-btn").onclick = async () => {
-  const e = $("op-error");
-  if(DEMO){
-    isAdmin = true; return;
-  }
-  const { error } = await sb.auth.signInWithPassword({ email:$("op-mail").value.trim(), password:$("op-pass").value });
-  if(error) return e.textContent = "Email ou mot de passe incorrect.";
-  e.textContent = ""; isAdmin = true; $("op-pass").value = "";
-  await refresh();
-};
-$("op-logout").onclick = async () => {
-  if(!DEMO) await sb.auth.signOut();
-  isAdmin = false; $("op-console").hidden = true; $("op-login").hidden = false;
-};
-
 // openConsole supprimée
 
 function renderAvail(){
