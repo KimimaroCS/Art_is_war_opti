@@ -203,6 +203,13 @@
       <a href="#planning"><button>Voir les créneaux</button></a>
     </section>
 
+    <!-- COURBE DÉCORATIVE -->
+    <div style="margin: 20px 0 40px; overflow: hidden;">
+      <svg viewBox="0 0 900 60" style="width: 100%; height: auto; display: block;" fill="none" stroke="currentColor" stroke-width="1.5" class="hint">
+        <path id="curve" d=""></path>
+      </svg>
+    </div>
+
     <div id="away-banner" class="card" style="border-color: var(--gold);" hidden>
       <strong style="color: var(--gold);">Information importante :</strong>
       <p id="away-text" style="margin: 8px 0 0; color: var(--grey);"></p>
@@ -338,7 +345,7 @@
         <textarea id="review-comment" rows="2" placeholder="Ton avis sur l'optimisation son..."></textarea>
       </div>
       <div id="review-error" class="error"></div>
-      <button id="envoyer-avis" style="margin-top: 10px;">Envoyer mon avis</button>
+      <button id="review-submit" style="margin-top: 10px;">Envoyer mon avis</button>
     </section>
 
     <!-- FAQ -->
@@ -474,7 +481,7 @@
       </div>`).join("");
     }
 
-    const reviewSubmitBtn = $("envoyer-avis");
+    const reviewSubmitBtn = $("review-submit");
     if(reviewSubmitBtn) {
       reviewSubmitBtn.onclick = async () => {
         const ref = $("review-ref").value.trim().toUpperCase();
@@ -502,6 +509,18 @@
 
     const anydeskLink = $("anydesk-link");
     if(anydeskLink) anydeskLink.href = CONFIG.anydeskUrl;
+
+    // Courbe SVG
+    (function curve(){
+      const curveElem = $("curve");
+      if(!curveElem) return;
+      const p=[];
+      for(let x=0;x<=900;x+=10){
+        const sub=24*Math.exp(-Math.pow((x-230)/90,2)), mid=28*Math.exp(-Math.pow((x-520)/120,2)), hi=9*Math.exp(-Math.pow((x-820)/110,2));
+        p.push(`${x},${(37+sub-mid-hi).toFixed(1)}`);
+      }
+      curveElem.setAttribute("d","M"+p.join(" L"));
+    })();
 
     const toast = (m, dur = 4000) => { const t=$("toast"); if(t){ t.innerHTML=m; t.hidden=false; setTimeout(()=>t.hidden=true,dur); } };
     const fmtDay  = iso => new Date(iso).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
@@ -551,13 +570,22 @@
     
     const boxContent = i => `<table width="100%" cellpadding="0" cellspacing="0" style="background:#1B1E25;border-left:3px solid #C8322B;margin:18px 0"><tr><td style="padding:14px 16px;color:#E8E2D6;font-size:14px;line-height:1.8">${i}</td></tr></table>`;
 
+    const cancelUrl = o => `${CONFIG.siteUrl}/annuler.html?ref=${encodeURIComponent(o.ref)}&t=${encodeURIComponent(o.cancel_token || "")}`;
+    const cancelBlock = o => `
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0 0;border-top:1px solid #2C313B">
+        <tr><td style="padding:18px 0 0">
+          <p style="margin:0 0 10px;color:#8B919C;font-size:13px">Un empêchement ? Tu peux annuler toi-même, sans frais, tant que la session n'a pas commencé.</p>
+          <a href="${cancelUrl(o)}" style="display:inline-block;background:transparent;border:1px solid #C8322B;color:#E2453D;text-decoration:none;padding:10px 18px;font-size:13px;letter-spacing:1px;text-transform:uppercase">Annuler mon rendez-vous</a>
+        </td></tr></table>`;
+
     const mailReceived = (o,s) => ({
       subject:`Réservation ${o.ref} — ${fmtDay(s.start_at)}`,
       html: shell("Merci pour ta commande",`
         <p style="margin:0 0 12px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
         <p style="margin:0 0 12px"><b style="font-size:18px;color:#C9A227">Ton numéro de commande : ${o.ref}</b></p>
         ${boxContent(`<b style="color:#C9A227">${o.ref}</b><br>Rendez-vous : <b>${fmtFull(s.start_at)}</b><br>Casque : ${esc(o.casque)}`)}
-        <p>Installe AnyDesk et garde-le ouvert : <a href="${CONFIG.anydeskUrl}" style="color:#C8322B">Télécharger AnyDesk</a>.</p>`)
+        <p>Installe AnyDesk et garde-le ouvert : <a href="${CONFIG.anydeskUrl}" style="color:#C8322B">Télécharger AnyDesk</a>.</p>
+        ${cancelBlock(o)}`)
     });
 
     const mailReady = () => CONFIG.emailjs.serviceId && CONFIG.emailjs.templateId && CONFIG.emailjs.publicKey;
@@ -657,7 +685,7 @@
           const counter = d.counter || 1;
           if(!slot || slot.status !== "open"){ submitBtn.disabled=false; return err.textContent = "Ce créneau vient d'être pris."; }
           order = { ref:`AIW-${String(counter).padStart(4,"0")}`, slot_id:slot.id, status:"pending",
-            pseudo, casque, email:mail, created_at:new Date().toISOString() };
+            pseudo, casque, email:mail, created_at:new Date().toISOString(), cancel_token: crypto.randomUUID() };
           orders.unshift(order); slot.status = "booked"; slot.order_ref = order.ref;
           await demo.set({ slots, orders, settings, counter: counter+1 });
         } else {
