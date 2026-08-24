@@ -437,6 +437,7 @@ const CONFIG = {
 const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
 const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+const on = (id, fn) => { const el = $(id); if(el) el.onclick = fn; };
 const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
 const sb = DEMO ? null : createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
 
@@ -821,7 +822,7 @@ $("track-btn").onclick = async () => {
    ========================================================== */
 // Bouton opérateur supprimé (page séparée operateur.html)
 
-$("op-login-btn").onclick = async () => {
+on("op-login-btn", async () => {
   const e = $("op-error");
   if(DEMO){
     isAdmin = true; return;
@@ -830,11 +831,11 @@ $("op-login-btn").onclick = async () => {
   if(error) return e.textContent = "Email ou mot de passe incorrect.";
   e.textContent = ""; isAdmin = true; $("op-pass").value = "";
   await refresh();
-};
-$("op-logout").onclick = async () => {
+});
+on("op-logout", async () => {
   if(!DEMO) await sb.auth.signOut();
-  isAdmin = false; $("op-console").hidden = true; $("op-login").hidden = false;
-};
+  isAdmin = false; const c = $("op-console"); const l = $("op-login"); if(c) c.hidden = true; if(l) l.hidden = false;
+});
 
 // openConsole supprimée
 
@@ -847,15 +848,15 @@ async function saveSettings(){
   if(DEMO) return demoSave();
   await sb.from("settings").update({ available: settings.available, away_message: settings.away_message }).eq("id",1);
 }
-$("avail-btn").onclick = async () => {
+on("avail-btn", async () => {
   settings.available = !settings.available;
   await saveSettings(); renderAvail(); render();
   toast(settings.available ? "Réservations ouvertes" : "Réservations fermées");
-};
-$("avail-save").onclick = async () => {
-  settings.away_message = $("avail-msg").value.trim();
+});
+on("avail-save", async () => {
+  settings.away_message = ($("avail-msg") && $("avail-msg").value.trim()) || "";
   await saveSettings(); render(); toast("Message enregistré");
-};
+});
 
 // Générer les cases à cocher des heures
 function renderHourCheckboxes(){
@@ -869,7 +870,7 @@ function renderHourCheckboxes(){
   `).join("");
 }
 
-$("op-add").onclick = async () => {
+on("op-add", async () => {
   const d = $("op-date").value, e = $("op-add-error");
   if(!d) return e.textContent = "Indique une date.";
   const times = [...$$(".hour-check:checked")].map(cb => cb.value);
@@ -885,9 +886,9 @@ $("op-add").onclick = async () => {
   else { const { error } = await sb.from("slots").insert(rows); if(error) return e.textContent = "Erreur : "+error.message; await refresh(); }
   render(); toast(`${rows.length} créneau(x) ouvert(s)`);
   [...$$(".hour-check")].forEach(cb => cb.checked = false);
-};
+});
 
-$("op-week").onclick = async () => {
+on("op-week", async () => {
   const today = new Date(), e = $("op-add-error");
   const times = [...$$(".hour-check:checked")].map(cb => cb.value);
   if(!times.length) return e.textContent = "Coche au moins une heure.";
@@ -912,7 +913,7 @@ $("op-week").onclick = async () => {
   else { const { error } = await sb.from("slots").insert(rows); if(error) return e.textContent = "Erreur : "+error.message; await refresh(); }
   render(); toast(`${rows.length} créneau(x) ouvert(s) pour la semaine`);
   [...$$(".hour-check")].forEach(cb => cb.checked = false);
-};
+});
 
 function renderOpSlots(){
   const box = $("op-slots");
@@ -958,12 +959,13 @@ function renderOpSlots(){
   });
 }
 
-$("op-tabs").onclick = e => {
+on("op-tabs", e => {
   const t = e.target.closest(".tab"); if(!t) return;
   filter = t.dataset.f;
-  [...$("op-tabs").children].forEach(x => x.setAttribute("aria-selected", x===t));
+  const opTabs = $("op-tabs");
+  if(opTabs) [...opTabs.children].forEach(x => x.setAttribute("aria-selected", x===t));
   renderOrders();
-};
+});
 
 // Afficher l'historique des sessions
 function renderHistory(){
