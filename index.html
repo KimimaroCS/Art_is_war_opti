@@ -1,1082 +1,714 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KimimaroFPS — ART IS WAR — Optimisation son</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#0C0D10; --sumi:#15171C; --panel:#1B1E25; --line:#2C313B;
-    --bone:#E8E2D6; --grey:#8B919C; --seal:#C8322B; --seal-hi:#E2453D;
-    --free:#3FA65C; --free-hi:#4FC470; --gold:#C9A227; --r:2px;
-    --text-light:#E8E2D6;
-  }
-  html.dark :root{
-    --ink:#F5F5F5; --sumi:#EEEEEE; --panel:#E8E8E8; --line:#D0D0D0;
-    --bone:#222222; --grey:#666666; --seal:#C8322B; --seal-hi:#E2453D;
-    --free:#3FA65C; --free-hi:#4FC470; --gold:#C9A227; --r:2px;
-    --text-light:#FFFFFF;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--ink);color:var(--text-light);font-family:'Barlow',system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
-  h1,h2,h3{font-family:'Big Shoulders Display',Impact,sans-serif;font-weight:900;line-height:.92;text-transform:uppercase}
-  .mono{font-family:'JetBrains Mono',monospace}
-  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
-  a{color:var(--text-light)}
-  :focus-visible{outline:2px solid var(--seal-hi);outline-offset:3px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KimimaroFPS — ART IS WAR | Optimisation Son Esport</title>
+  <style>
+    :root {
+      --bg: #0C0D10;
+      --card: #15171C;
+      --card-hover: #1B1E25;
+      --border: #2C313B;
+      --text: #E8E2D6;
+      --grey: #8B919C;
+      --accent: #C8322B;
+      --accent-hover: #E2453D;
+      --gold: #C9A227;
+      --green: #3FA65C;
+    }
+    .dark {
+      --bg: #07080A;
+      --card: #101216;
+      --card-hover: #161920;
+      --border: #222630;
+      --text: #F2EFE9;
+      --grey: #9FA5B2;
+      --accent: #E2453D;
+      --accent-hover: #F2554D;
+      --gold: #D4B237;
+      --green: #48BD69;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: background 0.3s, color 0.3s;
+    }
+    *, *:before, *:after { box-sizing: inherit; }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      background: var(--card);
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 18px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+    
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { color: var(--grey); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 1px;
+      transition: background 0.2s;
+    }
+    button:hover { background: var(--accent-hover); }
+    button:disabled { background: var(--border); color: var(--grey); cursor: not-allowed; }
 
-  header.hero{position:relative;padding:60px 0 36px;border-bottom:1px solid var(--line);overflow:hidden}
-  .seal{position:absolute;top:26px;right:20px;width:64px;height:64px;border:2px solid var(--seal);color:var(--seal);border-radius:var(--r);display:grid;place-items:center;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:13px;line-height:1;text-align:center;transform:rotate(-6deg)}
-  .hero h1{font-size:clamp(56px,15vw,130px);margin:12px 0 6px}
-  .hero h1 em{font-style:normal;color:var(--seal)}
-  .hero p.lead{max-width:46ch;color:var(--grey);font-size:18px;margin-bottom:22px}
-  .hero p.lead b{color:var(--text-light);font-weight:600}
-  .eq{width:100%;height:74px;display:block;margin:22px 0 0}
-  .eq path{fill:none;stroke:var(--seal);stroke-width:2}
-  .eq path.ghost{stroke:var(--line);stroke-width:1}
-  .price-tag{display:inline-flex;align-items:baseline;gap:8px;border:1px solid var(--line);padding:8px 14px;border-radius:var(--r);background:var(--sumi)}
-  .price-tag .amt{font-family:'Big Shoulders Display',sans-serif;font-size:30px;font-weight:900;line-height:1}
-  .price-tag .lbl{font-size:12px;color:var(--grey);letter-spacing:.12em;text-transform:uppercase}
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-secondary:hover { border-color: var(--accent); background: transparent; }
 
-  .btn{display:inline-block;border:none;cursor:pointer;border-radius:var(--r);font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:19px;text-transform:uppercase;letter-spacing:.06em;padding:12px 24px;background:var(--seal);color:#fff;text-decoration:none;transition:background .15s}
-  .btn:hover{background:var(--seal-hi)}
-  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text-light)}
-  .btn.ghost:hover{border-color:var(--text-light)}
-  .btn.sm{font-size:14px;padding:7px 12px}
-  .btn[disabled]{opacity:.4;cursor:not-allowed}
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    
+    .hero {
+      text-align: center;
+      padding: 60px 0;
+    }
+    .hero h1 { font-size: 42px; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+    .hero p { color: var(--grey); font-size: 16px; max-width: 600px; margin: 0 auto 30px; line-height: 1.6; }
 
-  section{padding:52px 0;border-bottom:1px solid var(--line)}
-  section h2{font-size:clamp(30px,6vw,46px);margin:8px 0 20px}
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
 
-  .banner{border-left:3px solid var(--gold);background:var(--sumi);padding:12px 14px;border-radius:var(--r);margin-bottom:22px;font-size:15px}
-  .banner[hidden]{display:none}
-  .money{display:flex;gap:14px;align-items:flex-start;border-left:3px solid var(--gold);background:var(--sumi);padding:14px 16px;border-radius:var(--r);margin-bottom:24px}
-  .money p{font-size:15px;color:var(--grey);margin:0}
-  .money b{color:var(--text-light)}
+    .slots-container { display: grid; gap: 20px; }
+    .day { background: var(--card); border: 1px solid var(--border); padding: 20px; }
+    .day-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .day-head h3 { margin: 0; font-size: 16px; text-transform: uppercase; }
+    .day-head span { font-size: 12px; color: var(--grey); }
 
-  .steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r)}
-  @media(min-width:720px){.steps{grid-template-columns:repeat(3,1fr)}}
-  .step{background:var(--sumi);padding:20px}
-  .step .num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--seal);letter-spacing:.2em}
-  .step h3{font-size:23px;margin:6px 0 8px}
-  .step p{color:var(--grey);font-size:15px}
+    .slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .slot {
+      background: var(--card-hover);
+      border: 1px solid var(--border);
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      color: var(--text);
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .slot.free { border-color: var(--green); }
+    .slot.free:hover { background: rgba(63, 166, 92, 0.1); }
+    .slot.taken { opacity: 0.5; border-color: var(--border); cursor: not-allowed; }
+    .slot .tag { font-size: 10px; color: var(--grey); text-transform: uppercase; }
+    .slot.free .tag { color: var(--green); }
 
-  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey)}
-  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
-  .dot.g{background:var(--free)} .dot.r{background:var(--seal)}
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .p-pending { background: rgba(201, 162, 39, 0.15); color: var(--gold); border: 1px solid var(--gold); }
+    .p-confirmed { background: rgba(63, 166, 92, 0.15); color: var(--green); border: 1px solid var(--green); }
+    .p-done { background: rgba(50, 100, 200, 0.15); color: #5B95F2; border: 1px solid #5B95F2; }
+    .p-cancelled { background: rgba(200, 50, 43, 0.15); color: var(--accent); border: 1px solid var(--accent); }
 
-  .day{margin-bottom:24px}
-  .day-head{display:flex;align-items:baseline;gap:12px;padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:12px}
-  .day-head h3{font-size:21px}
-  .day-head span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--grey)}
-  .slots{display:flex;flex-wrap:wrap;gap:8px}
-  .slot{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;border-radius:var(--r);padding:11px 15px;text-align:left;cursor:pointer;transition:background .15s,border-color .15s}
-  .slot.free{background:rgba(63,166,92,.09);border:1px solid var(--free);color:var(--free-hi)}
-  .slot.free:hover{background:rgba(63,166,92,.2)}
-  .slot.free[aria-pressed="true"]{background:var(--free);color:#08120B}
-  .slot.taken{background:rgba(200,50,43,.08);border:1px solid var(--seal);color:var(--seal);cursor:not-allowed}
-  .slot .tag{display:block;font-size:9px;letter-spacing:.14em;margin-top:2px;opacity:.85}
-  .empty{border:1px dashed var(--line);border-radius:var(--r);padding:26px;text-align:center;color:var(--grey)}
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 12px; color: var(--grey); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .checkbox-group { display: flex; align-items: flex-start; gap: 10px; margin: 15px 0; }
+    .checkbox-group input { width: auto; margin-top: 3px; }
+    .checkbox-group label { font-size: 13px; color: var(--text); text-transform: none; margin: 0; line-height: 1.4; cursor: pointer; }
 
-  .card{background:var(--sumi);border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-top:22px}
-  .selected{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border-left:3px solid var(--free);padding:12px 14px;margin-bottom:20px}
-  .selected .when{font-family:'JetBrains Mono',monospace;font-weight:600}
-  .field{margin-bottom:16px}
-  label{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;font-weight:600}
-  label .req{color:var(--seal)}
-  input[type=text],input[type=email],input[type=password],input[type=date],select,textarea{
-    width:100%;background:var(--ink);border:1px solid var(--line);border-radius:var(--r);
-    color:var(--text-light);font-family:'Barlow',sans-serif;font-size:16px;padding:11px 12px}
-  input[type=date]{font-family:'JetBrains Mono',monospace}
-  input:focus,select:focus,textarea:focus{border-color:var(--seal)}
-  textarea{resize:vertical;min-height:76px}
-  .hint{font-size:13px;color:var(--grey);margin-top:6px}
-  .check{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--text-light)}
-  .check input{margin-top:4px;accent-color:var(--free);width:18px;height:18px;flex:0 0 auto}
-  .anydesk{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);padding:13px;border-radius:var(--r);margin-bottom:10px}
-  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  .error{color:var(--seal-hi);font-size:14px;margin-top:8px;min-height:1em}
-  .status{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--grey)}
-
-  .done{text-align:center;padding:34px 20px}
-  .done h3{font-size:32px;color:var(--free);margin-bottom:6px}
-  .ref{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;border:1px solid var(--gold);color:var(--gold);padding:8px 14px;border-radius:var(--r);margin:12px 0}
-
-  .op-toggle{background:none;border:none;color:var(--grey);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;padding:0}
-  .op-toggle:hover{color:var(--seal)}
-  .grid3{display:grid;gap:12px}
-  @media(min-width:640px){.grid3{grid-template-columns:1fr 1fr auto;align-items:end}}
-  .pill{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;padding:3px 8px;border-radius:var(--r);border:1px solid;text-transform:uppercase}
-  .p-pending{color:var(--gold);border-color:var(--gold)}
-  .p-confirmed{color:var(--free);border-color:var(--free)}
-  .p-done{color:var(--grey);border-color:var(--line)}
-  .p-cancelled{color:var(--seal);border-color:var(--seal)}
-  .ord{border:1px solid var(--line);border-radius:var(--r);padding:13px;margin-bottom:8px;background:var(--sumi)}
-  .ord .top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
-  .ord dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px;margin-bottom:10px}
-  .ord dt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);padding-top:2px}
-  .ord dd{color:var(--text-light);word-break:break-word}
-  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-  .tab{background:var(--panel);border:1px solid var(--line);color:var(--grey);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 11px;border-radius:var(--r);cursor:pointer}
-  .tab[aria-selected="true"]{border-color:var(--seal);color:var(--text-light)}
-  .switch{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);padding:13px;border-radius:var(--r);margin-bottom:16px}
-  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--free);color:var(--text-light);padding:11px 18px;border-radius:var(--r);font-size:14px;z-index:50;max-width:90vw;text-align:center}
-  .toast[hidden]{display:none}
-  footer{padding:32px 0;color:var(--grey);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  @media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
-  [hidden] { display: none !important; }
-  #faq-1, #faq-2, #faq-3, #faq-4, #faq-5, #faq-6 { display: block; }
-    @keyframes slideIn{ from{ transform:translateX(400px); opacity:0; } to{ transform:translateX(0); opacity:1; } }
-</style>
+    .error { color: var(--accent); font-size: 13px; margin-top: 10px; }
+    .hint { color: var(--grey); font-size: 13px; }
+    .mono { font-family: monospace; }
+    
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 15px 20px;
+      z-index: 1000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border-left: 4px solid var(--accent);
+      font-size: 14px;
+    }
+    
+    .faq-item { border-bottom: 1px solid var(--border); padding: 15px 0; }
+    .faq-toggle { background: none; border: none; width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center; color: var(--text); font-size: 15px; font-weight: bold; cursor: pointer; padding: 0; }
+    .faq-content { color: var(--grey); font-size: 14px; line-height: 1.6; margin-top: 10px; }
+  </style>
 </head>
 <body>
 
-<header class="hero">
-  <button id="theme-toggle" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;padding:8px" title="Basculer le thème">🌙</button>
-  <div class="wrap">
-    <div class="seal">ART<br>IS<br>WAR</div>
-    <p class="eyebrow">Optimisation audio · Session à distance</p>
-    <h1>Art is <em>War</em></h1>
-    <p class="lead">Je règle ton son pour que tu <b>entendes les pas avant de les voir</b>. Session en direct sur ton PC, ton casque, ta config. 45 minutes.</p>
-    <div class="row">
-      <a class="btn" href="#planning">Choisir un créneau</a>
-      <span class="price-tag"><span class="amt">Gratuit</span><span class="lbl">Optimisation son offerte</span></span>
+  <header>
+    <a href="#" class="logo">Kimimaro<span>FPS</span></a>
+    <div class="nav-links">
+      <a href="#planning">Créneaux</a>
+      <a href="#suivi">Suivi</a>
+      <a href="#avis">Avis</a>
+      <a href="#faq">FAQ</a>
+      <button id="theme-toggle" class="btn-secondary" style="padding: 6px 10px;">🌙</button>
     </div>
-    <svg class="eq" viewBox="0 0 900 74" preserveAspectRatio="none" aria-hidden="true">
-      <path class="ghost" d="M0,37 L900,37"/><path id="curve" d="M0,37 L900,37"/>
-    </svg>
-  </div>
-</header>
+  </header>
 
-<section>
-  <div class="wrap">
-    <p class="eyebrow">Résultats</p>
-    <h2>Avant / Après optimisation</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;margin:40px 0">
-      <div>
-        <div style="background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:24px;text-align:center">
-          <div style="font-size:48px;margin-bottom:16px">📉</div>
-          <h3 style="margin:0 0 12px;font-size:18px;text-transform:uppercase">Avant</h3>
-          <p style="color:var(--grey);margin:0;font-size:14px">
-            ✗ Son faible<br>
-            ✗ Bruits parasites<br>
-            ✗ Casque non optimisé<br>
-            ✗ EQ par défaut
-          </p>
-        </div>
-      </div>
-      <div>
-        <div style="background:var(--panel);border:2px solid var(--free);border-radius:2px;padding:24px;text-align:center">
-          <div style="font-size:48px;margin-bottom:16px">📈</div>
-          <h3 style="margin:0 0 12px;font-size:18px;text-transform:uppercase;color:var(--free)">Après</h3>
-          <p style="color:var(--grey);margin:0;font-size:14px">
-            ✓ Son cristallin<br>
-            ✓ Isolation active<br>
-            ✓ Calibrage précis<br>
-            ✓ EQ sur mesure
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <p class="eyebrow">Le protocole</p>
-    <h2>Trois étapes, dans cet ordre</h2>
-    <div class="steps">
-      <div class="step"><span class="num">01</span><h3>Réserve</h3><p>Tu prends un créneau vert et tu remplis ta fiche. Rien à payer maintenant : tu reçois un numéro de commande.</p></div>
-      <div class="step"><span class="num">02</span><h3>Installe AnyDesk</h3><p>Avant le rendez-vous. Le jour J, je prends la main sur ton PC et j'optimise ton son avec toi.</p></div>
-      <div class="step"><span class="num">03</span><h3>C'est gratuit !</h3><p>Aucun paiement. Profite d'une optimisation son gratuite offerte par KimimaroFPS.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="planning">
-  <div class="wrap">
-    <p class="eyebrow">Planning</p>
-    <h2>Créneaux</h2>
-
-    <div class="money">
-      <div>
-        <p><b>Aucun paiement.</b> Cette optimisation son est <b>totalement gratuite</b>. Profite simplement du service offert par KimimaroFPS. <a href="remboursement.html" style="color:var(--seal-hi)">Plus d'infos</a>.</p>
-      </div>
-    </div>
-
-    <div class="banner" id="away-banner" hidden><span id="away-text"></span></div>
-    <p class="legend"><span><span class="dot g"></span>Libre</span><span><span class="dot r"></span>Réservé</span></p>
-    <div id="slots-container"><p class="status">Chargement du planning…</p></div>
-
-    <div id="booking" class="card" hidden>
-      <div class="selected">
-        <span class="when" id="sel-when"></span>
-        <button class="btn ghost sm" type="button" id="cancel-sel">Changer de créneau</button>
-      </div>
-
-      <div class="field">
-        <label for="f-pseudo">Pseudo Discord <span class="req">*</span></label>
-        <input type="text" id="f-pseudo" placeholder="@pseudo" autocomplete="off">
-      </div>
-      <div class="field">
-        <label for="f-casque">Casque <span class="req">*</span></label>
-        <input type="text" id="f-casque" placeholder="Ex : HyperX Cloud II, DT 990 250 ohm…" autocomplete="off">
-      </div>
-      <div class="field">
-        <label for="f-materiel">Carte son / DAC / ampli</label>
-        <input type="text" id="f-materiel" placeholder="Ex : carte mère, GO XLR, Creative G6, aucun…" autocomplete="off">
-      </div>
-      <div class="field">
-        <label for="f-jeu">Jeu principal</label>
-        <select id="f-jeu">
-          <option>Call of Duty / Warzone</option><option>Counter-Strike 2</option><option>Valorant</option>
-          <option>Apex Legends</option><option>Fortnite</option><option>Rainbow Six Siege</option><option>Autre</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="f-mail">Adresse mail <span class="req">*</span></label>
-        <input type="email" id="f-mail" placeholder="toi@mail.com" autocomplete="email">
-        <p class="hint">C'est là que partent la confirmation et la validation de ta commande.</p>
-      </div>
-      <div class="field">
-        <label>AnyDesk <span class="req">*</span></label>
-        <div class="anydesk">
-          <span class="hint" style="margin:0">Installe AnyDesk avant la session, lance-le, note le numéro affiché.</span>
-          <a class="btn ghost sm" id="anydesk-link" href="https://anydesk.com/fr/downloads" target="_blank" rel="noopener">Télécharger AnyDesk</a>
-        </div>
-        <input type="text" id="f-anydesk" placeholder="Adresse AnyDesk (9 chiffres) — si tu l'as déjà" autocomplete="off">
-        <label class="check" style="margin-top:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--text-light)">
-          <input type="checkbox" id="f-ok-anydesk">
-          <span>Je confirme qu'AnyDesk sera installé et ouvert au moment du rendez-vous.</span>
-        </label>
-      </div>
-      <div class="field">
-        <label for="f-notes">Précisions</label>
-        <textarea id="f-notes" placeholder="Ce qui te dérange : sons plats, pas inaudibles, saturation, casque trop faible…"></textarea>
-      </div>
-      <label class="check" style="text-transform:none;letter-spacing:0;font-weight:400;margin-bottom:18px">
-        <input type="checkbox" id="f-ok-price">
-        <span>J'ai compris : le service est gratuit, aucun paiement requis.</span>
-      </label>
-
-      <button class="btn" id="submit-btn" type="button">Réserver mon créneau</button>
-      <p class="error" id="form-error"></p>
-    </div>
-
-    <div id="done" class="card done" hidden>
-      <h3>Créneau réservé</h3>
-      <p class="ref" id="done-ref"></p>
-      <p class="mono" id="done-when" style="margin-bottom:12px"></p>
-      <p style="color:var(--grey);max-width:50ch;margin:0 auto 18px">Un mail de confirmation vient de partir. Installe AnyDesk d'ici là. Le service est gratuit, aucun paiement requis.</p>
-      <button class="btn ghost" id="new-booking" type="button">Réserver un autre créneau</button>
-    </div>
-  </div>
-</section>
-
-<section class="wrap" style="margin:40px 0">
-  <div style="max-width:960px;margin:0 auto">
-  <h2 style="margin-bottom:24px">Avis clients</h2>
-  
-  <div id="reviews-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:40px"></div>
-  
-  <div style="max-width:500px;margin:0 auto">
-    <div class="card">
-      <h3 style="margin:0 0 20px;font-size:18px;text-transform:uppercase;letter-spacing:1px">Laisse ton avis</h3>
-      
-      <div class="field">
-        <label for="review-ref">Numéro de commande</label>
-        <input type="text" id="review-ref" placeholder="AIW-0001">
-      </div>
-      
-      <div class="field">
-        <label for="review-pseudo">Pseudo</label>
-        <input type="text" id="review-pseudo" placeholder="Ton pseudo Discord">
-      </div>
-      
-      <div class="field">
-        <label for="review-rating">Note</label>
-        <select id="review-rating">
-          <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-          <option value="4">⭐⭐⭐⭐ Très bon</option>
-          <option value="3">⭐⭐⭐ Bon</option>
-          <option value="2">⭐⭐ OK</option>
-          <option value="1">⭐ Pas satisfait</option>
-        </select>
-      </div>
-      
-      <div class="field">
-        <label for="review-comment">Ton commentaire</label>
-        <textarea id="review-comment" placeholder="Partage ton retour..." style="min-height:80px;resize:vertical"></textarea>
-      </div>
-      
-      <button class="btn" id="review-submit" type="button" style="width:100%">Envoyer mon avis</button>
-      <p class="error" id="review-error" style="margin-top:8px;text-align:center"></p>
-    </div>
-  </div>
-</section>
-<section id="suivi">
-  <div class="wrap">
-    <p class="eyebrow">Suivi</p>
-    <h2>Où en est ma commande&nbsp;?</h2>
-    <div class="row">
-      <input type="text" id="track-ref" placeholder="AIW-0001" style="max-width:280px">
-      <button class="btn ghost" id="track-btn" type="button">Vérifier</button>
-    </div>
-    <div id="track-result" style="margin-top:16px"></div>
-  </div>
-</section>
-
-
-
-
-
-
-
-
-<section class="wrap" style="margin:40px 0">
-  <h2 style="margin-bottom:24px">Questions fréquentes</h2>
-  <div style="display:grid;gap:12px">
-    <div class="card" style="padding:0">
-      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-1">
-        <span>Quel est le tarif ?</span>
-        <span style="color:var(--grey)">+</span>
-      </button>
-      <div id="faq-1" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">Le service est totalement gratuit. Aucun paiement à la réservation ni au rendez-vous.</div>
-    </div>
+  <div class="container">
     
-    <div class="card" style="padding:0">
-      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-2">
-        <span>Comment ça se passe concrètement ?</span>
-        <span style="color:var(--grey)">+</span>
-      </button>
-      <div id="faq-2" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">Tu réserves un créneau, tu installes AnyDesk, tu me rejoins sur Discord. Au début du rendez-vous, nous démarrons l'optimisation audio de ton casque. Aucun paiement requis. Durée : 45 minutes.</div>
+    <!-- HERO -->
+    <section class="hero">
+      <h1>Optimisation Son Esport</h1>
+      <p>Libère le plein potentiel de ton casque et de ta configuration audio pour les jeux compétitifs (Call of Duty, Warzone, CDL).</p>
+      <a href="#planning"><button>Voir les créneaux</button></a>
+    </section>
+
+    <div id="away-banner" class="card" style="border-color: var(--gold);" hidden>
+      <strong style="color: var(--gold);">Information importante :</strong>
+      <p id="away-text" style="margin: 8px 0 0; color: var(--grey);"></p>
     </div>
 
-    <div class="card" style="padding:0">
-      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-3">
-        <span>Qu'est-ce qu'AnyDesk ?</span>
-        <span style="color:var(--grey)">+</span>
-      </button>
-      <div id="faq-3" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">C'est un logiciel de prise de contrôle à distance, comme TeamViewer. Je peux accéder à ton ordi pour optimiser tes réglages audio. C'est gratuit et sécurisé. <a href="https://anydesk.com/fr/downloads" style="color:var(--seal);text-decoration:none">Télécharge-le ici</a>.</div>
-    </div>
+    <!-- PLANNING -->
+    <section id="planning" style="margin-bottom: 50px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin: 0; text-transform: uppercase; font-size: 20px;">1. Choisis ton créneau</h2>
+        <span id="foot-count" class="hint">Chargement...</span>
+      </div>
+      <div id="slots-container" class="slots-container">
+        <!-- Rempli dynamiquement -->
+      </div>
+    </section>
 
-    <div class="card" style="padding:0">
-      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-4">
-        <span>Je peux annuler ma réservation ?</span>
-        <span style="color:var(--grey)">+</span>
-      </button>
-      <div id="faq-4" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">Oui, tu recevras un lien d'annulation dans le mail de confirmation. Tu peux annuler jusqu'à quelques heures avant. Si tu annules APRÈS avoir payé, il n'y a pas de remboursement (paiement au début = engagement).</div>
-    </div>
+    <!-- FORMULAIRE DE RÉSERVATION -->
+    <section id="booking" class="card" hidden style="margin-bottom: 50px; border-color: var(--accent);">
+      <h2 style="margin-top: 0; text-transform: uppercase; font-size: 20px;">2. Tes informations</h2>
+      <p class="hint">Rendez-vous sélectionné : <strong id="sel-when" style="color: var(--text);">—</strong></p>
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="form-group">
+          <label>Pseudo Discord *</label>
+          <input type="text" id="f-pseudo" placeholder="Ex: KimimaroFPS">
+        </div>
+        <div class="form-group">
+          <label>Modèle de Casque *</label>
+          <input type="text" id="f-casque" placeholder="Ex: Logitech G Pro X">
+        </div>
+      </div>
 
-    <div class="card" style="padding:0">
-      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-5">
-        <span>Quels casques vous optimisez ?</span>
-        <span style="color:var(--grey)">+</span>
-      </button>
-      <div id="faq-5" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">N'importe lequel ! Casque gaming, casque audio, écouteurs, tout ce qui peut se brancher à ton PC. On optimise l'EQ, les drivers, les réglages du jeu, etc.</div>
-    </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="form-group">
+          <label>Adresse Mail (pour la confirmation) *</label>
+          <input type="email" id="f-mail" placeholder="tonmail@domaine.com">
+        </div>
+        <div class="form-group">
+          <label>Jeu principal *</label>
+          <select id="f-jeu">
+            <option value="Warzone / BO7">Call of Duty (Warzone / BO7 / CDL)</option>
+            <option value="Autre Esport">Autre jeu Esport (Valorant, CS2, etc.)</option>
+          </select>
+        </div>
+      </div>
 
-    <div class="card" style="padding:0">
-      <button style="width:100%;background:none;border:none;text-align:left;padding:16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center" class="faq-toggle" data-target="faq-6">
-        <span>Après la session, je peux te recontacter ?</span>
-        <span style="color:var(--grey)">+</span>
-      </button>
-      <div id="faq-6" hidden style="padding:16px;border-top:1px solid var(--line);color:#FFFFFF;line-height:1.6;font-size:15px">Bien sûr ! Rejoine le Discord, j'y réponds aux questions. Si tu as besoin d'une retouche, on peut envisager une deuxième session.</div>
-    </div>
+      <div class="form-group">
+        <label>Configuration Matérielle (Optionnel)</label>
+        <input type="text" id="f-materiel" placeholder="Ex: Carte mère, DAC/Ampli éventuel...">
+      </div>
+
+      <div class="form-group">
+        <label>ID AnyDesk (Optionnel)</label>
+        <input type="text" id="f-anydesk" placeholder="Ex: 1 234 567 890">
+      </div>
+
+      <div class="form-group">
+        <label>Notes / Problèmes de son rencontrés</label>
+        <textarea id="f-notes" rows="3" placeholder="Dis-moi ce qui ne va pas avec ton son actuel..."></textarea>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="f-ok-anydesk">
+        <label for="f-ok-anydesk">Je confirme avoir installé et prêt AnyDesk pour le rendez-vous (<a href="https://anydesk.com/fr/downloads" target="_blank" id="anydesk-link" style="color: var(--accent);">Télécharger</a>).</label>
+      </div>
+      
+      <div class="checkbox-group">
+        <input type="checkbox" id="f-ok-price">
+        <label for="f-ok-price">Je confirme avoir compris que cette session d'optimisation est 100% gratuite.</label>
+      </div>
+
+      <div id="form-error" class="error"></div>
+
+      <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <button id="submit-btn">Confirmer la réservation</button>
+        <button id="cancel-sel" class="btn-secondary">Annuler</button>
+      </div>
+    </section>
+
+    <!-- SECTION SUCCÈS -->
+    <section id="done" class="card" hidden style="margin-bottom: 50px; border-color: var(--green); text-align: center; padding: 40px;">
+      <h2 style="color: var(--green); text-transform: uppercase; margin-top: 0;">Réservation validée !</h2>
+      <p>Ton numéro de commande : <strong id="done-ref" class="mono" style="font-size: 18px; color: var(--gold);">—</strong></p>
+      <p class="hint">Prévu le : <span id="done-when" style="color: var(--text);">—</span></p>
+      <p style="max-width: 500px; margin: 20px auto; color: var(--grey); line-height: 1.6;">Un e-mail récapitulatif t'a été envoyé. Assure-toi d'avoir AnyDesk ouvert à l'heure du rendez-vous et rejoins-moi sur Discord.</p>
+      <button id="new-booking" class="btn-secondary">Prendre un autre rendez-vous</button>
+    </section>
+
+    <!-- SUIVI DE COMMANDE -->
+    <section id="suivi" class="card" style="margin-bottom: 50px;">
+      <h2 style="margin-top: 0; text-transform: uppercase; font-size: 20px;">Suivre une réservation</h2>
+      <p class="hint">Entre ton numéro de commande (ex: AIW-0001) pour vérifier l'état de ton rendez-vous.</p>
+      <div style="display: flex; gap: 10px; margin-top: 15px;">
+        <input type="text" id="track-ref" placeholder="AIW-XXXX" style="background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px; flex: 1; text-transform: uppercase;">
+        <button id="track-btn">Vérifier</button>
+      </div>
+      <div id="track-result" style="margin-top: 15px;"></div>
+    </section>
+
+    <!-- AVIS CLIENTS -->
+    <section id="avis" class="card" style="margin-bottom: 50px;">
+      <h2 style="margin-top: 0; text-transform: uppercase; font-size: 20px;">Avis de la communauté</h2>
+      <div id="reviews-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; margin-top: 20px;">
+        <!-- Chargé dynamiquement -->
+      </div>
+      
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 30px 0;">
+      
+      <h3 style="font-size: 16px; text-transform: uppercase;">Laisser un avis (après session)</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;" class="form-group">
+        <div>
+          <label>Numéro de commande *</label>
+          <input type="text" id="review-ref" placeholder="AIW-XXXX">
+        </div>
+        <div>
+          <label>Ton Pseudo *</label>
+          <input type="text" id="review-pseudo" placeholder="Pseudo">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Note *</label>
+        <select id="review-rating">
+          <option value="5">⭐⭐⭐⭐⭐ (Parfait)</option>
+          <option value="4">⭐⭐⭐⭐ (Très bien)</option>
+          <option value="3">⭐⭐⭐ (Correct)</option>
+          <option value="2">⭐⭐ (Décevant)</option>
+          <option value="1">⭐ (Mauvais)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Commentaire *</label>
+        <textarea id="review-comment" rows="2" placeholder="Ton avis sur l'optimisation son..."></textarea>
+      </div>
+      <div id="review-error" class="error"></div>
+      <button id="envoyer-avis" style="margin-top: 10px;">Envoyer mon avis</button>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="card">
+      <h2 style="margin-top: 0; text-transform: uppercase; font-size: 20px;">Foire Aux Questions (FAQ)</h2>
+      
+      <div class="faq-item">
+        <button class="faq-toggle" data-target="faq-1">
+          <span>Est-ce vraiment 100% gratuit ?</span>
+          <span>+</span>
+        </button>
+        <div id="faq-1" class="faq-content" hidden>
+          Oui, absolument. C'est une démarche de partage d'expertise et d'optimisation pour la communauté esport, sans aucun frais caché.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-toggle" data-target="faq-2">
+          <span>De quoi ai-je besoin pour la session ?</span>
+          <span>+</span>
+        </button>
+        <div id="faq-2" class="faq-content" hidden>
+          Tu as besoin d'un casque branché, d'une connexion internet stable, du logiciel AnyDesk installé et prêt, et de quoi me parler sur Discord.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-toggle" data-target="faq-3">
+          <span>Comment annuler ou modifier mon créneau ?</span>
+          <span>+</span>
+        </button>
+        <div id="faq-3" class="faq-content" hidden>
+          Tu peux utiliser le lien d'annulation personnel présent dans l'e-mail de confirmation que tu as reçu.
+        </div>
+      </div>
+    </section>
+
   </div>
-  </div>
-</section>
 
-</section>
-  <span>KimimaroFPS — ART IS WAR — Service gratuit ·
-    <a href="cgv.html" style="color:var(--grey)">CGV</a> ·
-    <a href="remboursement.html" style="color:var(--grey)">Remboursement</a> ·
-    <a href="mentions-legales.html" style="color:var(--grey)">Mentions légales</a></span>
-  <span class="mono" id="foot-count"></span>
-</footer>
+  <div id="toast" hidden></div>
 
-<div class="toast" id="toast" hidden></div>
+  <!-- SCRIPT JS PRINCIPAL ET SÉCURISÉ -->
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 
-<script>
-/* Filet de sécurité : affiche toute erreur à l'écran au lieu de planter en silence */
-window.addEventListener("error", e => {
-  const box = document.getElementById("slots-container");
-  if(box) box.innerHTML = `<div class="empty" style="border-color:#C8322B;color:#E2453D;text-align:left">
-    <b>Erreur technique :</b><br><span style="font-family:monospace;font-size:13px">${(e.message||"")} ${(e.filename||"")}</span></div>`;
-});
-</script>
-<script type="module">
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
+    const CONFIG = {
+      supabaseUrl: "https://taqdcytecvabwyanyptb.supabase.co",
+      supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhcWRjeXRlY3ZhYnd5YW55cHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4NTYwMjAsImV4cCI6MjA5OTQzMjAyMH0.MwAgQTIqxuTzTUpd-l_sTiLEmU9bjRPzwR-PPp8vCJU",
+      siteUrl: "https://kimimarocs.github.io/Art_is_war_opti",
+      price: 0,
+      brand: "KimimaroFPS — ART IS WAR",
+      sessionMinutes: 45,
+      discord: "https://discord.gg/kimimaro1982",
+      contactMail: "nouveaupc1506@gmail.com",
+      anydeskUrl: "https://anydesk.com/fr/downloads",
+      emailjs: { serviceId:"service_ej7v54v", templateId:"template_mx7nmeg", publicKey:"UXN3v6g1hQVE5bc13" }
+    };
 
-/* ==========================================================
-   RÉGLAGES
-   Ces clés sont PUBLIQUES par nature : la clé "anon" de Supabase
-   est faite pour être exposée. La sécurité vient des règles RLS
-   (voir INSTALLATION.md). Ton mot de passe admin n'est jamais ici.
-   ========================================================== */
-const CONFIG = {
-  supabaseUrl: "https://taqdcytecvabwyanyptb.supabase.co",
-  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhcWRjeXRlY3ZhYnd5YW55cHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4NTYwMjAsImV4cCI6MjA5OTQzMjAyMH0.MwAgQTIqxuTzTUpd-l_sTiLEmU9bjRPzwR-PPp8vCJU",
-  siteUrl: "https://kimimarocs.github.io/Art_is_war_opti",
-  price: 0,
-  brand: "KimimaroFPS — ART IS WAR",
-  sessionMinutes: 45,
-  paypalMe: "KimimaroFPS",
-  discord: "https://discord.gg/kimimaro1982",
-  contactMail: "nouveaupc1506@gmail.com",
-  anydeskUrl: "https://anydesk.com/fr/downloads",
-  emailjs: { serviceId:"service_ej7v54v", templateId:"template_mx7nmeg", publicKey:"UXN3v6g1hQVE5bc13" }
-};
-/* ========================================================== */
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+    const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
+    const sb = DEMO ? null : createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
 
-const $ = id => document.getElementById(id);
-const $$ = sel => document.querySelectorAll(sel);
-const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
-const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
-const sb = DEMO ? null : createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
+    let slots = [], orders = [], settings = { available:true, away_message:"" };
+    let selectedId = null, isAdmin = false, reviews = [];
 
-let slots = [], orders = [], settings = { available:true, away_message:"" };
-let selectedId = null, isAdmin = false, filter = "pending", reviews = [];
+    // Gestion du thème sombre / clair
+    const initTheme = () => {
+      const theme = localStorage.getItem("theme") || "light";
+      if(theme === "dark") document.documentElement.classList.add("dark");
+      updateThemeButton();
+    };
 
-// Toggle thème sombre
-const initTheme = () => {
-  const theme = localStorage.getItem("theme") || "light";
-  if(theme === "dark") document.documentElement.classList.add("dark");
-  updateThemeButton();
-};
-
-const updateThemeButton = () => {
-  const isDark = document.documentElement.classList.contains("dark");
-  $("theme-toggle").textContent = isDark ? "☀️" : "🌙";
-};
-
-$("theme-toggle").onclick = () => {
-  const isDark = document.documentElement.classList.toggle("dark");
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-  updateThemeButton();
-};
-
-// Avis clients
-async function fetchReviews(){
-  if(DEMO){ return; }
-  const { data } = await sb.from("reviews").select("*").eq("approved", true).order("created_at", {ascending: false});
-  reviews = data || [];
-  renderReviews();
-}
-
-// Afficher les avis
-function renderReviews(){
-  const box = $("reviews-list");
-  if(!reviews.length) return box.innerHTML = `<p class="hint" style="grid-column:1/-1">Aucun avis pour le moment. Sois le premier !</p>`;
-  box.innerHTML = reviews.map(r => `<div class="card" style="padding:12px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <div>
-        <strong>${esc(r.pseudo)}</strong>
-        <span style="font-size:12px;color:var(--grey);margin-left:6px">#${esc(r.order_ref)}</span>
-      </div>
-      <span>${"⭐".repeat(r.rating)}</span>
-    </div>
-    <p style="margin:0;font-size:14px;color:var(--grey)">${esc(r.comment)}</p>
-  </div>`).join("");
-}
-
-// Soumettre un avis
-$("review-submit").onclick = async () => {
-  const ref = $("review-ref").value.trim().toUpperCase();
-  const pseudo = $("review-pseudo").value.trim();
-  const rating = parseInt($("review-rating").value);
-  const comment = $("review-comment").value.trim();
-  const err = $("review-error");
-  
-  // Validations
-  if(!ref || ref.length < 5) return err.textContent = "Numéro de commande invalide (format : AIW-0001)";
-  if(!pseudo || pseudo.length < 2) return err.textContent = "Pseudo trop court";
-  if(!comment || comment.length < 5) return err.textContent = "Commentaire trop court";
-  
-  // Vérifier que la commande existe et est terminée
-  if(DEMO){ toast("Mode démo : les avis ne sont pas sauvegardés"); return; }
-  
-  const order = orders.find(o => o.ref === ref);
-  if(!order) return err.textContent = `Commande ${ref} introuvable`;
-  if(order.status !== "done") return err.textContent = `La session ${ref} n'est pas terminée ou n'existe pas`;
-  
-  err.textContent = "";
-  
-  const { error } = await sb.from("reviews").insert({ order_ref: ref, pseudo, rating, comment });
-  if(error) return err.textContent = "Erreur : "+error.message;
-  
-  toast("Merci ! Ton avis sera publié après validation");
-  $("review-ref").value = "";
-  $("review-pseudo").value = "";
-  $("review-comment").value = "";
-  $("review-rating").value = "5";
-};
-
-$("anydesk-link").href = CONFIG.anydeskUrl;
-
-(function curve(){
-  const p=[];
-  for(let x=0;x<=900;x+=10){
-    const sub=24*Math.exp(-Math.pow((x-230)/90,2)), mid=28*Math.exp(-Math.pow((x-520)/120,2)), hi=9*Math.exp(-Math.pow((x-820)/110,2));
-    p.push(`${x},${(37+sub-mid-hi).toFixed(1)}`);
-  }
-  $("curve").setAttribute("d","M"+p.join(" L"));
-})();
-
-const toast = (m, dur = 4000) => { const t=$("toast"); t.textContent=m; t.hidden=false; setTimeout(()=>t.hidden=true,dur); };
-const fmtDay  = iso => new Date(iso).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
-const fmtTime = iso => new Date(iso).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
-const fmtFull = iso => `${fmtDay(iso)} à ${fmtTime(iso)}`;
-
-const STATUS = {
-  pending:  {label:"Réservation reçue", cls:"p-pending"},
-  confirmed:{label:"Validée",           cls:"p-confirmed"},
-  done:     {label:"Terminée & payée",  cls:"p-done"},
-  cancelled:{label:"Annulée",           cls:"p-cancelled"}
-};
-const pill = s => `<span class="pill ${STATUS[s].cls}">${STATUS[s].label}</span>`;
-
-/* ==========================================================
-   DONNÉES — Supabase, ou mode démo local (aperçu sans base)
-   ========================================================== */
-const demo = {
-  key: "aiw-demo",
-  async get(){ try{ const r = await window.storage.get(this.key,true); return r?.value ? JSON.parse(r.value) : null; }catch(e){ return null; } },
-  async set(d){ try{ await window.storage.set(this.key, JSON.stringify(d), true); }catch(e){} }
-};
-
-async function fetchAll(){
-  if(DEMO){
-    const d = await demo.get() || { slots:[], orders:[], settings:{available:true,away_message:""}, counter:1 };
-    slots = d.slots; orders = d.orders; settings = d.settings;
-    return;
-  }
-  const [s,o,st] = await Promise.all([
-    sb.from("slots").select("*").order("start_at"),
-    isAdmin ? sb.from("orders").select("*").order("created_at",{ascending:false}) : Promise.resolve({data:[]}),
-    sb.from("settings").select("*").eq("id",1).single()
-  ]);
-  slots = s.data || []; orders = o.data || [];
-  if(st.data) settings = st.data;
-}
-async function demoSave(){
-  const d = await demo.get() || { counter:1 };
-  await demo.set({ slots, orders, settings, counter: d.counter || 1 });
-}
-
-/* ==========================================================
-   MAILS (EmailJS)
-   ========================================================== */
-const shell = (title, body) => `<div style="background:#0C0D10;padding:28px 0;font-family:Arial,Helvetica,sans-serif">
-<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#15171C;border:1px solid #2C313B">
-<tr><td style="padding:26px 28px 0">
-  <p style="margin:0;color:#8B919C;font-size:11px;letter-spacing:3px">${CONFIG.brand}</p>
-  <h1 style="margin:8px 0 0;color:#E8E2D6;font-size:26px;text-transform:uppercase">${title}</h1>
-  <div style="height:3px;width:46px;background:#C8322B;margin:14px 0 0"></div>
-</td></tr>
-<tr><td style="padding:20px 28px 28px;color:#C9C4B8;font-size:15px;line-height:1.65">${body}</td></tr>
-<tr><td style="padding:16px 28px;border-top:1px solid #2C313B;color:#6B7079;font-size:12px">
-  ${CONFIG.brand} — optimisation son · <a href="${CONFIG.discord}" style="color:#C8322B;text-decoration:none">Discord</a>
-</td></tr></table></div>`;
-const box = i => `<table width="100%" cellpadding="0" cellspacing="0" style="background:#1B1E25;border-left:3px solid #C8322B;margin:18px 0"><tr><td style="padding:14px 16px;color:#E8E2D6;font-size:14px;line-height:1.8">${i}</td></tr></table>`;
-
-const cancelUrl = o => `${CONFIG.siteUrl}/annuler.html?ref=${encodeURIComponent(o.ref)}&t=${encodeURIComponent(o.cancel_token || "")}`;
-const cancelBlock = o => `
-  <table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0 0;border-top:1px solid #2C313B">
-    <tr><td style="padding:18px 0 0">
-      <p style="margin:0 0 10px;color:#8B919C;font-size:13px">Un empêchement ? Tu peux annuler toi-même, sans frais, tant que la session n'a pas commencé.</p>
-      <a href="${cancelUrl(o)}" style="display:inline-block;background:transparent;border:1px solid #C8322B;color:#E2453D;text-decoration:none;padding:10px 18px;font-size:13px;letter-spacing:1px;text-transform:uppercase">Annuler mon rendez-vous</a>
-      <p style="margin:10px 0 0;color:#6B7079;font-size:12px">Ce lien est personnel : ne le transmets à personne.</p>
-    </td></tr></table>`;
-
-const mailReceived = (o,s) => ({
-  subject:`Réservation ${o.ref} — ${fmtDay(s.start_at)}`,
-  html: shell("Merci pour ta commande",`
-    <p style="margin:0 0 12px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
-    <p style="margin:0 0 12px"><b style="font-size:18px;color:#C9A227">Ton numéro de commande : ${o.ref}</b></p>
-    <p style="margin:0 0 12px;color:#8B919C">Garde ce numéro pour pouvoir laisser ton avis après la session.</p>
-    <p style="margin:0 0 6px"><b style="color:#E8E2D6">Récapitulatif</b></p>
-    ${box(`<b style="color:#C9A227">${o.ref}</b><br>
-      Rendez-vous : <b>${fmtFull(s.start_at)}</b><br>
-      Durée : ${CONFIG.sessionMinutes} minutes<br>
-      Casque : ${esc(o.casque)}<br>
-      Tarif : <b>Gratuit</b>`)}
-    <p style="margin:0 0 6px"><b style="color:#E8E2D6">Important : comment ça se passe</b></p>
-    <p style="margin:0">Ce service d'optimisation son est <b>totalement gratuit</b>. Aucun paiement requis. Simplement du partage d'expertise.</p>
-    <p style="margin:16px 0 0"><b style="color:#E8E2D6">Avant le rendez-vous</b></p>
-    <p style="margin:0">Installe AnyDesk et laisse-le ouvert : <a href="${CONFIG.anydeskUrl}" style="color:#C8322B">télécharger AnyDesk</a>. Rejoins-moi sur Discord à l'heure prévue.</p>
-    ${cancelBlock(o)}`)
-});
-const mailConfirmed = (o,s) => ({
-  subject:`Commande ${o.ref} — validée`,
-  html: shell("Ta commande est validée",`
-    <p style="margin:0 0 6px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
-    <p style="margin:0">Ta commande est <b style="color:#3FA65C">validée</b>. Merci pour ta confiance et ta fidélité.</p>
-    ${box(`<b style="color:#C9A227">Commande ${o.ref}</b><br>
-      Rendez-vous confirmé : <b>${fmtFull(s.start_at)}</b><br>
-      Durée : ${CONFIG.sessionMinutes} minutes<br>
-      Tarif : <b>Gratuit</b>`)}
-    <p style="margin:0 0 6px"><b style="color:#E8E2D6">Le jour J</b></p>
-    <p style="margin:0 0 14px">AnyDesk ouvert, casque branché, jeu lancé. Je prends la main, on règle ton son ensemble, et tu repars avec ta config.</p>
-    <p style="margin:0 0 6px"><b style="color:#E8E2D6">Un souci, une question ?</b></p>
-    <p style="margin:0">Écris-moi sur <a href="${CONFIG.discord}" style="color:#C8322B">Discord</a> ou à ${CONFIG.contactMail}. J'ai moi aussi un planning : je ne réponds pas toujours dans la minute, mais je réponds toujours.</p>
-    <p style="margin:18px 0 0;color:#8B919C;font-size:14px">À très vite. — ${CONFIG.brand}</p>
-    ${cancelBlock(o)}`)
-});
-const mailDone = (o,s) => ({
-  subject:`Commande ${o.ref} — session terminée`,
-  html: shell("Session terminée",`
-    <p style="margin:0 0 6px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
-    <p style="margin:0">Ta session du ${fmtFull(s.start_at)} est terminée et le paiement est bien reçu. Ton son est réglé : la config est à toi.</p>
-    <p style="margin:14px 0 0">Si tu changes de casque ou si quelque chose bouge, reviens me voir. Merci pour ta fidélité. — ${CONFIG.brand}</p>`)
-});
-const mailCancelled = (o,s) => ({
-  subject:`Commande ${o.ref} — annulée`,
-  html: shell("Commande annulée",`
-    <p style="margin:0 0 6px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
-    <p style="margin:0">Ta commande <b>${o.ref}</b> du ${fmtFull(s.start_at)} est annulée. Le créneau repasse en vert sur le site.</p>
-    ${o.cancellation_reason ? `<p style="margin:8px 0 0"><b>Raison :</b> ${esc(o.cancellation_reason)}</p>` : ""}
-    <p style="margin:14px 0 0">Des questions ? Écris-moi sur <a href="${CONFIG.discord}" style="color:#C8322B">Discord</a>.</p>`)
-});
-
-const mailReady = () => CONFIG.emailjs.serviceId && CONFIG.emailjs.templateId && CONFIG.emailjs.publicKey;
-async function deliver(to, mail, label){
-  if(!mailReady()){
-    const txt = mail.html.replace(/<br\s*\/?>/gi,"\n").replace(/<\/p>/gi,"\n\n").replace(/<[^>]+>/g,"").replace(/\n{3,}/g,"\n\n").trim();
-    toast("Envoi auto non configuré — ouverture de ta messagerie");
-    window.open(`mailto:${to}?subject=${encodeURIComponent(mail.subject)}&body=${encodeURIComponent(txt)}`,"_blank");
-    return;
-  }
-  try{
-    const r = await fetch("https://api.emailjs.com/api/v1.0/email/send",{
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({
-        service_id: CONFIG.emailjs.serviceId,
-        template_id: CONFIG.emailjs.templateId,
-        user_id: CONFIG.emailjs.publicKey,
-        template_params:{ to_email:to, subject:mail.subject, message_html:mail.html }
-      })
-    });
-    toast(r.ok ? `Mail « ${label} » envoyé` : "Le mail n'est pas parti");
-  }catch(e){ toast("Le mail n'est pas parti"); }
-}
-
-/* ==========================================================
-   PLANNING PUBLIC
-   ========================================================== */
-// Mettre à jour le dashboard de stats
-function updateStats(){
-  const now = new Date();
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  
-  // Sessions "done" ce mois-ci
-  const sessionsDone = orders.filter(o => o.status === "done" && new Date(o.created_at) >= monthStart).length;
-  
-  // Estimé revenue
-  const revenue = sessionsDone * CONFIG.price;
-  
-  // Taux de remplissage
-  const totalSlots = slots.length || 1;
-  const bookedSlots = slots.filter(s => s.status === "booked").length;
-  const fillRate = totalSlots > 0 ? Math.round((bookedSlots / totalSlots) * 100) : 0;
-  
-  // Mettre à jour le HTML
-  const statBox = $("op-stats");
-  if(statBox){
-    statBox.innerHTML = `
-      <div style="text-align:center">
-        <div style="font-size:28px;font-weight:900;color:var(--free)">${sessionsDone}</div>
-        <div style="font-size:12px;color:var(--grey)">Sessions ce mois</div>
-      </div>
-      <div style="text-align:center">
-        <div style="font-size:28px;font-weight:900;color:var(--gold)">${revenue}€</div>
-        <div style="font-size:12px;color:var(--grey)">Estimé ce mois</div>
-      </div>
-      <div style="text-align:center">
-        <div style="font-size:28px;font-weight:900;color:var(--seal)">${fillRate}%</div>
-        <div style="font-size:12px;color:var(--grey)">Taux de remplissage</div>
-      </div>
-    `;
-  }
-}
-
-function render(){
-  const box = $("slots-container"), now = Date.now();
-  const upcoming = slots
-    .filter(s => new Date(s.start_at).getTime() > now - 3600e3)
-    .sort((a,b) => new Date(a.start_at) - new Date(b.start_at));
-  const visible = settings.available ? upcoming.filter(s => s.status !== "closed") : [];
-
-  $("away-banner").hidden = !!settings.available;
-  $("away-text").textContent = settings.away_message || "Réservations fermées pour le moment. Je rouvre des créneaux très vite.";
-
-  const free = visible.filter(s => s.status === "open").length;
-  $("foot-count").textContent = !settings.available ? "réservations fermées"
-    : free ? `${free} créneau${free>1?"x":""} libre${free>1?"s":""}` : "complet";
-
-  if(!visible.length){
-    box.innerHTML = `<div class="empty">${settings.available ? "Aucun créneau ouvert pour le moment. Repasse bientôt." : "Planning fermé."}</div>`;
-  } else {
-    const days = {};
-    visible.forEach(s => { const k = s.start_at.slice(0,10); (days[k] = days[k]||[]).push(s); });
-    box.innerHTML = Object.values(days).map(l => `
-      <div class="day">
-        <div class="day-head"><h3>${fmtDay(l[0].start_at)}</h3>
-          <span>${l.filter(s=>s.status==="open").length} libre(s) / ${l.length}</span></div>
-        <div class="slots">${l.map(s => s.status==="open"
-          ? `<button class="slot free" data-id="${s.id}" aria-pressed="${selectedId===s.id}">${fmtTime(s.start_at)}<span class="tag">LIBRE · ${CONFIG.sessionMinutes} MIN</span></button>`
-          : `<button class="slot taken" disabled>${fmtTime(s.start_at)}<span class="tag">RÉSERVÉ</span></button>`
-        ).join("")}</div>
-      </div>`).join("");
-    box.querySelectorAll(".slot.free").forEach(b => b.addEventListener("click", () => selectSlot(b.dataset.id)));
-  }
-  if(isAdmin && $("op-hours")){ renderHourCheckboxes(); renderOpSlots(); renderHistory(); renderOrders(); updateStats(); }
-}
-
-function selectSlot(id){
-  selectedId = id;
-  const s = slots.find(x => String(x.id) === String(id));
-  $("sel-when").textContent = fmtFull(s.start_at);
-  $("booking").hidden = false; $("done").hidden = true;
-  render();
-  $("booking").scrollIntoView({behavior:"smooth",block:"start"});
-}
-$("cancel-sel").onclick = () => { selectedId=null; $("booking").hidden=true; render(); $("planning").scrollIntoView({behavior:"smooth"}); };
-$("new-booking").onclick = () => { $("done").hidden=true; $("planning").scrollIntoView({behavior:"smooth"}); };
-
-$("submit-btn").onclick = async () => {
-  const err = $("form-error");
-  const pseudo=$("f-pseudo").value.trim(), casque=$("f-casque").value.trim(), mail=$("f-mail").value.trim();
-  if(!selectedId) return err.textContent = "Choisis un créneau vert.";
-  if(!pseudo)     return err.textContent = "Ton pseudo Discord est obligatoire.";
-  if(!casque)     return err.textContent = "Indique ton casque.";
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return err.textContent = "Adresse mail invalide.";
-  if(!$("f-ok-anydesk").checked) return err.textContent = "Confirme l'installation d'AnyDesk.";
-  if(!$("f-ok-price").checked)   return err.textContent = "Confirme que tu as compris le tarif.";
-  err.textContent = ""; $("submit-btn").disabled = true;
-
-  const payload = {
-    p_slot: selectedId, p_pseudo: pseudo, p_casque: casque, p_email: mail,
-    p_materiel: $("f-materiel").value.trim(), p_jeu: $("f-jeu").value,
-    p_anydesk: $("f-anydesk").value.trim(), p_notes: $("f-notes").value.trim()
-  };
-
-  let order = null, slot = slots.find(s => String(s.id) === String(selectedId));
-
-  if(DEMO){
-    const d = await demo.get() || { counter:1 };
-    const counter = d.counter || 1;
-    if(!slot || slot.status !== "open"){ $("submit-btn").disabled=false; return err.textContent = "Ce créneau vient d'être pris."; }
-    order = { ref:`AIW-${String(counter).padStart(4,"0")}`, slot_id:slot.id, status:"pending",
-      pseudo, casque, email:mail, materiel:payload.p_materiel, jeu:payload.p_jeu,
-      anydesk:payload.p_anydesk, notes:payload.p_notes, created_at:new Date().toISOString(),
-      cancel_token: crypto.randomUUID() };
-    orders.unshift(order); slot.status = "booked"; slot.order_ref = order.ref;
-    await demo.set({ slots, orders, settings, counter: counter+1 });
-  } else {
-    // fonction SQL atomique : réserve le créneau ET crée la commande
-    const { data, error } = await sb.rpc("book_slot", payload);
-    $("submit-btn").disabled = false;
-    if(error || !data){ await refresh(); return err.textContent = "Ce créneau vient d'être pris. Choisis-en un autre."; }
-    order = data;
-    await refresh();
-    slot = slots.find(s => String(s.id) === String(order.slot_id)) || slot;
-  }
-
-  $("submit-btn").disabled = false;
-  await deliver(mail, mailReceived(order, slot), "réservation reçue");
-
-  // Toast de confirmation avec numéro AIW
-  toast(`✅ Réservation confirmée ! Numéro : <b style="color:#C9A227">${order.ref}</b>`, 5000);
-
-  $("done-ref").textContent = order.ref;
-  $("done-when").textContent = fmtFull(slot.start_at);
-  $("booking").hidden = true; $("done").hidden = false;
-  ["f-pseudo","f-casque","f-materiel","f-mail","f-anydesk","f-notes"].forEach(i => $(i).value="");
-  $("f-ok-anydesk").checked = $("f-ok-price").checked = false;
-  selectedId = null; render();
-  $("done").scrollIntoView({behavior:"smooth",block:"center"});
-};
-
-/* ---------- suivi ---------- */
-$("track-btn").onclick = async () => {
-  const ref = $("track-ref").value.trim().toUpperCase(), out = $("track-result");
-  let o = null;
-  if(DEMO) o = orders.find(x => x.ref === ref);
-  else { const { data } = await sb.rpc("track_order", { p_ref: ref }); o = data && data[0]; }
-  if(!o) return out.innerHTML = `<p class="error" style="margin:0">Aucune commande à ce numéro.</p>`;
-  const s = slots.find(x => String(x.id) === String(o.slot_id));
-  out.innerHTML = `<div class="ord"><div class="top"><strong class="mono">${esc(o.ref)}</strong>${pill(o.status)}</div>
-    <dl><dt>Rendez-vous</dt><dd>${o.start_at ? fmtFull(o.start_at) : (s ? fmtFull(s.start_at) : "—")}</dd>
-        <dt>Tarif</dt><dd>${CONFIG.price === 0 ? "Gratuit" : CONFIG.price + " €"}</dd></dl></div>`;
-};
-
-/* ==========================================================
-   OPÉRATEUR
-   ========================================================== */
-// Bouton opérateur supprimé (page séparée operateur.html)
-
-$("op-login-btn").onclick = async () => {
-  const e = $("op-error");
-  if(DEMO){
-    isAdmin = true; return;
-  }
-  const { error } = await sb.auth.signInWithPassword({ email:$("op-mail").value.trim(), password:$("op-pass").value });
-  if(error) return e.textContent = "Email ou mot de passe incorrect.";
-  e.textContent = ""; isAdmin = true; $("op-pass").value = "";
-  await refresh();
-};
-$("op-logout").onclick = async () => {
-  if(!DEMO) await sb.auth.signOut();
-  isAdmin = false; $("op-console").hidden = true; $("op-login").hidden = false;
-};
-
-// openConsole supprimée
-
-function renderAvail(){
-  $("avail-label").textContent = settings.available ? "Je suis disponible" : "Je suis indisponible";
-  $("avail-label").style.color = settings.available ? "var(--free)" : "var(--seal)";
-}
-
-async function saveSettings(){
-  if(DEMO) return demoSave();
-  await sb.from("settings").update({ available: settings.available, away_message: settings.away_message }).eq("id",1);
-}
-$("avail-btn").onclick = async () => {
-  settings.available = !settings.available;
-  await saveSettings(); renderAvail(); render();
-  toast(settings.available ? "Réservations ouvertes" : "Réservations fermées");
-};
-$("avail-save").onclick = async () => {
-  settings.away_message = $("avail-msg").value.trim();
-  await saveSettings(); render(); toast("Message enregistré");
-};
-
-// Générer les cases à cocher des heures
-function renderHourCheckboxes(){
-  const box = $("op-hours");
-  const hours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00"];
-  box.innerHTML = hours.map(h => `
-    <label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer;user-select:none">
-      <input type="checkbox" class="hour-check" value="${h}" style="cursor:pointer">
-      <span>${h}</span>
-    </label>
-  `).join("");
-}
-
-$("op-add").onclick = async () => {
-  const d = $("op-date").value, e = $("op-add-error");
-  if(!d) return e.textContent = "Indique une date.";
-  const times = [...$$(".hour-check:checked")].map(cb => cb.value);
-  if(!times.length) return e.textContent = "Coche au moins une heure.";
-  e.textContent = "";
-  const rows = times.map(t => {
-    const [h,m] = t.split(":");
-    return { start_at: `${d}T${h.padStart(2,"0")}:${m}:00`, status:"open" };
-  }).filter(r => !slots.some(s => s.start_at.slice(0,16) === r.start_at.slice(0,16)));
-
-  if(!rows.length){ toast("Ces créneaux existent déjà"); return; }
-  if(DEMO){ rows.forEach(r => slots.push({ id:"s"+Date.now()+Math.random().toString(36).slice(2,5), ...r })); await demoSave(); }
-  else { const { error } = await sb.from("slots").insert(rows); if(error) return e.textContent = "Erreur : "+error.message; await refresh(); }
-  render(); toast(`${rows.length} créneau(x) ouvert(s)`);
-  [...$$(".hour-check")].forEach(cb => cb.checked = false);
-};
-
-$("op-week").onclick = async () => {
-  const today = new Date(), e = $("op-add-error");
-  const times = [...$$(".hour-check:checked")].map(cb => cb.value);
-  if(!times.length) return e.textContent = "Coche au moins une heure.";
-  e.textContent = "";
-  
-  const rows = [];
-  for(let i=0; i<7; i++){
-    const d = new Date(today);
-    d.setDate(d.getDate()+i);
-    const dateStr = d.toISOString().slice(0,10);
-    times.forEach(t => {
-      const [h,m] = t.split(":");
-      const start = `${dateStr}T${h.padStart(2,"0")}:${m}:00`;
-      if(!slots.some(s => s.start_at.slice(0,16) === start.slice(0,16))) {
-        rows.push({ start_at: start, status:"open" });
-      }
-    });
-  }
-  
-  if(!rows.length){ toast("Tous ces créneaux existent déjà"); return; }
-  if(DEMO){ rows.forEach(r => slots.push({ id:"s"+Date.now()+Math.random().toString(36).slice(2,5), ...r })); await demoSave(); }
-  else { const { error } = await sb.from("slots").insert(rows); if(error) return e.textContent = "Erreur : "+error.message; await refresh(); }
-  render(); toast(`${rows.length} créneau(x) ouvert(s) pour la semaine`);
-  [...$$(".hour-check")].forEach(cb => cb.checked = false);
-};
-
-function renderOpSlots(){
-  const box = $("op-slots");
-  const list = [...slots].sort((a,b)=>new Date(a.start_at)-new Date(b.start_at));
-  if(!list.length) return box.innerHTML = `<p class="hint">Aucun créneau.</p>`;
-  const days = {};
-  list.forEach(s => { const k = s.start_at.slice(0,10); (days[k]=days[k]||[]).push(s); });
-  box.innerHTML = Object.values(days).map(l => `
-    <div class="day"><div class="day-head"><h3>${fmtDay(l[0].start_at)}</h3></div>
-    ${l.map(s => `<div class="row" style="justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)">
-      <span class="mono">${fmtTime(s.start_at)}
-        <span style="font-size:11px;margin-left:8px;color:${s.status==="open"?"var(--free)":s.status==="booked"?"var(--seal)":"var(--grey)"}">
-          ${s.status==="open"?"LIBRE":s.status==="booked"?"RÉSERVÉ":"FERMÉ"}</span></span>
-      <span class="row" style="gap:6px">
-        ${s.status!=="booked" ? `<button class="btn ghost sm" data-toggle="${s.id}">${s.status==="open"?"Fermer":"Rouvrir"}</button>` : ""}
-        <button class="btn ghost sm" data-edit="${s.id}">Éditer heure</button>
-        <button class="op-toggle" data-del="${s.id}">supprimer</button>
-      </span></div>`).join("")}</div>`).join("");
-
-  box.querySelectorAll("[data-toggle]").forEach(b => b.onclick = async () => {
-    const s = slots.find(x => String(x.id) === b.dataset.toggle);
-    s.status = s.status === "open" ? "closed" : "open";
-    if(DEMO) await demoSave(); else await sb.from("slots").update({status:s.status}).eq("id",s.id);
-    await refresh(); render();
-  });
-  box.querySelectorAll("[data-edit]").forEach(b => b.onclick = async () => {
-    const s = slots.find(x => String(x.id) === b.dataset.edit);
-    const currentTime = s.start_at.slice(11,16);
-    const newTime = prompt(`Nouvelle heure pour ${fmtDay(s.start_at)} (format HH:MM) :\nActuelle : ${currentTime}`, currentTime);
-    if(!newTime || !/^\d{2}:\d{2}$/.test(newTime.trim())) return;
-    const [h,m] = newTime.trim().split(":");
-    const newStart = `${s.start_at.slice(0,10)}T${h}:${m}:00`;
-    if(slots.some(x => String(x.id) !== String(s.id) && x.start_at.slice(0,16) === newStart.slice(0,16))) return toast("Cette heure existe déjà ce jour.");
-    s.start_at = newStart;
-    if(DEMO) await demoSave(); else await sb.from("slots").update({start_at:newStart}).eq("id",s.id);
-    await refresh(); render();
-  });
-  box.querySelectorAll("[data-del]").forEach(b => b.onclick = async () => {
-    if(!confirm("Supprimer ce créneau ?")) return;
-    if(DEMO){ slots = slots.filter(x => String(x.id) !== b.dataset.del); await demoSave(); }
-    else await sb.from("slots").delete().eq("id", b.dataset.del);
-    await refresh(); render();
-  });
-}
-
-$("op-tabs").onclick = e => {
-  const t = e.target.closest(".tab"); if(!t) return;
-  filter = t.dataset.f;
-  [...$("op-tabs").children].forEach(x => x.setAttribute("aria-selected", x===t));
-  renderOrders();
-};
-
-// Afficher l'historique des sessions
-function renderHistory(){
-  const box = $("op-history");
-  if(!box) return;
-  
-  const done = [...orders]
-    .filter(o => o.status === "done")
-    .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
-    .slice(0, 20);
-  
-  if(!done.length) return box.innerHTML = `<p class="hint">Aucune session terminée.</p>`;
-  
-  box.innerHTML = done.map(o => {
-    const s = slots.find(s => String(s.id) === String(o.slot_id));
-    return `<div style="padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center">
-      <div style="flex:1">
-        <strong>${esc(o.pseudo)}</strong> — <span class="mono">${o.ref}</span><br>
-        <span style="font-size:12px;color:var(--grey)">${s ? fmtFull(s.start_at) : "—"}</span>
-      </div>
-      <span style="color:var(--free);font-weight:900">${CONFIG.price === 0 ? "Gratuit" : CONFIG.price + "€"}</span>
-    </div>`;
-  }).join("");
-}
-
-function renderOrders(){
-  const box = $("op-orders");
-  const list = orders.filter(o => filter==="all" || o.status===filter);
-  if(!list.length) return box.innerHTML = `<p class="hint">Aucune commande.</p>`;
-  box.innerHTML = list.map(o => {
-    const s = slots.find(x => String(x.id) === String(o.slot_id));
-    return `<div class="ord">
-      <div class="top"><strong class="mono">${esc(o.ref)}</strong>${pill(o.status)}</div>
-      <dl>
-        <dt>RDV</dt><dd class="mono">${s ? fmtFull(s.start_at) : "créneau supprimé"}</dd>
-        <dt>Discord</dt><dd>${esc(o.pseudo)}</dd>
-        <dt>Mail</dt><dd>${esc(o.email)}</dd>
-        <dt>Casque</dt><dd>${esc(o.casque)}${o.materiel ? " — "+esc(o.materiel) : ""}</dd>
-        <dt>Jeu</dt><dd>${esc(o.jeu)}</dd>
-        <dt>AnyDesk</dt><dd>${esc(o.anydesk || "à donner en session")}</dd>
-        ${o.notes ? `<dt>Notes</dt><dd>${esc(o.notes)}</dd>` : ""}
-      </dl>
-      <div class="row">
-        ${o.status==="pending"   ? `<button class="btn sm" data-act="confirm" data-ref="${o.ref}">Valider + mail</button>` : ""}
-        ${o.status==="confirmed" ? `<button class="btn ghost sm" data-act="done" data-ref="${o.ref}">Session faite & payée</button>` : ""}
-        ${(o.status!=="cancelled" && o.status!=="done") ? `<button class="btn ghost sm" data-act="cancel" data-ref="${o.ref}">Annuler</button>` : ""}
-        <button class="btn ghost sm" data-act="resend" data-ref="${o.ref}">Renvoyer le mail</button>
-      </div></div>`;
-  }).join("");
-  box.querySelectorAll("[data-act]").forEach(b => b.onclick = () => action(b.dataset.act, b.dataset.ref));
-}
-
-async function setOrderStatus(o, status){
-  o.status = status;
-  if(DEMO) await demoSave();
-  else await sb.from("orders").update({ status }).eq("ref", o.ref);
-}
-
-async function action(act, ref){
-  const o = orders.find(x => x.ref === ref); if(!o) return;
-  const s = slots.find(x => String(x.id) === String(o.slot_id)) || { start_at:o.created_at };
-
-  if(act === "confirm"){ await setOrderStatus(o,"confirmed"); render(); await deliver(o.email, mailConfirmed(o,s), "commande validée"); }
-  else if(act === "done"){ await setOrderStatus(o,"done"); render(); await deliver(o.email, mailDone(o,s), "session terminée"); }
-  else if(act === "cancel"){
-    if(!confirm(`Annuler ${ref} et remettre le créneau en vert ?`)) return;
-    const reason = prompt("Raison d'annulation (optionnel) :", "");
-    o.cancellation_reason = reason || "";
-    await setOrderStatus(o,"cancelled");
-    const slot = slots.find(x => String(x.id) === String(o.slot_id));
-    if(slot){ slot.status = "open"; if(DEMO) await demoSave(); else await sb.from("slots").update({status:"open"}).eq("id",slot.id); }
-    await refresh(); render();
-    await deliver(o.email, mailCancelled(o,s), "commande annulée");
-  }
-  else if(act === "resend"){
-    const m = o.status==="confirmed" ? mailConfirmed(o,s) : o.status==="done" ? mailDone(o,s)
-            : o.status==="cancelled" ? mailCancelled(o,s) : mailReceived(o,s);
-    await deliver(o.email, m, "renvoi");
-  }
-}
-
-/* ---------- démarrage ---------- */
-async function refresh(){ await fetchAll(); }
-(async () => {
-initTheme();
-  if(!DEMO){
-    const { data } = await sb.auth.getSession();
-    if(data.session){ isAdmin = true; }
-  }
-  await refresh();
-  await fetchReviews();
-  render();
-  // Panel admin sur operateur.html
-  if(DEMO) toast("Mode démo : configure Supabase pour la mise en ligne");
-})();
-
-// FAQ - Accordéons (à la fin pour être sûr que le DOM est prêt)
-setTimeout(() => {
-  document.querySelectorAll(".faq-toggle").forEach(btn => {
-    btn.onclick = (e) => {
-      e.preventDefault();
-      const id = btn.getAttribute("data-target");
-      const target = document.getElementById(id);
-      console.log("Clic sur", id, "target:", target);
-      if(target) {
-        const isHidden = target.hidden;
-        target.hidden = !isHidden;
-        btn.querySelector("span:last-child").textContent = isHidden ? "−" : "+";
-        console.log("État de", id, ":", target.hidden);
+    const updateThemeButton = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      const toggleBtn = $("theme-toggle");
+      if(toggleBtn) {
+        toggleBtn.textContent = isDark ? "☀️" : "🌙";
       }
     };
-  });
-}, 100);
-</script>
+
+    // Initialisation globale sécurisée au chargement du DOM
+    document.addEventListener("DOMContentLoaded", () => {
+      initTheme();
+
+      // Bouton Theme Toggle sécurisé
+      const toggleBtn = $("theme-toggle");
+      if(toggleBtn) {
+        toggleBtn.onclick = () => {
+          const isDark = document.documentElement.classList.toggle("dark");
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+          updateThemeButton();
+        };
+      }
+
+      // Accordéons FAQ sécurisés
+      document.querySelectorAll(".faq-toggle").forEach(btn => {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          const id = btn.getAttribute("data-target");
+          const target = document.getElementById(id);
+          if(target) {
+            const isHidden = target.hidden;
+            target.hidden = !isHidden;
+            const iconSpan = btn.querySelector("span:last-child");
+            if(iconSpan) iconSpan.textContent = isHidden ? "−" : "+";
+          }
+        };
+      });
+    });
+
+    // Gestion des avis
+    async function fetchReviews(){
+      if(DEMO){ return; }
+      const { data } = await sb.from("reviews").select("*").eq("approved", true).order("created_at", {ascending: false});
+      reviews = data || [];
+      renderReviews();
+    }
+
+    function renderReviews(){
+      const box = $("reviews-list");
+      if(!box) return;
+      if(!reviews.length) return box.innerHTML = `<p class="hint" style="grid-column:1/-1">Aucun avis pour le moment. Sois le premier !</p>`;
+      box.innerHTML = reviews.map(r => `<div class="card" style="padding:12px; margin-bottom:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div>
+            <strong>${esc(r.pseudo)}</strong>
+            <span style="font-size:12px;color:var(--grey);margin-left:6px">#${esc(r.order_ref)}</span>
+          </div>
+          <span>${"⭐".repeat(r.rating)}</span>
+        </div>
+        <p style="margin:0;font-size:14px;color:var(--grey)">${esc(r.comment)}</p>
+      </div>`).join("");
+    }
+
+    const reviewSubmitBtn = $("envoyer-avis");
+    if(reviewSubmitBtn) {
+      reviewSubmitBtn.onclick = async () => {
+        const ref = $("review-ref").value.trim().toUpperCase();
+        const pseudo = $("review-pseudo").value.trim();
+        const rating = parseInt($("review-rating").value);
+        const comment = $("review-comment").value.trim();
+        const err = $("review-error");
+        
+        if(!ref || ref.length < 5) return err.textContent = "Numéro de commande invalide (format : AIW-XXXX)";
+        if(!pseudo || pseudo.length < 2) return err.textContent = "Pseudo trop court";
+        if(!comment || comment.length < 5) return err.textContent = "Commentaire trop court";
+        
+        if(DEMO){ toast("Mode démo : les avis ne sont pas sauvegardés"); return; }
+        
+        err.textContent = "";
+        const { error } = await sb.from("reviews").insert({ order_ref: ref, pseudo, rating, comment });
+        if(error) return err.textContent = "Erreur : "+error.message;
+        
+        toast("Merci ! Ton avis sera publié après validation");
+        $("review-ref").value = "";
+        $("review-pseudo").value = "";
+        $("review-comment").value = "";
+      };
+    }
+
+    const anydeskLink = $("anydesk-link");
+    if(anydeskLink) anydeskLink.href = CONFIG.anydeskUrl;
+
+    const toast = (m, dur = 4000) => { const t=$("toast"); if(t){ t.innerHTML=m; t.hidden=false; setTimeout(()=>t.hidden=true,dur); } };
+    const fmtDay  = iso => new Date(iso).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
+    const fmtTime = iso => new Date(iso).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+    const fmtFull = iso => `${fmtDay(iso)} à ${fmtTime(iso)}`;
+
+    const STATUS = {
+      pending:  {label:"Réservation reçue", cls:"p-pending"},
+      confirmed:{label:"Validée",           cls:"p-confirmed"},
+      done:     {label:"Terminée & payée",  cls:"p-done"},
+      cancelled:{label:"Annulée",           cls:"p-cancelled"}
+    };
+    const pill = s => `<span class="pill ${STATUS[s]?.cls || 'p-pending'}">${STATUS[s]?.label || s}</span>`;
+
+    const demo = {
+      key: "aiw-demo",
+      async get(){ try{ const r = await window.storage.get(this.key,true); return r?.value ? JSON.parse(r.value) : null; }catch(e){ return null; } },
+      async set(d){ try{ await window.storage.set(this.key, JSON.stringify(d), true); }catch(e){} }
+    };
+
+    async function fetchAll(){
+      if(DEMO){
+        const d = await demo.get() || { slots:[], orders:[], settings:{available:true,away_message:""}, counter:1 };
+        slots = d.slots; orders = d.orders; settings = d.settings;
+        return;
+      }
+      const [s,o,st] = await Promise.all([
+        sb.from("slots").select("*").order("start_at"),
+        isAdmin ? sb.from("orders").select("*").order("created_at",{ascending:false}) : Promise.resolve({data:[]}),
+        sb.from("settings").select("*").eq("id",1).single()
+      ]);
+      slots = s.data || []; orders = o.data || [];
+      if(st.data) settings = st.data;
+    }
+
+    const shell = (title, body) => `<div style="background:#0C0D10;padding:28px 0;font-family:Arial,sans-serif">
+    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#15171C;border:1px solid #2C313B">
+    <tr><td style="padding:26px 28px 0">
+      <p style="margin:0;color:#8B919C;font-size:11px;letter-spacing:3px">${CONFIG.brand}</p>
+      <h1 style="margin:8px 0 0;color:#E8E2D6;font-size:26px;text-transform:uppercase">${title}</h1>
+      <div style="height:3px;width:46px;background:#C8322B;margin:14px 0 0"></div>
+    </td></tr>
+    <tr><td style="padding:20px 28px 28px;color:#C9C4B8;font-size:15px;line-height:1.65">${body}</td></tr>
+    <tr><td style="padding:16px 28px;border-top:1px solid #2C313B;color:#6B7079;font-size:12px">
+      ${CONFIG.brand} — optimisation son · <a href="${CONFIG.discord}" style="color:#C8322B;text-decoration:none">Discord</a>
+    </td></tr></table></div>`;
+    
+    const boxContent = i => `<table width="100%" cellpadding="0" cellspacing="0" style="background:#1B1E25;border-left:3px solid #C8322B;margin:18px 0"><tr><td style="padding:14px 16px;color:#E8E2D6;font-size:14px;line-height:1.8">${i}</td></tr></table>`;
+
+    const mailReceived = (o,s) => ({
+      subject:`Réservation ${o.ref} — ${fmtDay(s.start_at)}`,
+      html: shell("Merci pour ta commande",`
+        <p style="margin:0 0 12px">Salut <b style="color:#E8E2D6">${esc(o.pseudo)}</b>,</p>
+        <p style="margin:0 0 12px"><b style="font-size:18px;color:#C9A227">Ton numéro de commande : ${o.ref}</b></p>
+        ${boxContent(`<b style="color:#C9A227">${o.ref}</b><br>Rendez-vous : <b>${fmtFull(s.start_at)}</b><br>Casque : ${esc(o.casque)}`)}
+        <p>Installe AnyDesk et garde-le ouvert : <a href="${CONFIG.anydeskUrl}" style="color:#C8322B">Télécharger AnyDesk</a>.</p>`)
+    });
+
+    const mailReady = () => CONFIG.emailjs.serviceId && CONFIG.emailjs.templateId && CONFIG.emailjs.publicKey;
+    async function deliver(to, mail, label){
+      if(!mailReady()){
+        return;
+      }
+      try{
+        await fetch("https://api.emailjs.com/api/v1.0/email/send",{
+          method:"POST", headers:{"Content-Type":"application/json"},
+          body: JSON.stringify({
+            service_id: CONFIG.emailjs.serviceId,
+            template_id: CONFIG.emailjs.templateId,
+            user_id: CONFIG.emailjs.publicKey,
+            template_params:{ to_email:to, subject:mail.subject, message_html:mail.html }
+          })
+        });
+        toast(`Mail « ${label} » envoyé`);
+      }catch(e){}
+    }
+
+    function render(){
+      const box = $("slots-container");
+      if(!box) return;
+      const now = Date.now();
+      const upcoming = slots
+        .filter(s => new Date(s.start_at).getTime() > now - 3600e3)
+        .sort((a,b) => new Date(a.start_at) - new Date(b.start_at));
+      const visible = settings.available ? upcoming.filter(s => s.status !== "closed") : [];
+
+      const awayBanner = $("away-banner");
+      if(awayBanner) awayBanner.hidden = !!settings.available;
+      const awayText = $("away-text");
+      if(awayText) awayText.textContent = settings.away_message || "Réservations fermées pour le moment.";
+
+      const free = visible.filter(s => s.status === "open").length;
+      const footCount = $("foot-count");
+      if(footCount) footCount.textContent = !settings.available ? "réservations fermées" : free ? `${free} créneau${free>1?"x":""} libre${free>1?"s":""}` : "complet";
+
+      if(!visible.length){
+        box.innerHTML = `<div class="card"><p class="hint" style="margin:0; text-align:center;">Aucun créneau ouvert pour le moment.</p></div>`;
+      } else {
+        const days = {};
+        visible.forEach(s => { const k = s.start_at.slice(0,10); (days[k] = days[k]||[]).push(s); });
+        box.innerHTML = Object.values(days).map(l => `
+          <div class="day">
+            <div class="day-head"><h3>${fmtDay(l[0].start_at)}</h3>
+              <span>${l.filter(s=>s.status==="open").length} libre(s) / ${l.length}</span></div>
+            <div class="slots">${l.map(s => s.status==="open"
+              ? `<button class="slot free" data-id="${s.id}" aria-pressed="${selectedId===s.id}">${fmtTime(s.start_at)}<span class="tag">LIBRE · ${CONFIG.sessionMinutes} MIN</span></button>`
+              : `<button class="slot taken" disabled>${fmtTime(s.start_at)}<span class="tag">RÉSERVÉ</span></button>`
+            ).join("")}</div>
+          </div>`).join("");
+        box.querySelectorAll(".slot.free").forEach(b => b.addEventListener("click", () => selectSlot(b.dataset.id)));
+      }
+    }
+
+    function selectSlot(id){
+      selectedId = id;
+      const s = slots.find(x => String(x.id) === String(id));
+      if(!s) return;
+      $("sel-when").textContent = fmtFull(s.start_at);
+      $("booking").hidden = false; $("done").hidden = true;
+      render();
+      $("booking").scrollIntoView({behavior:"smooth",block:"start"});
+    }
+
+    const cancelSel = $("cancel-sel");
+    if(cancelSel) cancelSel.onclick = () => { selectedId=null; $("booking").hidden=true; render(); $("planning").scrollIntoView({behavior:"smooth"}); };
+    
+    const newBooking = $("new-booking");
+    if(newBooking) newBooking.onclick = () => { $("done").hidden=true; $("planning").scrollIntoView({behavior:"smooth"}); };
+
+    const submitBtn = $("submit-btn");
+    if(submitBtn) {
+      submitBtn.onclick = async () => {
+        const err = $("form-error");
+        const pseudo=$("f-pseudo").value.trim(), casque=$("f-casque").value.trim(), mail=$("f-mail").value.trim();
+        if(!selectedId) return err.textContent = "Choisis un créneau vert.";
+        if(!pseudo)     return err.textContent = "Ton pseudo Discord est obligatoire.";
+        if(!casque)     return err.textContent = "Indique ton casque.";
+        if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return err.textContent = "Adresse mail invalide.";
+        if(!$("f-ok-anydesk").checked) return err.textContent = "Confirme l'installation d'AnyDesk.";
+        if(!$("f-ok-price").checked)   return err.textContent = "Confirme que tu as compris le tarif.";
+        err.textContent = ""; submitBtn.disabled = true;
+
+        const payload = {
+          p_slot: selectedId, p_pseudo: pseudo, p_casque: casque, p_email: mail,
+          p_materiel: $("f-materiel").value.trim(), p_jeu: $("f-jeu").value,
+          p_anydesk: $("f-anydesk").value.trim(), p_notes: $("f-notes").value.trim()
+        };
+
+        let order = null, slot = slots.find(s => String(s.id) === String(selectedId));
+
+        if(DEMO){
+          const d = await demo.get() || { counter:1 };
+          const counter = d.counter || 1;
+          if(!slot || slot.status !== "open"){ submitBtn.disabled=false; return err.textContent = "Ce créneau vient d'être pris."; }
+          order = { ref:`AIW-${String(counter).padStart(4,"0")}`, slot_id:slot.id, status:"pending",
+            pseudo, casque, email:mail, created_at:new Date().toISOString() };
+          orders.unshift(order); slot.status = "booked"; slot.order_ref = order.ref;
+          await demo.set({ slots, orders, settings, counter: counter+1 });
+        } else {
+          const { data, error } = await sb.rpc("book_slot", payload);
+          submitBtn.disabled = false;
+          if(error || !data){ await refresh(); return err.textContent = "Ce créneau vient d'être pris. Choisis-en un autre."; }
+          order = data;
+          await refresh();
+          slot = slots.find(s => String(s.id) === String(order.slot_id)) || slot;
+        }
+
+        submitBtn.disabled = false;
+        await deliver(mail, mailReceived(order, slot), "réservation reçue");
+
+        toast(`✅ Réservation confirmée ! Numéro : <b>${order.ref}</b>`, 5000);
+
+        $("done-ref").textContent = order.ref;
+        $("done-when").textContent = fmtFull(slot.start_at);
+        $("booking").hidden = true; $("done").hidden = false;
+        ["f-pseudo","f-casque","f-materiel","f-mail","f-anydesk","f-notes"].forEach(i => $(i).value="");
+        $("f-ok-anydesk").checked = $("f-ok-price").checked = false;
+        selectedId = null; render();
+        $("done").scrollIntoView({behavior:"smooth",block:"center"});
+      };
+    }
+
+    const trackBtn = $("track-btn");
+    if(trackBtn) {
+      trackBtn.onclick = async () => {
+        const ref = $("track-ref").value.trim().toUpperCase(), out = $("track-result");
+        let o = null;
+        if(DEMO) o = orders.find(x => x.ref === ref);
+        else { const { data } = await sb.rpc("track_order", { p_ref: ref }); o = data && data[0]; }
+        if(!o) return out.innerHTML = `<p class="error" style="margin:0">Aucune commande à ce numéro.</p>`;
+        const s = slots.find(x => String(x.id) === String(o.slot_id));
+        out.innerHTML = `<div class="card" style="margin:0"><div style="display:flex; justify-content:space-between; align-items:center;"><strong class="mono">${esc(o.ref)}</strong>${pill(o.status)}</div>
+          <p style="margin:8px 0 0; color:var(--grey);">Rendez-vous : ${o.start_at ? fmtFull(o.start_at) : (s ? fmtFull(s.start_at) : "—")}</p></div>`;
+      };
+    }
+
+    async function refresh(){ await fetchAll(); }
+
+    (async () => {
+      if(!DEMO){
+        const { data } = await sb.auth.getSession();
+        if(data.session){ isAdmin = true; }
+      }
+      await refresh();
+      await fetchReviews();
+      render();
+    })();
+  </script>
 </body>
 </html>
