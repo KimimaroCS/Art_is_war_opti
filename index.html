@@ -540,7 +540,6 @@ $("anydesk-link").href = CONFIG.anydeskUrl;
   $("curve").setAttribute("d","M"+p.join(" L"));
 })();
 
-const toast = m => { const t=$("toast"); t.textContent=m; t.hidden=false; setTimeout(()=>t.hidden=true,4000); };
 const fmtDay  = iso => new Date(iso).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
 const fmtTime = iso => new Date(iso).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
 const fmtFull = iso => `${fmtDay(iso)} à ${fmtTime(iso)}`;
