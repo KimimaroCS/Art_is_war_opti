@@ -447,14 +447,6 @@ const toast = (msg, dur = 4000) => {
   t.hidden = false;
   setTimeout(() => t.hidden = true, dur);
 };
-```
-
----
-
-### 2. Trouve la deuxième occurrence un peu plus bas
-Fais une recherche `Ctrl + F` avec le mot `dur = 4000` ou `toast = m =>` un peu plus bas dans le script. Tu vas tomber sur cette ligne :
-```javascript
-const toast = m => { const t=$("toast"); t.textContent=m; t.hidden=false; setTimeout(()=>t.hidden=true,4000); };
 const $$ = sel => document.querySelectorAll(sel);
 const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
