@@ -436,13 +436,25 @@ const CONFIG = {
 /* ========================================================== */
 
 const $ = id => document.getElementById(id);
-const toast = (msg, dur = 3000) => {
-  const t = document.createElement("div");
-  t.style.cssText = "position:fixed;bottom:20px;right:20px;background:var(--seal);color:var(--text-light);padding:16px;border-radius:2px;max-width:300px;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:slideIn 0.3s;z-index:9999";
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), dur);
+const toast = (msg, dur = 4000) => {
+  const t = document.getElementById("toast") || document.createElement("div");
+  if(!document.getElementById("toast")) {
+    t.id = "toast";
+    t.className = "toast";
+    document.body.appendChild(t);
+  }
+  t.innerHTML = msg;
+  t.hidden = false;
+  setTimeout(() => t.hidden = true, dur);
 };
+```
+
+---
+
+### 2. Trouve la deuxième occurrence un peu plus bas
+Fais une recherche `Ctrl + F` avec le mot `dur = 4000` ou `toast = m =>` un peu plus bas dans le script. Tu vas tomber sur cette ligne :
+```javascript
+const toast = m => { const t=$("toast"); t.textContent=m; t.hidden=false; setTimeout(()=>t.hidden=true,4000); };
 const $$ = sel => document.querySelectorAll(sel);
 const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 const DEMO = !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey;
