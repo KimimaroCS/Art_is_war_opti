@@ -436,16 +436,12 @@ const CONFIG = {
 /* ========================================================== */
 
 const $ = id => document.getElementById(id);
-const toast = (msg, dur = 4000) => {
-  const t = document.getElementById("toast") || document.createElement("div");
-  if(!document.getElementById("toast")) {
-    t.id = "toast";
-    t.className = "toast";
-    document.body.appendChild(t);
-  }
-  t.innerHTML = msg;
-  t.hidden = false;
-  setTimeout(() => t.hidden = true, dur);
+const toast = (msg, dur = 3000) => {
+  const t = document.createElement("div");
+  t.style.cssText = "position:fixed;bottom:20px;right:20px;background:var(--seal);color:var(--text-light);padding:16px;border-radius:2px;max-width:300px;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:slideIn 0.3s;z-index:9999";
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), dur);
 };
 const $$ = sel => document.querySelectorAll(sel);
 const esc = s => String(s ?? "").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
@@ -540,6 +536,7 @@ $("anydesk-link").href = CONFIG.anydeskUrl;
   $("curve").setAttribute("d","M"+p.join(" L"));
 })();
 
+const toast = m => { const t=$("toast"); t.textContent=m; t.hidden=false; setTimeout(()=>t.hidden=true,4000); };
 const fmtDay  = iso => new Date(iso).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
 const fmtTime = iso => new Date(iso).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
 const fmtFull = iso => `${fmtDay(iso)} à ${fmtTime(iso)}`;
@@ -831,6 +828,21 @@ $("track-btn").onclick = async () => {
    OPÉRATEUR
    ========================================================== */
 // Bouton opérateur supprimé (page séparée operateur.html)
+
+$("op-login-btn").onclick = async () => {
+  const e = $("op-error");
+  if(DEMO){
+    isAdmin = true; return;
+  }
+  const { error } = await sb.auth.signInWithPassword({ email:$("op-mail").value.trim(), password:$("op-pass").value });
+  if(error) return e.textContent = "Email ou mot de passe incorrect.";
+  e.textContent = ""; isAdmin = true; $("op-pass").value = "";
+  await refresh();
+};
+$("op-logout").onclick = async () => {
+  if(!DEMO) await sb.auth.signOut();
+  isAdmin = false; $("op-console").hidden = true; $("op-login").hidden = false;
+};
 
 // openConsole supprimée
 
