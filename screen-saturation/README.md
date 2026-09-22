@@ -1,18 +1,23 @@
 # DebunkPC — Saturation écran
 
-Outil Python **Windows** pour augmenter / diminuer la **saturation** des couleurs sur **un écran au choix** (multi-moniteurs supporté).
+Outil Python **Windows** pour régler la saturation / Digital Vibrance **par écran**, **compatible plein écran exclusif** (via le pilote GPU).
 
-Idéal pour rendre un jeu plus “vibrant” pendant tes TikToks DebunkPC, sans toucher aux autres écrans (Discord, OBS, etc.).
+## Compatible jeux (exclusif)
+
+| Backend | Quand | Plein écran exclusif |
+|---|---|---|
+| **NVIDIA Digital Vibrance** (NVAPI) | GPU NVIDIA | ✅ Oui |
+| **AMD Saturation** (ADL) | GPU AMD | ✅ Oui |
+| Windows Magnifier (secours) | Intel / pas d’API GPU | ❌ Non → borderless |
+
+L’outil choisit automatiquement **NVIDIA → AMD → Magnifier**.
 
 ## Prérequis
 
 - Windows 10 / 11
-- Python 3.10+
-- Carte graphique compatible WDDM (standard aujourd’hui)
-- **Aucune dépendance pip** (stdlib + ctypes + tkinter)
-
-> Tkinter est inclus avec l’installateur Python officiel Windows.  
-> Si `tkinter` manque : réinstalle Python en cochant **tcl/tk**.
+- Python 3.10+ (tkinter inclus)
+- Pilote NVIDIA ou AMD à jour
+- **Aucune dépendance pip**
 
 ## Lancer
 
@@ -21,29 +26,21 @@ cd screen-saturation
 python main.py
 ```
 
+ou `run.bat`
+
 ## Utilisation
 
-1. Choisis l’**écran cible** dans la liste
-2. Règle la **saturation** (100 % = normal, >100 % = plus saturé)
-3. Clique **Appliquer**
-4. **Réinitialiser** pour tout remettre à zéro
+1. Vérifie le badge vert : `✓ NVIDIA Digital Vibrance — plein écran exclusif OK`
+2. Choisis l’écran du jeu
+3. Monte la saturation (> 100 %)
+4. Lance ton jeu en **plein écran exclusif** — l’effet reste
 
-Option **Appliquer à tous les écrans** : utilise l’effet fullscreen Magnification (global).
+**Réinitialiser** restaure le niveau d’origine (celui d’avant l’outil).
 
-## Jeux
+## Multi-écrans
 
-| Mode d’affichage | Résultat typique |
-|---|---|
-| Fenêtré / Borderless | ✅ Filtre OK |
-| Plein écran exclusif | ⚠️ Parfois ignoré par le jeu |
-
-Pour Fortnite / Valorant / etc. : passe en **borderless** si le filtre ne s’applique pas.
-
-## Comment ça marche
-
-- **Un écran** : fenêtre Magnifier invisible sur le moniteur choisi + matrice de saturation (`MagSetColorEffect`)
-- **Tous les écrans** : `MagSetFullscreenColorEffect`
-- Les clics passent à travers (la souris reste utilisable sur le jeu)
+- Un seul écran : le jeu plus saturé, Discord/OBS intacts
+- Case « tous les écrans » : applique à chaque sortie GPU détectée
 
 ## Structure
 
@@ -51,14 +48,18 @@ Pour Fortnite / Valorant / etc. : passe en **borderless** si le filtre ne s’ap
 screen-saturation/
   main.py
   saturation/
-    app.py        # UI
-    engine.py     # Magnification API
-    monitors.py   # Détection multi-écrans
-    matrix.py     # Matrice de saturation
+    app.py
+    engine.py              # choisit le backend
+    monitors.py
+    matrix.py
+    backends/
+      nvidia.py            # Digital Vibrance (exclusif OK)
+      amd.py               # ADL saturation (exclusif OK)
+      magnification.py     # secours OS
 ```
 
 ## Limites
 
-- Windows uniquement
-- Ce n’est **pas** le Digital Vibrance NVIDIA / Saturation AMD (niveau GPU) : c’est un filtre OS. Pour un réglage permanent GPU, utilise le panneau NVIDIA/AMD.
-- Fermer l’app retire l’effet
+- Écran branché sur iGPU Intel → souvent Magnifier seulement
+- Sur laptop NVIDIA Optimus : l’écran doit être piloté par le GPU NVIDIA pour NVAPI
+- Fermer l’app restaure les valeurs d’origine

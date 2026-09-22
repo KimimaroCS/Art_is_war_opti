@@ -15,8 +15,8 @@ class SaturationApp(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
         self.title("DebunkPC — Saturation écran")
-        self.geometry("420x500")
-        self.minsize(380, 460)
+        self.geometry("440x560")
+        self.minsize(400, 520)
         self.configure(bg="#0E1116")
 
         self._engine: SaturationEngine | None = None
@@ -29,10 +29,33 @@ class SaturationApp(tk.Tk):
         try:
             self._engine = SaturationEngine()
             self._reload_monitors()
+            self._update_backend_badge()
             self._live_var.set(True)
+            if not self._engine.backend_info.exclusive_fullscreen:
+                messagebox.showwarning(
+                    "Plein écran exclusif",
+                    "Backend Magnifier détecté (pas de NVAPI/ADL).\n\n"
+                    "Ce mode NE fonctionne PAS en plein écran exclusif.\n"
+                    "Installe/utilise un GPU NVIDIA ou AMD, ou joue en borderless.",
+                )
         except OSError as exc:
             messagebox.showerror("Erreur", str(exc))
             self.after(100, self.destroy)
+
+    def _update_backend_badge(self) -> None:
+        if self._engine is None:
+            return
+        info = self._engine.backend_info
+        if info.exclusive_fullscreen:
+            self._backend_label.configure(
+                text=f"✓ {info.name} — plein écran exclusif OK",
+                style="Ok.TLabel",
+            )
+        else:
+            self._backend_label.configure(
+                text=f"⚠ {info.name} — pas compatible exclusif",
+                style="Warn.TLabel",
+            )
 
     def _build_style(self) -> None:
         style = ttk.Style(self)
@@ -99,6 +122,18 @@ class SaturationApp(tk.Tk):
             arrowcolor=fg,
         )
         style.configure(
+            "Ok.TLabel",
+            background=bg,
+            foreground=accent,
+            font=("Segoe UI Semibold", 10),
+        )
+        style.configure(
+            "Warn.TLabel",
+            background=bg,
+            foreground="#FFB020",
+            font=("Segoe UI Semibold", 10),
+        )
+        style.configure(
             "Horizontal.TScale",
             background=bg,
             troughcolor=panel,
@@ -114,10 +149,15 @@ class SaturationApp(tk.Tk):
         )
         ttk.Label(
             root,
-            text="Saturation des couleurs par écran — preuves visuelles, pas de magie GPU.",
+            text="Saturation par écran — pilote GPU (plein écran exclusif OK).",
             style="Muted.TLabel",
-            wraplength=360,
-        ).pack(anchor="w", padx=20, pady=(0, 12))
+            wraplength=380,
+        ).pack(anchor="w", padx=20, pady=(0, 8))
+
+        self._backend_label = ttk.Label(
+            root, text="Backend : détection…", style="Muted.TLabel", wraplength=380
+        )
+        self._backend_label.pack(anchor="w", padx=20, pady=(0, 12))
 
         ttk.Label(root, text="Écran cible").pack(anchor="w", padx=20)
         self._monitor_var = tk.StringVar()
@@ -185,11 +225,12 @@ class SaturationApp(tk.Tk):
         ttk.Label(
             root,
             text=(
-                "Astuce jeux : mode bordless / fenêtré recommandé. "
-                "Le plein écran exclusif peut ignorer le filtre."
+                "NVIDIA / AMD : Digital Vibrance / Saturation pilote — "
+                "fonctionne en plein écran exclusif. "
+                "Si Magnifier (secours) : passe en borderless."
             ),
             style="Muted.TLabel",
-            wraplength=360,
+            wraplength=380,
         ).pack(anchor="w", padx=20, pady=(4, 8))
 
     def _reload_monitors(self) -> None:
