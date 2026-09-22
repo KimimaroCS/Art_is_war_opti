@@ -1,23 +1,27 @@
-# DebunkPC — Saturation écran
+# DebunkPC Color — grading naturel (mieux que Digital Vibrance)
 
-Outil Python **Windows** pour régler la saturation / Digital Vibrance **par écran**, **compatible plein écran exclusif** (via le pilote GPU).
+Outil Windows pour un rendu **plus beau que le Digital Vibrance NVIDIA** :
+on priorise des **courbes gamma (présence)** et on garde la vibrance **légère**.
 
-## Compatible jeux (exclusif)
+Compatible **plein écran exclusif** (LUT pipeline NVIDIA).
 
-| Backend | Quand | Plein écran exclusif |
+## Pourquoi pas « juste » Digital Vibrance ?
+
+Le DVC NVIDIA sature tout uniformément → peaux roses, ciel criard, look plastique.
+**DebunkPC Color** fait l’inverse de la mode TikTok « vibrance 100 % » :
+
+1. **Présence** — courbe S (contraste tons moyens)
+2. **Lift ombres** — lisibilité en jeu
+3. **Vibrance légère** — appoint seulement
+4. **Gamma** — équilibre global
+
+## Backend
+
+| Priorité | Backend | Exclusif |
 |---|---|---|
-| **NVIDIA Digital Vibrance** (NVAPI) | GPU NVIDIA | ✅ Oui |
-| **AMD Saturation** (ADL) | GPU AMD | ✅ Oui |
-| Windows Magnifier (secours) | Intel / pas d’API GPU | ❌ Non → borderless |
-
-L’outil choisit automatiquement **NVIDIA → AMD → Magnifier**.
-
-## Prérequis
-
-- Windows 10 / 11
-- Python 3.10+ (tkinter inclus)
-- Pilote NVIDIA ou AMD à jour
-- **Aucune dépendance pip**
+| 1 | **DebunkPC Natural (NVIDIA)** — LUT `SetTargetGammaCorrection` + DVC soft | ✅ |
+| 2 | AMD ADL saturation | ✅ |
+| 3 | Magnifier (secours) | ❌ |
 
 ## Lancer
 
@@ -26,40 +30,20 @@ cd screen-saturation
 python main.py
 ```
 
-ou `run.bat`
+## Presets
 
-## Utilisation
+| Preset | Usage |
+|---|---|
+| **Naturel** | Recommandé au quotidien / TikTok |
+| Cinématique | Plus contrasté, vibrance encore plus basse |
+| Compétitif | Ombres relevées (visibilité) |
+| Punch | Plus agressif |
+| Off | Neutre |
 
-1. Vérifie le badge vert : `✓ NVIDIA Digital Vibrance — plein écran exclusif OK`
-2. Choisis l’écran du jeu
-3. Monte la saturation (> 100 %)
-4. Lance ton jeu en **plein écran exclusif** — l’effet reste
-
-**Réinitialiser** restaure le niveau d’origine (celui d’avant l’outil).
-
-## Multi-écrans
-
-- Un seul écran : le jeu plus saturé, Discord/OBS intacts
-- Case « tous les écrans » : applique à chaque sortie GPU détectée
-
-## Structure
-
-```
-screen-saturation/
-  main.py
-  saturation/
-    app.py
-    engine.py              # choisit le backend
-    monitors.py
-    matrix.py
-    backends/
-      nvidia.py            # Digital Vibrance (exclusif OK)
-      amd.py               # ADL saturation (exclusif OK)
-      magnification.py     # secours OS
-```
+Sélectionne **uniquement l’écran du jeu** pour laisser Discord/OBS intacts.
 
 ## Limites
 
-- Écran branché sur iGPU Intel → souvent Magnifier seulement
-- Sur laptop NVIDIA Optimus : l’écran doit être piloté par le GPU NVIDIA pour NVAPI
-- Fermer l’app restaure les valeurs d’origine
+- NVIDIA recommandé pour le vrai grading LUT
+- Sur Optimus : l’écran doit être piloté par le GPU NVIDIA
+- Réinitialiser / fermer l’app restaure l’état d’origine

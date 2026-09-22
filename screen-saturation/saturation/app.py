@@ -1,4 +1,4 @@
-"""Interface Tkinter — sélection d'écran + saturation."""
+"""Interface Tkinter — presets de grading naturel (mieux que Digital Vibrance)."""
 
 from __future__ import annotations
 
@@ -7,16 +7,16 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 
 from .engine import SaturationEngine
-from .matrix import slider_to_saturation
+from .grading import PRESETS, GradeParams
 from .monitors import Monitor, list_monitors
 
 
 class SaturationApp(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
-        self.title("DebunkPC — Saturation écran")
-        self.geometry("440x560")
-        self.minsize(400, 520)
+        self.title("DebunkPC — Color Grade")
+        self.geometry("460x620")
+        self.minsize(420, 580)
         self.configure(bg="#0E1116")
 
         self._engine: SaturationEngine | None = None
@@ -34,9 +34,8 @@ class SaturationApp(tk.Tk):
             if not self._engine.backend_info.exclusive_fullscreen:
                 messagebox.showwarning(
                     "Plein écran exclusif",
-                    "Backend Magnifier détecté (pas de NVAPI/ADL).\n\n"
-                    "Ce mode NE fonctionne PAS en plein écran exclusif.\n"
-                    "Installe/utilise un GPU NVIDIA ou AMD, ou joue en borderless.",
+                    "Backend Magnifier détecté.\n"
+                    "Pas compatible plein écran exclusif — NVIDIA/AMD requis.",
                 )
         except OSError as exc:
             messagebox.showerror("Erreur", str(exc))
@@ -46,16 +45,12 @@ class SaturationApp(tk.Tk):
         if self._engine is None:
             return
         info = self._engine.backend_info
-        if info.exclusive_fullscreen:
-            self._backend_label.configure(
-                text=f"✓ {info.name} — plein écran exclusif OK",
-                style="Ok.TLabel",
-            )
-        else:
-            self._backend_label.configure(
-                text=f"⚠ {info.name} — pas compatible exclusif",
-                style="Warn.TLabel",
-            )
+        style = "Ok.TLabel" if info.exclusive_fullscreen else "Warn.TLabel"
+        mark = "✓" if info.exclusive_fullscreen else "⚠"
+        self._backend_label.configure(
+            text=f"{mark} {info.name}\n{info.detail}",
+            style=style,
+        )
 
     def _build_style(self) -> None:
         style = ttk.Style(self)
@@ -63,42 +58,29 @@ class SaturationApp(tk.Tk):
             style.theme_use("clam")
         except tk.TclError:
             pass
-
-        bg = "#0E1116"
-        panel = "#161B22"
-        fg = "#F2F4F7"
-        muted = "#8B949E"
-        accent = "#2EE6A6"
-
+        bg, panel, fg, muted, accent = (
+            "#0E1116",
+            "#161B22",
+            "#F2F4F7",
+            "#8B949E",
+            "#2EE6A6",
+        )
         style.configure(".", background=bg, foreground=fg, fieldbackground=panel)
         style.configure("TFrame", background=bg)
-        style.configure("Card.TFrame", background=panel)
         style.configure("TLabel", background=bg, foreground=fg, font=("Segoe UI", 10))
         style.configure(
-            "Title.TLabel",
-            background=bg,
-            foreground=fg,
-            font=("Segoe UI Semibold", 16),
+            "Title.TLabel", background=bg, foreground=fg, font=("Segoe UI Semibold", 16)
         )
         style.configure(
-            "Muted.TLabel",
-            background=bg,
-            foreground=muted,
-            font=("Segoe UI", 9),
+            "Muted.TLabel", background=bg, foreground=muted, font=("Segoe UI", 9)
         )
         style.configure(
             "Value.TLabel",
             background=bg,
             foreground=accent,
-            font=("Segoe UI Semibold", 14),
+            font=("Segoe UI Semibold", 12),
         )
-        style.configure(
-            "TButton",
-            background=panel,
-            foreground=fg,
-            padding=8,
-            font=("Segoe UI", 10),
-        )
+        style.configure("TButton", background=panel, foreground=fg, padding=8)
         style.map("TButton", background=[("active", "#21262D")])
         style.configure(
             "Accent.TButton",
@@ -108,12 +90,7 @@ class SaturationApp(tk.Tk):
             font=("Segoe UI Semibold", 10),
         )
         style.map("Accent.TButton", background=[("active", "#5EF0C0")])
-        style.configure(
-            "TCheckbutton",
-            background=bg,
-            foreground=fg,
-            font=("Segoe UI", 10),
-        )
+        style.configure("TCheckbutton", background=bg, foreground=fg)
         style.configure(
             "TCombobox",
             fieldbackground=panel,
@@ -122,116 +99,117 @@ class SaturationApp(tk.Tk):
             arrowcolor=fg,
         )
         style.configure(
-            "Ok.TLabel",
-            background=bg,
-            foreground=accent,
-            font=("Segoe UI Semibold", 10),
+            "Ok.TLabel", background=bg, foreground=accent, font=("Segoe UI", 9)
         )
         style.configure(
-            "Warn.TLabel",
-            background=bg,
-            foreground="#FFB020",
-            font=("Segoe UI Semibold", 10),
+            "Warn.TLabel", background=bg, foreground="#FFB020", font=("Segoe UI", 9)
         )
-        style.configure(
-            "Horizontal.TScale",
-            background=bg,
-            troughcolor=panel,
-        )
+        style.configure("Horizontal.TScale", background=bg, troughcolor=panel)
 
     def _build_ui(self) -> None:
-        pad = {"padx": 20, "pady": 6}
-        root = ttk.Frame(self, style="TFrame")
-        root.pack(fill=tk.BOTH, expand=True, padx=8, pady=8)
+        root = ttk.Frame(self)
+        root.pack(fill=tk.BOTH, expand=True, padx=16, pady=12)
 
-        ttk.Label(root, text="DebunkPC", style="Title.TLabel").pack(
-            anchor="w", **pad
-        )
+        ttk.Label(root, text="DebunkPC Color", style="Title.TLabel").pack(anchor="w")
         ttk.Label(
             root,
-            text="Saturation par écran — pilote GPU (plein écran exclusif OK).",
+            text="Grading naturel (courbes) — pas le Digital Vibrance plastique.",
             style="Muted.TLabel",
-            wraplength=380,
-        ).pack(anchor="w", padx=20, pady=(0, 8))
+            wraplength=400,
+        ).pack(anchor="w", pady=(2, 8))
 
         self._backend_label = ttk.Label(
-            root, text="Backend : détection…", style="Muted.TLabel", wraplength=380
+            root, text="Backend…", style="Muted.TLabel", wraplength=400
         )
-        self._backend_label.pack(anchor="w", padx=20, pady=(0, 12))
+        self._backend_label.pack(anchor="w", pady=(0, 10))
 
-        ttk.Label(root, text="Écran cible").pack(anchor="w", padx=20)
+        ttk.Label(root, text="Écran cible").pack(anchor="w")
         self._monitor_var = tk.StringVar()
         self._monitor_combo = ttk.Combobox(
-            root,
-            textvariable=self._monitor_var,
-            state="readonly",
-            width=42,
+            root, textvariable=self._monitor_var, state="readonly", width=44
         )
-        self._monitor_combo.pack(anchor="w", padx=20, pady=(4, 8))
-
-        row = ttk.Frame(root)
-        row.pack(fill=tk.X, padx=20, pady=(0, 8))
-        ttk.Button(row, text="Rafraîchir écrans", command=self._reload_monitors).pack(
-            side=tk.LEFT
+        self._monitor_combo.pack(anchor="w", pady=(4, 6))
+        ttk.Button(root, text="Rafraîchir écrans", command=self._reload_monitors).pack(
+            anchor="w", pady=(0, 8)
         )
 
         self._all_var = tk.BooleanVar(value=False)
         ttk.Checkbutton(
             root,
-            text="Appliquer à tous les écrans",
+            text="Tous les écrans",
             variable=self._all_var,
             command=self._on_all_toggle,
-        ).pack(anchor="w", padx=20, pady=8)
+        ).pack(anchor="w")
 
-        ttk.Label(root, text="Saturation").pack(anchor="w", padx=20, pady=(8, 0))
-        self._value_label = ttk.Label(root, text="100 % (normal)", style="Value.TLabel")
-        self._value_label.pack(anchor="w", padx=20, pady=(2, 4))
-
-        self._sat_var = tk.DoubleVar(value=100.0)
-        self._live_var = tk.BooleanVar(value=False)
-        self._scale = ttk.Scale(
+        ttk.Label(root, text="Preset").pack(anchor="w", pady=(12, 0))
+        self._preset_var = tk.StringVar(value="Naturel")
+        self._preset_combo = ttk.Combobox(
             root,
-            from_=0,
-            to=200,
-            orient=tk.HORIZONTAL,
-            variable=self._sat_var,
-            command=self._on_slider,
+            textvariable=self._preset_var,
+            state="readonly",
+            values=list(PRESETS.keys()) + ["Personnalisé"],
+            width=44,
         )
-        self._scale.pack(fill=tk.X, padx=20, pady=4)
+        self._preset_combo.pack(anchor="w", pady=(4, 4))
+        self._preset_combo.bind("<<ComboboxSelected>>", self._on_preset)
 
-        hints = ttk.Frame(root)
-        hints.pack(fill=tk.X, padx=20)
-        ttk.Label(hints, text="0 % gris", style="Muted.TLabel").pack(side=tk.LEFT)
-        ttk.Label(hints, text="200 % max", style="Muted.TLabel").pack(side=tk.RIGHT)
-
-        ttk.Checkbutton(
+        ttk.Label(
             root,
-            text="Aperçu en direct (applique en bougeant le slider)",
-            variable=self._live_var,
-        ).pack(anchor="w", padx=20, pady=(0, 8))
+            text="Naturel = recommandé. Punch = plus agressif. Vibrance reste basse.",
+            style="Muted.TLabel",
+            wraplength=400,
+        ).pack(anchor="w", pady=(0, 8))
+
+        self._presence = tk.DoubleVar(value=PRESETS["Naturel"].presence * 100)
+        self._vibrance = tk.DoubleVar(value=PRESETS["Naturel"].vibrance * 100)
+        self._shadow = tk.DoubleVar(value=PRESETS["Naturel"].shadow_lift * 100)
+        self._gamma = tk.DoubleVar(value=100)  # mapped around 1.0
+
+        self._add_slider(root, "Présence (contraste naturel)", self._presence, 0, 100)
+        self._add_slider(root, "Vibrance (légère)", self._vibrance, 0, 100)
+        self._add_slider(root, "Lift ombres (lisibilité)", self._shadow, 0, 40)
+        self._add_slider(root, "Gamma (100 = neutre)", self._gamma, 70, 130)
+
+        self._live_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(
+            root, text="Aperçu en direct", variable=self._live_var
+        ).pack(anchor="w", pady=(8, 4))
 
         btns = ttk.Frame(root)
-        btns.pack(fill=tk.X, padx=20, pady=18)
+        btns.pack(fill=tk.X, pady=12)
+        ttk.Button(btns, text="Réinitialiser", command=self._on_reset).pack(side=tk.LEFT)
         ttk.Button(
-            btns, text="Réinitialiser", command=self._on_reset
-        ).pack(side=tk.LEFT)
-        ttk.Button(
-            btns,
-            text="Appliquer",
-            style="Accent.TButton",
-            command=self._on_apply,
+            btns, text="Appliquer", style="Accent.TButton", command=self._on_apply
         ).pack(side=tk.RIGHT)
 
         ttk.Label(
             root,
             text=(
-                "NVIDIA / AMD : Digital Vibrance / Saturation pilote — "
-                "fonctionne en plein écran exclusif. "
-                "Si Magnifier (secours) : passe en borderless."
+                "Astuce TikTok/jeux : preset Naturel, écran du jeu seulement. "
+                "Compatible plein écran exclusif (NVIDIA LUT)."
             ),
             style="Muted.TLabel",
-            wraplength=380,
-        ).pack(anchor="w", padx=20, pady=(4, 8))
+            wraplength=400,
+        ).pack(anchor="w")
+
+    def _add_slider(self, parent, label: str, var: tk.DoubleVar, frm: int, to: int) -> None:
+        ttk.Label(parent, text=label).pack(anchor="w", pady=(6, 0))
+        row = ttk.Frame(parent)
+        row.pack(fill=tk.X)
+        val = ttk.Label(row, text=f"{int(var.get())}", style="Value.TLabel", width=4)
+        val.pack(side=tk.RIGHT)
+
+        def on_move(_=None, v=var, lab=val):
+            lab.configure(text=f"{int(round(v.get()))}")
+            self._preset_var.set("Personnalisé")
+            if self._live_var.get() and self._engine is not None:
+                if hasattr(self, "_live_after_id"):
+                    self.after_cancel(self._live_after_id)
+                self._live_after_id = self.after(90, lambda: self._on_apply(silent=True))
+
+        ttk.Scale(
+            row, from_=frm, to=to, orient=tk.HORIZONTAL, variable=var, command=on_move
+        ).pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 8))
 
     def _reload_monitors(self) -> None:
         try:
@@ -239,11 +217,9 @@ class SaturationApp(tk.Tk):
         except OSError as exc:
             messagebox.showerror("Erreur", str(exc))
             return
-
         labels = [m.label for m in self._monitors]
         self._monitor_combo["values"] = labels
         if labels:
-            # Préférer l'écran principal
             primary = next((i for i, m in enumerate(self._monitors) if m.is_primary), 0)
             self._monitor_combo.current(primary)
 
@@ -254,60 +230,74 @@ class SaturationApp(tk.Tk):
         return self._monitors[idx]
 
     def _on_all_toggle(self) -> None:
-        state = "disabled" if self._all_var.get() else "readonly"
-        self._monitor_combo.configure(state=state)
+        self._monitor_combo.configure(
+            state="disabled" if self._all_var.get() else "readonly"
+        )
 
-    def _on_slider(self, _value: str | None = None) -> None:
-        pct = int(round(float(self._sat_var.get())))
-        if pct == 100:
-            text = "100 % (normal)"
-        elif pct == 0:
-            text = "0 % (niveaux de gris)"
-        elif pct > 100:
-            text = f"{pct} % (plus saturé)"
-        else:
-            text = f"{pct} % (moins saturé)"
-        self._value_label.configure(text=text)
-        if self._live_var.get() and self._engine is not None:
-            # Debounce léger via after — évite de spammer l'API
-            if hasattr(self, "_live_after_id"):
-                self.after_cancel(self._live_after_id)
-            self._live_after_id = self.after(80, lambda: self._on_apply(silent=True))
+    def _on_preset(self, _event=None) -> None:
+        name = self._preset_var.get()
+        if name == "Personnalisé" or name not in PRESETS:
+            return
+        p = PRESETS[name]
+        self._presence.set(p.presence * 100)
+        self._vibrance.set(p.vibrance * 100)
+        self._shadow.set(p.shadow_lift * 100)
+        # gamma 0.7–1.3 ↔ slider 70–130
+        self._gamma.set(p.gamma * 100)
+        if self._live_var.get():
+            self._on_apply(silent=True)
+
+    def _current_params(self) -> GradeParams:
+        return GradeParams(
+            presence=self._presence.get() / 100.0,
+            vibrance=self._vibrance.get() / 100.0,
+            shadow_lift=self._shadow.get() / 100.0,
+            highlight_roll=0.10,
+            gamma=self._gamma.get() / 100.0,
+        )
 
     def _on_apply(self, silent: bool = False) -> None:
         if self._engine is None:
             return
-        sat = slider_to_saturation(self._sat_var.get())
-        try:
-            # À 100 %, on retire complètement le filtre (plus propre pour les jeux)
-            if abs(sat - 1.0) < 1e-6:
+        params = self._current_params()
+        # Off / neutre → reset propre
+        if (
+            params.presence < 0.01
+            and params.vibrance < 0.01
+            and params.shadow_lift < 0.01
+            and abs(params.gamma - 1.0) < 0.02
+        ):
+            try:
                 self._engine.reset()
-                return
+            except OSError as exc:
+                if not silent:
+                    messagebox.showerror("Erreur", str(exc))
+            return
+        try:
             if self._all_var.get():
-                self._engine.apply(sat, all_monitors=True)
+                self._engine.apply_grade(params, all_monitors=True)
             else:
-                monitor = self._selected_monitor()
-                if monitor is None:
+                mon = self._selected_monitor()
+                if mon is None:
                     if not silent:
                         messagebox.showwarning("Écran", "Sélectionne un écran.")
                     return
-                self._engine.apply(sat, monitor=monitor, all_monitors=False)
+                self._engine.apply_grade(params, monitor=mon, all_monitors=False)
         except OSError as exc:
             if not silent:
                 messagebox.showerror("Erreur", str(exc))
 
     def _on_reset(self) -> None:
-        if self._engine is None:
-            return
-        self._sat_var.set(100)
-        self._on_slider()
-        try:
-            self._engine.reset()
-        except OSError as exc:
-            messagebox.showerror("Erreur", str(exc))
+        self._preset_var.set("Off")
+        self._on_preset()
+        if self._engine:
+            try:
+                self._engine.reset()
+            except OSError as exc:
+                messagebox.showerror("Erreur", str(exc))
 
     def _on_close(self) -> None:
-        if self._engine is not None:
+        if self._engine:
             try:
                 self._engine.close()
             except Exception:
@@ -317,7 +307,6 @@ class SaturationApp(tk.Tk):
 
 def run() -> None:
     if sys.platform != "win32":
-        print("DebunkPC Saturation fonctionne uniquement sur Windows.")
+        print("DebunkPC Color fonctionne uniquement sur Windows.")
         sys.exit(1)
-    app = SaturationApp()
-    app.mainloop()
+    SaturationApp().mainloop()
